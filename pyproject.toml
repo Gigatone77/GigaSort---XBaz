@@ -42,6 +42,7 @@ include = [
     "resources/",
     "gigasort.desktop",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "pyproject.toml",
 ]
