@@ -53,9 +53,9 @@ def build_parser():
     g.add_argument("--clean-dupes", action="store_true",
                    help="Categorize and move duplicate archives to _DUPLICATES")
     g.add_argument("--trash", action="store_true",
-                   help="Manage the _TRASH bin (list / delete selected)")
+                   help="Manage the _TRASH bin (move selected to ~deleted; never deletes)")
     g.add_argument("--delete-rejects", action="store_true",
-                   help="Delete files in _REJECTS (double-confirmed, verified only)")
+                   help="Move verified _REJECTS items to ~deleted (restorable, never deletes)")
     g.add_argument("--extract", action="store_true",
                    help="Extract archives into <Type>/<Author>/<Name>/")
     g.add_argument("--gamestructure", action="store_true",

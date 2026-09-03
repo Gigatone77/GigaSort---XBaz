@@ -8,6 +8,11 @@ from gigasort.constants import (
     THREAT_FILENAME, SETTINGS_FILENAME, REJECT_BIN, TRASH_BIN,
 )
 from gigasort.utils.io import json_load, json_dump, _atomic_write_text
+from gigasort.utils import fs
+
+# Hidden, restorable sub-folder inside each bin. One-bin rule copies are
+# MOVED here (never removed) so GigaSort never permanently deletes anything.
+_DELETED_SUBDIR = "~deleted"
 
 
 def _join(folder, name):
@@ -129,8 +134,9 @@ def bin_path(folder, bin_name):
 
 def prepare_one_bin(folder, filename, bin_name, dry_run=False, remove_fn=None):
     """Enforce the one-bin rule: if the file is sitting in the opposite bin,
-    remove it from there first (unless dry_run). `remove_fn` does the actual
-    guarded removal; if None a plain unlink is attempted."""
+    relocate it there first (unless dry_run). `remove_fn` overrides the
+    default, which MOVES the older copy into that bin's restorable '~deleted'
+    sub-folder instead of permanently deleting it (no-delete rule)."""
     other = TRASH_BIN if bin_name == REJECT_BIN else REJECT_BIN
     other_path = os.path.join(bin_path(folder, other), filename)
     if not os.path.exists(other_path):
@@ -140,7 +146,11 @@ def prepare_one_bin(folder, filename, bin_name, dry_run=False, remove_fn=None):
     if remove_fn:
         remove_fn(other_path)
     else:
+        # No-delete default: move the other-bin copy to its '~deleted' folder.
         try:
-            os.remove(other_path)
+            deleted_dir = os.path.join(os.path.dirname(other_path), _DELETED_SUBDIR)
+            dst = os.path.join(deleted_dir, filename)
+            if os.path.abspath(other_path) != os.path.abspath(dst):
+                fs.guarded_move(folder, other_path, dst)
         except OSError:
             pass

@@ -1,14 +1,42 @@
 """Trash-bin management (--trash) and reject-pile cleanup (--delete-rejects).
 
-SAFETY: deletion only ever touches files that pass the web-verification gate
-(real Cyberpunk 2077 mods). Anything unverified is reported and left in
-place — never deleted, per the HARD GigaSort safety rule.
+SAFETY (HARD NO-DELETE RULE): this module NEVER permanently deletes anything.
+Items selected for "deletion" are instead MOVED into a hidden, restorable
+sub-folder inside the relevant bin, so they can always be recovered by hand.
+Only files that pass the web-verification gate (real Cyberpunk 2077 mods) are
+ever moved; anything unverified is reported and left in place.
 """
 
 import os
 
 from gigasort.constants import TRASH_BIN, REJECT_BIN
-from gigasort.core import storage, sort, verify
+from gigasort.core import storage, verify
+from gigasort.utils import fs
+
+# Hidden, restorable sub-folder inside each bin where "deleted" items land.
+# They are MOVED here, never removed, so the no-delete rule holds.
+DELETED_DIR = "~deleted"
+
+
+def _bin_deleted_dir(folder, bin_name):
+    return os.path.join(folder, bin_name, DELETED_DIR)
+
+
+def _send_to_deleted(folder, bin_name, filename, dry_run=False):
+    """Move one verified item into the bin's restorable '~deleted' sub-folder.
+
+    Replaces permanent deletion: the file is moved (never removed), and the
+    move is appended to the undo manifest so it is always reversible.
+    """
+    src = os.path.join(folder, bin_name, filename)
+    dst = os.path.join(_bin_deleted_dir(folder, bin_name), filename)
+    fs.guarded_move(
+        folder,
+        src,
+        dst,
+        dry_run=dry_run,
+        record_fn=(lambda s, d: storage.record_move(folder, s, d, dry_run)),
+    )
 
 
 def _list_bin(folder, bin_name):
@@ -41,29 +69,28 @@ def manage_trash(folder, dry_run=False, non_interactive=False):
     if non_interactive:
         deletable = [fn for fn in items if fn in approved]
         if not deletable:
-            print("  (non-interactive) nothing verified to delete; "
-                  "unverified items left untouched.")
+            print("  (non-interactive) nothing verified to move to '%s/'; "
+                  "unverified items left untouched." % DELETED_DIR)
             for fn in items:
                 if fn not in approved:
                     print("  unverified (kept): %s" % fn)
             return 0
         if dry_run:
-            print("  would delete (verified):")
+            print("  would move to '%s/' (verified):" % DELETED_DIR)
             for fn in deletable:
                 print("    %s" % fn)
             return 0
         for fn in deletable:
-            os.remove(os.path.join(bdir, fn))
-            storage.record_move(folder, os.path.join(bdir, fn),
-                                os.path.join(TRASH_BIN + "/~deleted", fn),
-                                dry_run)
-        print("  Deleted %d verified item(s)." % len(deletable))
+            _send_to_deleted(folder, TRASH_BIN, fn, dry_run=dry_run)
+        print("  Moved %d verified item(s) to '%s/' (restorable, nothing deleted)."
+              % (len(deletable), DELETED_DIR))
         for fn in items:
             if fn not in approved:
                 print("  unverified (kept): %s" % fn)
         return 0
 
-    sel = input("  delete which numbers (verified only)? [n/N to abort]: ").strip()
+    sel = input("  move which numbers to '%s/' (verified only)? "
+                "[n/N to abort]: " % DELETED_DIR).strip()
     if not sel.lower() in ("", "n", "no"):
         for token in sel.split():
             try:
@@ -75,16 +102,17 @@ def manage_trash(folder, dry_run=False, non_interactive=False):
                 print("  SKIP (unverified, HARD rule): %s" % fn)
                 continue
             if dry_run:
-                print("  would delete: %s" % fn)
+                print("  would move to '%s/': %s" % (DELETED_DIR, fn))
             else:
-                os.remove(os.path.join(bdir, fn))
-                print("  deleted: %s" % fn)
+                _send_to_deleted(folder, TRASH_BIN, fn)
+                print("  moved to '%s/' (restorable): %s" % (DELETED_DIR, fn))
     return 0
 
 
 def delete_rejects(folder, dry_run=False, yes=False, strict=False):
-    """Delete verified-only items in _REJECTS (double-confirmed). Never
-    touches unverified files."""
+    """Move VERIFIED-only, double-confirmed items in _REJECTS to the hidden,
+    restorable '~deleted' sub-folder. Never permanently deletes; never touches
+    unverified files."""
     bdir, items = _list_bin(folder, REJECT_BIN)
     print("REJECT PILE  (%s)" % REJECT_BIN)
     if not items:
@@ -100,7 +128,7 @@ def delete_rejects(folder, dry_run=False, yes=False, strict=False):
     kept = [fn for fn in items if fn not in approved]
 
     if dry_run:
-        print("  would delete (verified):")
+        print("  would move to '%s/' (verified):" % DELETED_DIR)
         for fn in deletable:
             print("    %s" % fn)
         print("  unverified (kept, HARD rule):")
@@ -109,25 +137,24 @@ def delete_rejects(folder, dry_run=False, yes=False, strict=False):
         return 0
 
     if not deletable:
-        print("  No verified rejects to delete; unverified kept in place.")
+        print("  No verified rejects to move; unverified kept in place.")
         return 0
 
     if not yes:
         if strict:
-            print("  abort (--strict): would delete %d verified reject(s) "
-                  "without confirmation" % len(deletable))
+            print("  abort (--strict): would move %d verified reject(s) to "
+                  "'%s/' without confirmation" % (len(deletable), DELETED_DIR))
             return 0
-        ans = input("  permanently delete %d verified reject(s)? "
-                    "[y/N]: " % len(deletable)).strip().lower()
+        ans = input("  move %d verified reject(s) to the restorable '%s/' "
+                    "folder (nothing is deleted)? [y/N]: "
+                    % (len(deletable), DELETED_DIR)).strip().lower()
         if ans not in ("y", "yes"):
             print("  Cancelled.")
             return 0
 
     for fn in deletable:
-        os.remove(os.path.join(bdir, fn))
-        storage.record_move(folder, os.path.join(bdir, fn), os.path.join(
-            REJECT_BIN + "/~deleted", fn))
-        print("  deleted: %s" % fn)
+        _send_to_deleted(folder, REJECT_BIN, fn)
+        print("  moved to '%s/' (restorable): %s" % (DELETED_DIR, fn))
     for fn in kept:
         print("  unverified (kept, HARD rule): %s" % fn)
     return 0
