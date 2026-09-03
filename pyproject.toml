@@ -26,9 +26,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-repo/gigasort"
-Documentation = "https://github.com/your-repo/gigasort#readme"
-Source = "https://github.com/your-repo/gigasort"
+Homepage = "https://github.com/Gigatone77/gigasort"
+Repository = "https://github.com/Gigatone77/gigasort"
+"Bug Tracker" = "https://github.com/Gigatone77/gigasort/issues"
 
 [project.scripts]
 gigasort = "gigasort.__main__:main"

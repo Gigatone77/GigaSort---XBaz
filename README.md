@@ -61,7 +61,7 @@ GigaSlim, CyberFlashSync and XBaz — each runnable from its own GUI tab.
 ## Install
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Gigatone77/gigasort.git
 cd gigasort
 pip install .
 ```
