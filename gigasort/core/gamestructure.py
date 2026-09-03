@@ -88,7 +88,7 @@ def _resolve_layout(folder, path):
 def _safe_extract(root, archive_path, dest_dir):
     """Extract an archive into dest_dir with path sanitisation and fence
     guarding. Uses zipfile for .zip, 7z/unrar subprocess for others."""
-    dest_dir = fs.guard_under(root, dest_dir)
+    fs.guard_under(root, dest_dir)  # assert containment; keep dest_dir
     os.makedirs(dest_dir, exist_ok=True)
     ext = os.path.splitext(archive_path)[1].lower()
     if ext == ".zip":
@@ -166,7 +166,7 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, input_fn=input):
 
     if not dry_run:
         ans = input_fn("\nPlace into '%s'? [y/N] " % dest_root).strip().lower()
-        if ans not in ("y", "yes"):
+        if ans not in ("y", "yes", "confirm"):
             print("Aborted.")
             return
 
@@ -204,6 +204,8 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, input_fn=input):
                 print("  could not compile %s: %s" % (fn, exc))
             finally:
                 shutil.rmtree(work, ignore_errors=True)
+
+    shutil.rmtree(os.path.join(folder, GS_STAGE_DIR), ignore_errors=True)
 
     json_dump(os.path.join(folder, GS_MANIFEST), {
         "tool": "GigaSort", "mode": "gamestructure",

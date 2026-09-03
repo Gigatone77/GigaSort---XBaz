@@ -13,6 +13,7 @@ from gigasort.gui.pages.status import StatusPage
 from gigasort.gui.pages.gigaslim import GigaSlimPage
 from gigasort.gui.pages.cyberflash import CyberFlashSyncPage
 from gigasort.gui.pages.xbaz import XBazPage
+from gigasort.gui.pages.gamestructure import GameStructurePage
 
 WINDOW_WIDTH = 960
 WINDOW_HEIGHT = 640
@@ -84,11 +85,14 @@ class MainWindow(Adw.ApplicationWindow):
         self.gigaslim_page = GigaSlimPage(workspace=self.workspace)
         self.cyberflash_page = CyberFlashSyncPage(workspace=self.workspace)
         self.xbaz_page = XBazPage(workspace=self.workspace)
+        self.gamestructure_page = GameStructurePage(workspace=self.workspace)
         add_row("gigaslim", "GigaSlim", "edit-clear-symbolic",
                 self.gigaslim_page)
         add_row("cyberflash", "CyberFlashSync", "document-save-symbolic",
                 self.cyberflash_page)
         add_row("xbaz", "XBaz", "input-gaming-symbolic", self.xbaz_page)
+        add_row("gamestructure", "Game Structure", "folder-symbolic",
+                self.gamestructure_page)
 
         def on_row_activated(listbox, row):
             if hasattr(row, "_page_id"):
