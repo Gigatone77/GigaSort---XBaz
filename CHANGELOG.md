@@ -9,8 +9,9 @@ Modular, redistributable rewrite shipping a GTK4 GUI + headless CLI.
 ### Added
 - **GTK4 / libadwaita GUI** (`gigasort` with no flags). Core tabs: Scan &
   Sort, Undo, Workspace. A **Companion Tools** section adds one tab each for
-  GigaSlim, CyberFlashSync and XBaz, each with a dedicated options sidebar and
-  live output pane.
+  GigaSlim, CyberFlashSync, XBaz and **Game Structure**, each with a dedicated
+  options sidebar and live output pane. The Game Structure tab drives the
+  `--gamestructure` mode with source folder / game-dir / dry-run options.
 - **Expanded CLI** (~35 flags), feature-parity with the published tool:
   `--verify --gate --check-deps --modlist --need-redownload --vram --preview
   --clean-dupes --trash --delete-rejects --extract --gamestructure --agent
@@ -24,6 +25,16 @@ Modular, redistributable rewrite shipping a GTK4 GUI + headless CLI.
   launcher GUI pages.
 - Publishable distribution: `pyproject.toml` (hatchling), `README.md`, `LICENSE`
   (MIT), wheel + sdist under `dist/`.
+
+### Fixed
+- **Game-structure extraction** (`--gamestructure`): `_safe_extract` was
+  overriding `dest_dir` with the workspace root (`fs.guard_under` returns the
+  root), silently dumping extracted files into the source folder instead of
+  the stage / game tree. Now it asserts containment and keeps `dest_dir`, so
+  archives compile into the correct `GAMESTRUCTURE/<subpath>` tree and the
+  source folder stays clean (temp stage is removed after the build).
+- **Game-structure `--yes`**: the non-interactive confirm value (`confirm`)
+  now satisfies the `[y/N]` prompt, so `--yes` proceeds without aborting.
 
 ### Packaging
 - Install from source: `pip install .` -> `gigasort` command with GUI + CLI.
