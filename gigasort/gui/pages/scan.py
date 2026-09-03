@@ -10,7 +10,7 @@ from gi.repository import Gtk, Adw, GLib
 from gigasort.core import sort
 from gigasort.utils.format import human_size
 from gigasort.constants import REJECT_BIN, TRASH_BIN, DUPLICATES_BIN
-from gigasort.gui.util import esc
+from gigasort.gui.util import esc, show_error
 
 
 class ScanPage(Adw.NavigationPage):
@@ -182,7 +182,9 @@ class ScanPage(Adw.NavigationPage):
 
     def _on_scan_error(self, error):
         self._scan_button.set_sensitive(True)
-        self._status_label.set_text("Error: %s" % error)
+        self._status_label.set_text(
+            "Scan failed - see the error dialog for details.")
+        show_error(self, "Scan failed", error)
 
     def _on_apply(self, *args):
         self._apply_button.set_sensitive(False)
@@ -213,4 +215,6 @@ class ScanPage(Adw.NavigationPage):
 
     def _on_apply_error(self, error):
         self._apply_button.set_sensitive(True)
-        self._status_label.set_text("Apply error: %s" % error)
+        self._status_label.set_text(
+            "Apply failed - see the error dialog for details.")
+        show_error(self, "Apply failed", error)
