@@ -16,6 +16,7 @@ class CyberFlashSyncPage(CompanionPage):
     ]
 
     def _build_sidebar(self):
+        self._run_button.set_visible(False)
         self._drive = self._add_entry("Flash drive mount", "auto-detect")
         self._only = self._add_entry("Only mapping ids", "all")
         self._with_game = self._add_toggle(

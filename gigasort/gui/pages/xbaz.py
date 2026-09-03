@@ -29,6 +29,8 @@ class XBazPage(CompanionPage):
         note.set_xalign(0)
         self._options.append(note)
 
+        self._run_button.set_visible(False)
+
         self._add_button("Status (diagnostic)", "suggested-action").connect(
             "clicked", lambda *a: self._run_cmd("status"))
         self._add_button("Bind stock xpad").connect(
