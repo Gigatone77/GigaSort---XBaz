@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=GigaSort
+Comment=Cyberpunk 2077 mod-archive organizer
+Exec=gigasort
+Icon=gigasort
+Terminal=false
+Categories=Utility;
+Keywords=cyberpunk;mod;archive;organizer;cp2077;sort;
+StartupNotify=true

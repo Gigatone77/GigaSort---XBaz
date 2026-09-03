@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gigasort"
+version = "2.0.0"
+description = "Cyberpunk 2077 mod-archive organizer — categorize, deduplicate, web-verify, and compile, with a GTK4 GUI + CLI"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+keywords = [
+    "cyberpunk", "2077", "mods", "nexus", "organizer", "sort",
+    "gigasm", "gigaslim", "cyberflashsync", "xbaz", "gui", "gtk",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: X11 Applications :: GTK",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Games/Entertainment",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-repo/gigasort"
+Documentation = "https://github.com/your-repo/gigasort#readme"
+Source = "https://github.com/your-repo/gigasort"
+
+[project.scripts]
+gigasort = "gigasort.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gigasort"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "gigasort/",
+    "resources/",
+    "gigasort.desktop",
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+]

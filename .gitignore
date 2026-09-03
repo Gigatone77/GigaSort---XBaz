@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# GigaSort workspace state (never commit user mod state)
+_GigaSort_*.json
+_GigaSort_*.txt
+_GigaSort_stage/
+_GigaSort_backup/
+_GigaSort_bridge/
+_REJECTS/
+_TRASH/
+_DUPLICATES/
+_ON_HOLD/
+GAMESTRUCTURE/
+
+# Editors / OS
+*.swp
+.DS_Store
