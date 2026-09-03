@@ -50,6 +50,50 @@ def build_allowlist(keep, cache=None, progress=None):
     return verified, flagged
 
 
+def verification_statuses(folder, kept, progress=None):
+    """Per-file verification origin, using the same gate as the sort.
+
+    Returns {filename: status} where status is one of:
+      'offline'    - already APPROVED in the local verified cache (no Net).
+      'online'     - resolved live against Nexus just now.
+      'unverified' - neither; never touched by the sort.
+
+    Mirrors build_allowlist() but records *why* each file passed, so the UI can
+    show an offline vs online indicator. Newly online-verified hits are cached
+    for future offline confirmation, exactly as the sort's gate does.
+    """
+    from gigasort.core import storage
+
+    cache = storage.load_cache(folder)
+    already = {
+        fn for fn, e in cache.items()
+        if e and e.get("status") == APPROVED
+    }
+    statuses = {}
+    for fn, _size in kept:
+        entry = cache.get(fn)
+        if entry and entry.get("status") == APPROVED:
+            statuses[fn] = "offline" if fn in already else "online"
+            continue
+        mod_id = extract_mod_id(fn)
+        title = net.verified_nexus_title(mod_id) if mod_id else None
+        if title:
+            statuses[fn] = "online"
+            cache[fn] = {
+                "status": APPROVED,
+                "category": categorize(fn),
+                "nexus_title": title,
+                "nexus_cat": None,
+            }
+        else:
+            statuses[fn] = "unverified"
+        if progress:
+            progress(fn)
+    if cache:
+        storage.save_cache(folder, cache)
+    return statuses
+
+
 def verify_categories(keep, cache, rejects=()):
     """Cross-reference each archive against its Nexus page.
 

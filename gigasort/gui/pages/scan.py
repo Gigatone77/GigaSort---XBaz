@@ -7,7 +7,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
-from gigasort.core import sort
+from gigasort.core import sort, verify
 from gigasort.utils.format import human_size
 from gigasort.constants import REJECT_BIN, TRASH_BIN, DUPLICATES_BIN
 from gigasort.gui.util import esc, show_error
@@ -135,22 +135,32 @@ class ScanPage(Adw.NavigationPage):
         t = threading.Thread(target=worker, daemon=True)
         t.start()
 
-    def _on_scan_done(self, result):
-        self._result = result
-        self._scan_button.set_sensitive(True)
+    def _status_chip(self, status):
+        """Small colored badge: OFFLINE (cached) / ONLINE (live) / UNVERIFIED."""
+        badges = {
+            "offline": ("OFFLINE", "success"),
+            "online": ("ONLINE", "warning"),
+            "unverified": ("UNVERIFIED", "error"),
+        }
+        text, cls = badges.get(status, ("UNVERIFIED", "error"))
+        lbl = Gtk.Label(label=text)
+        lbl.set_css_classes([cls, "giga-veri-chip"])
+        return lbl
 
-        totals = (
-            "kept %d  |  duplicates %d  |  rejects %d  |  %s"
-            % (len(result.kept), len(result.duplicates), len(result.rejects),
-               human_size(result.total_bytes))
-        )
-        self._status_label.set_text(totals)
+    def _row(self, fn, size, status=None):
+        row = Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
+        if status and status != "unverified":
+            row.add_suffix(self._status_chip(status))
+        return row
+
+    def _populate(self, result, statuses=None):
+        statuses = statuses or {}
 
         self._clear_list(self._rejects_list)
         if result.rejects:
             for fn, size in result.rejects:
-                row = Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
-                self._rejects_list.append(row)
+                self._rejects_list.append(
+                    self._row(fn, size, statuses.get(fn)))
         else:
             self._rejects_list.append(
                 Adw.ActionRow(title="No rejects - every file categorized"))
@@ -158,8 +168,8 @@ class ScanPage(Adw.NavigationPage):
         self._clear_list(self._dupes_list)
         if result.duplicates:
             for fn, size in result.duplicates:
-                row = Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
-                self._dupes_list.append(row)
+                self._dupes_list.append(
+                    self._row(fn, size, statuses.get(fn)))
         else:
             self._dupes_list.append(
                 Adw.ActionRow(title="No duplicates"))
@@ -170,12 +180,33 @@ class ScanPage(Adw.NavigationPage):
                 files = result.plan[cat]
                 grp = Adw.PreferencesGroup(title="%s  (%d)" % (esc(cat), len(files)))
                 for fn, size in files:
-                    grp.add(Adw.ActionRow(title=esc(fn), subtitle=human_size(size)))
+                    grp.add(self._row(fn, size, statuses.get(fn)))
                 self._plan_box.append(grp)
         else:
-            self._clear_list(self._plan_box)
             self._plan_box.append(
                 Adw.ActionRow(title="Nothing to move"))
+
+    def _on_scan_done(self, result):
+        self._result = result
+        self._scan_button.set_sensitive(True)
+
+        totals = (
+            "kept %d  |  duplicates %d  |  rejects %d  |  %s"
+            % (len(result.kept), len(result.duplicates), len(result.rejects),
+               human_size(result.total_bytes))
+        )
+        self._status_label.set_text(totals)
+        self._populate(result)
+
+        def worker():
+            try:
+                statuses = verify.verification_statuses(
+                    result.folder, result.kept)
+                GLib.idle_add(self._populate, result, statuses)
+            except Exception:
+                pass
+
+        threading.Thread(target=worker, daemon=True).start()
 
         self._apply_button.set_visible(
             bool(result.plan or result.rejects or result.duplicates))
@@ -192,19 +223,33 @@ class ScanPage(Adw.NavigationPage):
 
         def worker():
             try:
-                moved = sort.execute_sort(self._result,
-                                          input_fn=lambda *a: "confirm")
-                GLib.idle_add(self._on_apply_done, moved)
+                result = sort.execute_sort(self._result,
+                                           input_fn=lambda *a: "confirm")
+                GLib.idle_add(self._on_apply_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_apply_error, e)
 
         t = threading.Thread(target=worker, daemon=True)
         t.start()
 
-    def _on_apply_done(self, moved):
+    def _on_apply_done(self, result):
         self._apply_button.set_sensitive(True)
         self._apply_button.set_visible(False)
-        self._status_label.set_text("Applied %d move(s)." % moved)
+        moved = result.get("moved", 0)
+        flagged = result.get("flagged_unverified", [])
+        if flagged:
+            msg = (
+                "%d file(s) moved.\n\n%d UNVERIFIED file(s) were left "
+                "untouched (never moved/trashed):\n\n%s"
+                % (moved, len(flagged), "\n".join("  \u2022 %s" % f
+                                                  for f in flagged))
+            )
+            self._status_label.set_text(
+                "%d moved; %d unverified left in place."
+                % (moved, len(flagged)))
+            show_error(self, "Apply finished with skipped files", msg)
+        else:
+            self._status_label.set_text("Applied %d move(s)." % moved)
         try:
             from gigasort.core import tags
             tags.write_tags(self.workspace)
