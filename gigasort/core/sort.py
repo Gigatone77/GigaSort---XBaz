@@ -39,6 +39,11 @@ class ScanResult:
     group_frameworks: bool = False
     framework_of: dict = field(default_factory=dict)  # fn -> group name
     relocate: list = field(default_factory=list)      # [(fn, src, dst, size)]
+    # fn -> [installed game paths it would overwrite]; files here go to
+    # _ON_HOLD instead of their category until the user resolves the conflict.
+    hold_conflicts: dict = field(default_factory=dict)
+    # Whether a game directory was configured (enables the conflict check).
+    game_dir: str = ""
     scanned_at: float = field(default_factory=time.time)
 
     @property
@@ -349,7 +354,7 @@ def rescue_verified_rejects(folder, rejects, verified, cache=None):
 
 
 def scan_workspace(folder, toplevel_authors=None, author_plus_batch=False,
-                   group_frameworks=False):
+                   group_frameworks=False, game_dir=None):
     """Read the workspace, group by cleaned name, decide keep/dupe, and
     categorize the keepers. Pure/read-only.
 
@@ -361,11 +366,25 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=False,
           general category organization runs in parallel on all other files.
     When group_frameworks=True, framework groups are resolved from cached
     dependency data (never live network here) and stored in framework_of.
+
+    `game_dir` (a real Cyberpunk 2077 install) enables the game-directory
+    conflict check: any keep file that would OVERWRITE an already-installed
+    mod file is routed to _ON_HOLD instead of its category (via
+    hold_conflicts). When game_dir is None it is read from the workspace
+    settings; if still unset the conflict check is disabled entirely.
     """
     if toplevel_authors is None:
         toplevel_authors = list(TOPLEVEL_AUTHORS)
     else:
         toplevel_authors = list(toplevel_authors)
+
+    if game_dir is None:
+        try:
+            game_dir = (storage.load_settings(folder) or {}).get("game_dir") or ""
+        except Exception:
+            game_dir = ""
+    game_dir = game_dir or ""
+
     archives = []
     for fn in sorted(os.listdir(folder)):
         full = os.path.join(folder, fn)
@@ -443,13 +462,27 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=False,
     except Exception:
         pass
 
+    # Game-directory conflict check: a keep file that would OVERWRITE an
+    # already-installed mod file is routed to _ON_HOLD instead of its category.
+    # Runs only when game_dir is set (otherwise disabled / a no-op).
+    hold_conflicts = {}
+    if game_dir:
+        try:
+            from gigasort.core import conflict
+            hold_conflicts = conflict.find_conflicts(
+                folder, [fn for fn, _ in keep], game_dir)
+        except Exception:
+            pass
+
     return ScanResult(folder=folder, kept=keep, duplicates=dupes,
                       rejects=rejects, plan=plan,
                       toplevel_authors=toplevel_authors,
                       author_plus_batch=author_plus_batch,
                       group_frameworks=group_frameworks,
                       framework_of=framework_of,
-                      relocate=relocate)
+                      relocate=relocate,
+                      hold_conflicts=hold_conflicts,
+                      game_dir=game_dir)
 
 
 def build_verified_gate(folder, kept):
@@ -537,6 +570,41 @@ def _to_bin(folder, filename, bin_name, dry_run, input_fn=input):
     dst = os.path.join(bin_dir, filename)
     if os.path.abspath(src) != os.path.abspath(dst):
         fs.guarded_move(folder, src, dst, dry_run=dry_run, input_fn=input_fn)
+
+
+def route_hold_conflicts(result, verified, dry_run=False, input_fn=input):
+    """Move game-directory-conflicting files to the _ON_HOLD review bin.
+
+    For every file that would OVERWRITE an installed game file (per
+    result.hold_conflicts), pull it out of the normal category plan and move
+    it to _ON_HOLD so the user reviews it before placement. Only VERIFIED
+    files are moved (a held conflict is still a real CP2077 mod — never touch
+    the unverified). Returns the number moved.
+    """
+    if not result.hold_conflicts:
+        return 0
+    folder = result.folder
+    moved = 0
+    conflicts = dict(result.hold_conflicts)
+    # Remove conflicted files from every category bucket so they are not
+    # placed normally; they go to _ON_HOLD instead.
+    for cat, files in list(result.plan.items()):
+        kept_list = []
+        for fn, size in files:
+            if fn in conflicts:
+                if fn in verified:
+                    _to_bin(folder, fn, "_ON_HOLD", dry_run, input_fn)
+                    moved += 1
+                    print("  -> _ON_HOLD (conflict): %s" % fn)
+                    for p in conflicts[fn]:
+                        print("      overwrites installed: %s" % p)
+            else:
+                kept_list.append((fn, size))
+        if kept_list:
+            result.plan[cat] = kept_list
+        else:
+            del result.plan[cat]
+    return moved
 
 
 def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
@@ -627,6 +695,11 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
                 for fn in verified_rejects:
                     _to_bin(folder, fn, REJECT_BIN, dry_run, input_fn)
                 print("  Batch: moved verified rejects to %s." % REJECT_BIN)
+
+    # Game-directory conflicts -> _ON_HOLD (a verified mod that would
+    # overwrite an installed file is reviewed, not sorted into its category).
+    held_conflicts = route_hold_conflicts(
+        result, verified, dry_run=dry_run, input_fn=input_fn)
 
     # Plan destinations:
     #   listed author     -> <author>/<file>                (top-level folder)
@@ -725,6 +798,7 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
         "flagged_unverified": sorted(flagged),
         "relocated": relocated,
         "pruned": pruned,
+        "held_conflicts": held_conflicts,
     }
 
 
@@ -759,7 +833,8 @@ def _move_skip_collision(folder, src, dst, dry_run=False, input_fn=None,
 
 
 def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None,
-                   author_plus_batch=False, group_frameworks=False):
+                   author_plus_batch=False, group_frameworks=False,
+                   game_dir=None):
     """Headless, non-interactive sort (used by --apply and the agent bridge's
     batch-sort op). Returns a summary dict.
 
@@ -776,7 +851,8 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
 
     result = scan_workspace(folder, toplevel_authors=toplevel_authors,
                             author_plus_batch=author_plus_batch,
-                            group_frameworks=group_frameworks)
+                            group_frameworks=group_frameworks,
+                            game_dir=game_dir)
     moved = 0
     plus_batch = author_plus_batch or result.author_plus_batch
 
@@ -820,6 +896,9 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
         for rfn, (rcat, rsize) in rescued.items():
             result.rejects = [(f, s) for f, s in result.rejects if f != rfn]
             result.plan.setdefault(rcat, []).append((rfn, rsize))
+
+    # Game-directory conflicts -> _ON_HOLD (reviewed, not placed normally).
+    held_conflicts = route_hold_conflicts(result, verified, dry_run=dry_run)
 
     # Every planned move is allowed only if the file is verified.
     for cat, files in list(result.plan.items()):
@@ -912,6 +991,7 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
         "relocated": relocated,
         "frameworks": sorted(set(groups.values())),
         "pruned": pruned,
+        "held_conflicts": held_conflicts,
     }
 
 

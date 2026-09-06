@@ -109,6 +109,24 @@ class ScanPage(Adw.NavigationPage):
         gb_box.append(gb_hint)
         outer.append(gb_box)
 
+        game_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self._game_dir_entry = Gtk.Entry(
+            placeholder_text="Path to the installed Cyberpunk 2077 folder "
+                             "(enables conflict check); leave empty to disable")
+        self._game_dir_entry.set_hexpand(True)
+        self._game_dir_entry.set_tooltip_text(
+            "If set, GigaSort compares each download against the actual "
+            "installed mod files in this game directory. Any archive that "
+            "would OVERWRITE an already-installed file is routed to _ON_HOLD "
+            "with an explanation instead of its category folder, so you can "
+            "review the conflict before it is placed. Leave empty to disable "
+            "the check entirely.")
+        game_box.append(self._game_dir_entry)
+        game_btn = Gtk.Button(label="Browse...")
+        game_btn.connect("clicked", self._on_select_game_dir)
+        game_box.append(game_btn)
+        outer.append(game_box)
+
         if self.workspace:
             try:
                 settings = storage.load_settings(self.workspace)
@@ -119,6 +137,8 @@ class ScanPage(Adw.NavigationPage):
                     bool(settings.get("author_plus_batch")))
                 self._group_frameworks.set_active(
                     bool(settings.get("group_frameworks")))
+                if settings.get("game_dir"):
+                    self._game_dir_entry.set_text(settings["game_dir"])
             except Exception:
                 pass
 
@@ -130,6 +150,11 @@ class ScanPage(Adw.NavigationPage):
         self._rejects_list.set_selection_mode(Gtk.SelectionMode.NONE)
         self._notebook.append_page(
             self._scroll(self._rejects_list), Gtk.Label(label="Rejects"))
+
+        self._hold_list = Gtk.ListBox()
+        self._hold_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self._notebook.append_page(
+            self._scroll(self._hold_list), Gtk.Label(label="On Hold"))
 
         self._dupes_list = Gtk.ListBox()
         self._dupes_list.set_selection_mode(Gtk.SelectionMode.NONE)
@@ -170,6 +195,30 @@ class ScanPage(Adw.NavigationPage):
             nxt = child.get_next_sibling()
             ls.remove(child)
             child = nxt
+
+    def _populate_hold(self, conflicts=None):
+        """Show mods that would conflict with installed game files. Each row
+        explains WHICH installed file would be overwritten so the user can
+        decide. Fills the 'On Hold' tab."""
+        conflicts = conflicts or {}
+        self._clear_list(self._hold_list)
+        if not conflicts:
+            self._hold_list.append(Adw.ActionRow(
+                title="No game-directory conflicts detected."))
+            return
+        for fn in sorted(conflicts):
+            paths = conflicts[fn]
+            row = Adw.ActionRow(
+                title=esc(fn),
+                subtitle="Would overwrite %d installed file(s) - sent to "
+                         "_ON_HOLD for review" % len(paths))
+            detail = "\n".join("  \u2022 %s" % p for p in paths[:8])
+            if len(paths) > 8:
+                detail += "\n  \u2022 ... and %d more" % (len(paths) - 8)
+            hl = Gtk.Label(label=detail, wrap=True, css_classes=["dim-label"])
+            hl.set_xalign(0)
+            row.add_suffix(hl)
+            self._hold_list.append(row)
 
     def _populate_struct(self, structs=None):
         """Show the archive-structure check results (True = CP2077 game layout,
@@ -235,6 +284,24 @@ class ScanPage(Adw.NavigationPage):
             folder = None
         dialog.select_folder(self.get_root(), None, self._on_folder_selected, folder)
 
+    def _on_select_game_dir(self, *args):
+        from gi.repository import Gio
+        dialog = Gtk.FileDialog()
+        dialog.set_title("Select the installed Cyberpunk 2077 folder")
+        cur = self._game_dir_entry.get_text().strip()
+        start = Gio.File.new_for_path(cur) if cur and os.path.isdir(cur) else None
+        dialog.select_folder(self.get_root(), None,
+                             self._on_game_dir_selected, start)
+
+    def _on_game_dir_selected(self, dialog, result):
+        from gi.repository import Gio
+        try:
+            file = dialog.select_folder_finish(result)
+        except GLib.Error:
+            return
+        if file:
+            self._game_dir_entry.set_text(file.get_path())
+
     def _on_folder_selected(self, dialog, result):
         import os
         from gi.repository import Gio
@@ -261,12 +328,14 @@ class ScanPage(Adw.NavigationPage):
         authors = self._get_toplevel_authors()
         plus_batch = self._author_plus_batch.get_active()
         group_fw = self._group_frameworks.get_active()
+        game_dir = self._game_dir_entry.get_text().strip()
         if self.workspace:
             try:
                 settings = storage.load_settings(self.workspace)
                 settings["toplevel_authors"] = authors
                 settings["author_plus_batch"] = plus_batch
                 settings["group_frameworks"] = group_fw
+                settings["game_dir"] = game_dir
                 storage.save_settings(self.workspace, settings)
             except Exception:
                 pass
@@ -276,7 +345,8 @@ class ScanPage(Adw.NavigationPage):
                 result = sort.scan_workspace(self.workspace,
                                              toplevel_authors=authors,
                                              author_plus_batch=plus_batch,
-                                             group_frameworks=group_fw)
+                                             group_frameworks=group_fw,
+                                             game_dir=game_dir)
                 GLib.idle_add(self._on_scan_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_scan_error, e)
@@ -306,6 +376,8 @@ class ScanPage(Adw.NavigationPage):
 
     def _populate(self, result, statuses=None):
         statuses = statuses or {}
+
+        self._populate_hold(result.hold_conflicts)
 
         self._clear_list(self._rejects_list)
         if result.rejects:
@@ -376,9 +448,11 @@ class ScanPage(Adw.NavigationPage):
         self._scan_button.set_sensitive(True)
 
         totals = (
-            "kept %d  |  duplicates %d  |  rejects %d  |  relocations %d  |  %s"
+            "kept %d  |  duplicates %d  |  rejects %d  |  holds %d  |  "
+            "relocations %d  |  %s"
             % (len(result.kept), len(result.duplicates), len(result.rejects),
-               len(result.relocate), human_size(result.total_bytes))
+               len(result.hold_conflicts), len(result.relocate),
+               human_size(result.total_bytes))
         )
         self._status_label.set_text(totals)
         self._populate(result)
@@ -428,7 +502,7 @@ class ScanPage(Adw.NavigationPage):
 
         self._apply_button.set_visible(
             bool(result.plan or result.rejects or result.duplicates
-                 or result.relocate))
+                 or result.relocate or result.hold_conflicts))
 
     def _on_scan_error(self, error):
         self._scan_button.set_sensitive(True)

@@ -80,7 +80,10 @@ def build_parser():
     p.add_argument("--yes", action="store_true",
                    help="Approve confirmations non-interactively")
     p.add_argument("--game-dir", default=None,
-                   help="Target game directory for --gamestructure")
+                   help="Target game directory: for --gamestructure, and with "
+                        "--apply/-s it enables game-directory conflict detection "
+                        "(mods that would overwrite installed files go to "
+                        "_ON_HOLD). Falls back to the saved setting if omitted.")
     p.add_argument("--with-game", action="store_true",
                    help="Include the full game-dir zip in --cyberflash")
     p.add_argument("--videos", action="store_true",
@@ -243,11 +246,13 @@ def main(argv=None):
         authors = settings.get("toplevel_authors") or list(TOPLEVEL_AUTHORS)
         plus_batch = bool(settings.get("author_plus_batch"))
         group_fw = bool(settings.get("group_frameworks"))
+        game_dir = args.game_dir or settings.get("game_dir") or ""
         summary = sort.run_batch_sort(folder, dry_run=args.dry_run,
                                       to_rejects=not args.keep,
                                       toplevel_authors=authors,
                                       author_plus_batch=plus_batch,
-                                      group_frameworks=group_fw)
+                                      group_frameworks=group_fw,
+                                      game_dir=game_dir)
         print("Done: %d moved, %d dupes, %d rejects%s." % (
             summary["moved"], summary["duplicates"],
             summary["to_rejects"],

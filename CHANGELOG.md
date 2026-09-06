@@ -2,6 +2,21 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [Unreleased]
+
+### Added
+- **Game-directory conflict detection** (`core/conflict.py`): once a Cyberpunk
+  2077 install is set (GUI "Game directory" field, saved in
+  `_GigaSort_settings.json`, or `--game-dir`), GigaSort compares every download
+  against the actually-installed mod files (`archive/pc/mod`, `r6/scripts`,
+  `red4ext/plugins`, engine/CET roots, etc.). Any archive that would OVERWRITE
+  an already-installed file is routed to the **`_ON_HOLD`** review bin instead
+  of its category folder, each with an explanation of exactly which installed
+  file(s) it collides with. Strict exact-overwrite matching keeps false
+  positives low. The check is a no-op when no game directory is configured.
+- **On Hold tab** in the GUI showing conflicting mods + the installed files
+  each would overwrite.
+
 ## [2.0.0] - 2026-09-03
 
 Modular, redistributable rewrite shipping a GTK4 GUI + headless CLI.
