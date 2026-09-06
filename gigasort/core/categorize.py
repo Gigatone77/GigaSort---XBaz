@@ -35,6 +35,24 @@ def extract_mod_id(filename):
     return m.group(1) if m else None
 
 
+CCXL_MODID_RE = re.compile(r"(?<![a-z0-9-])(\d{3,6})(?![a-z0-9-])", re.IGNORECASE)
+
+
+def candidate_mod_id(filename):
+    """Loose Nexus mod-id candidate: a 4-6 digit number embedded in the name.
+
+    Newer Nexus / CCXL-collection downloads write the mod id as a bare number
+    (e.g. 'CCXL - AMELIE REDUX 31403 1 <date>-<hash>.zip') rather than the
+    classic '-31403-5-...' form. This returns the first such token, used only
+    as a candidate so the offline structural gate can pair a strong CP2077
+    archive layout with *some* numeric Nexus id without requiring the classic
+    delimiter.
+    """
+    return extract_mod_id(filename) or (
+        (CCXL_MODID_RE.search(filename).group(1))
+        if CCXL_MODID_RE.search(filename) else None)
+
+
 def extract_mod_author(filename):
     """Best-effort Nexus author for a downloaded filename, or None.
 

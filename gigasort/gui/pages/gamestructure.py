@@ -16,6 +16,7 @@ class GameStructurePage(CompanionPage):
     TOOL_NAME = "Game Structure"
 
     def _build_sidebar(self):
+        self._run_button.set_visible(False)
         self._folder = self._add_entry(
             "Source folder",
             os.path.expanduser("~/Downloads"))
@@ -62,6 +63,7 @@ class GameStructurePage(CompanionPage):
             try:
                 proc = subprocess.Popen(
                     full, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                    stdin=subprocess.DEVNULL,
                     text=True, bufsize=1,
                     cwd=folder if os.path.isdir(folder) else None)
                 self._proc = proc

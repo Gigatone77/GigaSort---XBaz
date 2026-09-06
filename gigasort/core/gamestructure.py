@@ -9,21 +9,26 @@ overwrite is detected with an optional timestamped backup before commit.
 """
 
 import os
-import re
 import shutil
 import subprocess
 import time
 import zipfile
 
 from gigasort.constants import (
-    CP2077_ROOT_DIRS, ARCHIVE_INSTALL_EXTS, GS_STRUCTURE_DIR, GS_STAGE_DIR,
-    GS_MANIFEST, GS_BACKUP_DIR, GS_MOD_INDEX,
+    CP2077_ROOT_DIRS, GS_STRUCTURE_DIR, GS_STAGE_DIR,
+    GS_MANIFEST, GS_BACKUP_DIR,
 )
-from gigasort.core import storage
-from gigasort.core.categorize import extract_mod_id, extract_mod_author
 from gigasort.utils import fs
 from gigasort.utils.format import human_size
 from gigasort.utils.io import json_load, json_dump
+
+
+class ExtractionError(RuntimeError):
+    """Raised when an archive extraction fails (7z/rar missing or corrupt)."""
+
+
+class StructureError(RuntimeError):
+    """Raised when an archive's layout cannot be placed confidently."""
 
 
 def _norm_rel(path):
@@ -65,15 +70,28 @@ def _resolve_layout(folder, path):
     entries = compat.list_entries(path)
     if not entries:
         return {"method": "unknown", "subpaths": set(), "loose": [], "category": None}
+
     subs, loose = _game_subpaths(entries)
     if subs:
         return {"method": "local", "subpaths": subs, "loose": loose, "category": None}
-    # nested single-wrapper
+
+    # nested single-wrapper: peel one layer and look inside
     tops = {e.split("/", 1)[0] for e in entries if "/" in e}
     if len(tops) == 1 and not loose:
-        return {"method": "nested", "subpaths": set(), "loose": [],
-                "category": None}
+        wrapper = next(iter(tops))
+        inner_entries = [e.split("/", 1)[1] for e in entries
+                         if e.startswith(wrapper + "/") and "/" in e]
+        inner_subs, inner_loose = _game_subpaths(inner_entries)
+        if inner_subs:
+            return {"method": "nested", "subpaths": inner_subs,
+                    "loose": inner_loose, "category": None,
+                    "_wrapper": wrapper}
+        # wrapper present but inner contents not game-shaped; fall through
+        # to nexus/manual with the full entry list
+        entries = [wrapper + "/" + e for e in inner_entries] + inner_loose
+
     # nexus category fallback
+    from gigasort.core.categorize import extract_mod_id
     mid = extract_mod_id(path)
     cat = None
     if mid:
@@ -106,11 +124,21 @@ def _safe_extract(root, archive_path, dest_dir):
         tmp = os.path.join(dest_dir, "_gs_extract_tmp")
         os.makedirs(tmp, exist_ok=True)
         if ext == ".7z":
-            subprocess.run(["7z", "x", "-y", "-o" + tmp, archive_path],
-                           check=False)
+            r = subprocess.run(["7z", "x", "-y", "-o" + tmp, archive_path],
+                               capture_output=True, text=True)
+            if r.returncode != 0:
+                shutil.rmtree(tmp, ignore_errors=True)
+                raise ExtractionError(
+                    "7z extraction failed (rc=%d): %s"
+                    % (r.returncode, r.stderr.strip() or "unknown error"))
         elif ext == ".rar":
-            subprocess.run(["unrar", "x", "-y", archive_path, tmp + "/"],
-                           check=False)
+            r = subprocess.run(["unrar", "x", "-y", archive_path, tmp + "/"],
+                               capture_output=True, text=True)
+            if r.returncode != 0:
+                shutil.rmtree(tmp, ignore_errors=True)
+                raise ExtractionError(
+                    "unrar extraction failed (rc=%d): %s"
+                    % (r.returncode, r.stderr.strip() or "unknown error"))
         for root2, _dirs, files in os.walk(tmp):
             for f in files:
                 rel = os.path.relpath(os.path.join(root2, f), tmp)
@@ -149,7 +177,26 @@ def _collect_plan(folder):
     return plan, manual
 
 
-def run_gamestructure(folder, game_dir=None, dry_run=False, input_fn=input):
+def _backup_existing(dest_root, sub, rel):
+    """Create a timestamped backup of an existing file before overwrite."""
+    dst = os.path.join(dest_root, sub, rel)
+    if not os.path.isfile(dst):
+        return None
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    backup_dir = os.path.join(dest_root, GS_BACKUP_DIR, sub)
+    os.makedirs(backup_dir, exist_ok=True)
+    base = os.path.basename(rel)
+    name, ext = os.path.splitext(base)
+    backup_path = os.path.join(backup_dir, "%s_%s%s" % (name, ts, ext))
+    try:
+        shutil.copy2(dst, backup_path)
+    except OSError:
+        return None
+    return backup_path
+
+
+def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
+                      input_fn=input):
     """The main game-structure mode: resolve -> plan -> stage/install."""
     plan, manual = _collect_plan(folder)
     print("=" * 70)
@@ -160,7 +207,7 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, input_fn=input):
     if manual:
         print("\n  MANUAL (cannot place confidently - sort by hand):")
         for fn in manual:
-            print("    • %s" % fn)
+            print("    * %s" % fn)
 
     dest_root = game_dir or os.path.join(folder, GS_STRUCTURE_DIR)
 
@@ -183,40 +230,67 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, input_fn=input):
         return
 
     compiled = 0
-    for method, items in plan.items():
-        for fn, r in items:
-            src = os.path.join(folder, fn)
-            stage = os.path.join(folder, GS_STAGE_DIR)
-            os.makedirs(stage, exist_ok=True)
-            work = os.path.join(stage, "_%s" % compiled)
-            try:
-                _safe_extract(folder, src, work)
-                # copy staged subpaths into dest_root
-                if r.get("subpaths"):
-                    for sub in sorted(r["subpaths"]):
-                        src_dir = os.path.join(work, sub)
+    skipped = 0
+    total = sum(len(items) for items in plan.values())
+    try:
+        for method, items in plan.items():
+            for fn, r in items:
+                idx = compiled + skipped + 1
+                if total > 1:
+                    print("  [%d/%d] %s ..." % (idx, total, fn))
+                src = os.path.join(folder, fn)
+                stage = os.path.join(folder, GS_STAGE_DIR)
+                os.makedirs(stage, exist_ok=True)
+                work = os.path.join(stage, "_%s" % compiled)
+                try:
+                    _safe_extract(folder, src, work)
+                    subpaths = r.get("subpaths")
+                    if not subpaths:
+                        print("    skipped (no placeable content): %s" % fn)
+                        skipped += 1
+                        continue
+                    wrapper = r.get("_wrapper")
+                    for sub in sorted(subpaths):
+                        if wrapper:
+                            src_dir = os.path.join(work, wrapper, sub)
+                        else:
+                            src_dir = os.path.join(work, sub)
                         if not os.path.isdir(src_dir):
-                            continue
+                            # try without wrapper as fallback
+                            alt = os.path.join(work, sub)
+                            if os.path.isdir(alt):
+                                src_dir = alt
+                            else:
+                                continue
                         dst_dir = os.path.join(dest_root, sub)
-                        _copy_dir_guarded(folder, src_dir, dst_dir, dry_run)
-                compiled += 1
-            except Exception as exc:
-                print("  could not compile %s: %s" % (fn, exc))
-            finally:
-                shutil.rmtree(work, ignore_errors=True)
-
-    shutil.rmtree(os.path.join(folder, GS_STAGE_DIR), ignore_errors=True)
+                        _copy_dir_guarded(dest_root, src_dir, dst_dir,
+                                          dry_run, strict=strict)
+                    compiled += 1
+                except ExtractionError as exc:
+                    print("  extraction failed %s: %s" % (fn, exc))
+                    skipped += 1
+                except StructureError as exc:
+                    print("  could not place %s: %s" % (fn, exc))
+                    skipped += 1
+                except Exception as exc:
+                    print("  could not compile %s: %s" % (fn, exc))
+                    skipped += 1
+                finally:
+                    shutil.rmtree(work, ignore_errors=True)
+    finally:
+        shutil.rmtree(os.path.join(folder, GS_STAGE_DIR), ignore_errors=True)
 
     json_dump(os.path.join(folder, GS_MANIFEST), {
         "tool": "GigaSort", "mode": "gamestructure",
         "created": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "dest": dest_root, "compiled": compiled,
+        "dest": dest_root, "compiled": compiled, "skipped": skipped,
     })
-    print("\nCompiled %d archive(s) into %s"
-          % (compiled, dest_root))
+    print("\nCompiled %d archive(s) into %s" % (compiled, dest_root))
+    if skipped:
+        print("Skipped %d archive(s) with issues." % skipped)
 
 
-def _copy_dir_guarded(folder, src_dir, dst_dir, dry_run):
+def _copy_dir_guarded(dest_root, src_dir, dst_dir, dry_run, strict=False):
     """Copy a staged subpath into a destination root, guarding each target."""
     for root2, _dirs, files in os.walk(src_dir):
         rel_root = os.path.relpath(root2, src_dir)
@@ -224,8 +298,16 @@ def _copy_dir_guarded(folder, src_dir, dst_dir, dry_run):
             src = os.path.join(root2, f)
             rel = os.path.join(rel_root, f) if rel_root != "." else f
             dst = os.path.join(dst_dir, rel)
-            fs.guard_under(folder, dst)
             os.makedirs(os.path.dirname(dst), exist_ok=True)
+            if os.path.exists(dst):
+                backup = _backup_existing(dest_root,
+                                          os.path.relpath(dst_dir, dest_root),
+                                          rel)
+                if backup:
+                    print("    backed up -> %s" % os.path.basename(backup))
+                elif strict:
+                    print("    refused (strict): %s" % rel)
+                    continue
             if dry_run:
                 continue
             shutil.copy2(src, dst)

@@ -1,5 +1,6 @@
 """Scan & Sort page — scan workspace, preview plan, apply moves."""
 
+import os
 import threading
 
 import gi
@@ -7,7 +8,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
-from gigasort.core import sort, verify
+from gigasort.core import sort, verify, storage
 from gigasort.utils.format import human_size
 from gigasort.constants import REJECT_BIN, TRASH_BIN, DUPLICATES_BIN
 from gigasort.gui.util import esc, show_error
@@ -65,6 +66,62 @@ class ScanPage(Adw.NavigationPage):
         folder_box.append(self._path_label)
         outer.append(folder_box)
 
+        authors_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self._author_plus_batch = Gtk.CheckButton(
+            label="Author + organize rest")
+        self._author_plus_batch.set_tooltip_text(
+            "Check: the author(s) below get their own folder AND the general "
+            "category organization runs in parallel on all other files.\n"
+            "Uncheck (default): only the listed author(s) are sorted to their "
+            "folder - everything else is left in place.")
+        authors_box.append(self._author_plus_batch)
+        authors_label = Gtk.Label(label="Author(s) folder:")
+        authors_label.set_xalign(0)
+        authors_label.add_css_class("dim-label")
+        authors_box.append(authors_label)
+        self._authors_entry = Gtk.Entry(
+            placeholder_text="Comma-separated: ScorpionTank, AuthorName")
+        self._authors_entry.set_hexpand(True)
+        authors_box.append(self._authors_entry)
+        outer.append(authors_box)
+
+        gb_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        self._group_frameworks = Gtk.CheckButton(
+            label="Group by shared framework")
+        self._group_frameworks.set_tooltip_text(
+            "Group mods that require the same NICHE core framework (Virtual "
+            "Atelier, Equipment-EX, AMM, Input Loader, Codeware, ...) into a "
+            "sub-folder named after that framework, INSIDE the mod's category "
+            "and alongside the framework mod itself:\n"
+            "    Category/Virtual Atelier/<Author>/<mod>\n"
+            "A framework folder can therefore exist in several categories; "
+            "every mod - including the core framework zip - always stays "
+            "within its own category.\n"
+            "Universal frameworks that almost every mod has (RED4ext, "
+            "ArchiveXL, TweakXL, CET) are ignored - they would only create "
+            "huge meaningless folders.\n"
+            "Needs 'Author + organize rest' checked to take effect. "
+            "Requires a caches refresh (online).")
+        gb_box.append(self._group_frameworks)
+        gb_hint = Gtk.Label(label="(requires 'Author + organize rest')")
+        gb_hint.set_xalign(0)
+        gb_hint.add_css_class("dim-label")
+        gb_box.append(gb_hint)
+        outer.append(gb_box)
+
+        if self.workspace:
+            try:
+                settings = storage.load_settings(self.workspace)
+                saved = settings.get("toplevel_authors", "")
+                if saved:
+                    self._authors_entry.set_text(", ".join(saved))
+                self._author_plus_batch.set_active(
+                    bool(settings.get("author_plus_batch")))
+                self._group_frameworks.set_active(
+                    bool(settings.get("group_frameworks")))
+            except Exception:
+                pass
+
         self._notebook = Gtk.Notebook()
         self._notebook.set_vexpand(True)
         outer.append(self._notebook)
@@ -78,6 +135,24 @@ class ScanPage(Adw.NavigationPage):
         self._dupes_list.set_selection_mode(Gtk.SelectionMode.NONE)
         self._notebook.append_page(
             self._scroll(self._dupes_list), Gtk.Label(label="Duplicates"))
+
+        self._relocate_list = Gtk.ListBox()
+        self._relocate_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self._notebook.append_page(
+            self._scroll(self._relocate_list),
+            Gtk.Label(label="Relocations"))
+
+        self._placement_list = Gtk.ListBox()
+        self._placement_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self._notebook.append_page(
+            self._scroll(self._placement_list),
+            Gtk.Label(label="Final Sweep"))
+
+        self._struct_list = Gtk.ListBox()
+        self._struct_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self._notebook.append_page(
+            self._scroll(self._struct_list),
+            Gtk.Label(label="Structure"))
 
         self._plan_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         self._notebook.append_page(
@@ -95,6 +170,58 @@ class ScanPage(Adw.NavigationPage):
             nxt = child.get_next_sibling()
             ls.remove(child)
             child = nxt
+
+    def _populate_struct(self, structs=None):
+        """Show the archive-structure check results (True = CP2077 game layout,
+        False = 'Unstructured' -> manual handling, missing = not yet checked).
+        Fills the 'Structure' tab."""
+        structs = structs or {}
+        self._clear_list(self._struct_list)
+        if not structs:
+            self._struct_list.append(Adw.ActionRow(
+                title="No verified archives to report structure for yet."))
+            return
+        reports = []
+        for fn, s in structs.items():
+            if s is False:
+                reports.append(Adw.ActionRow(
+                    title=esc(fn),
+                    subtitle="Unstructured - archive interior is NOT a "
+                             "CP2077 game layout (manual handling needed)"))
+            elif s is True:
+                reports.append(Adw.ActionRow(
+                    title=esc(fn),
+                    subtitle="CP2077 game-path structure confirmed"))
+            else:
+                reports.append(Adw.ActionRow(
+                    title=esc(fn),
+                    subtitle="Structure unknown - archive not readable"))
+        for row in sorted(reports, key=lambda r: r.get_title()):
+            self._struct_list.append(row)
+
+    def _populate_placement(self, issues=None):
+        """Final whole-directory sweep: confirm every file sits where the sort
+        expects it (read-only). Fills the 'Final Sweep' tab."""
+        self._clear_list(self._placement_list)
+        issues = issues or []
+        labels = {
+            "misplaced": "wrong category/author folder",
+            "root": "still at workspace root",
+            "split-page": "split across categories",
+        }
+        if not issues:
+            self._placement_list.append(Adw.ActionRow(
+                title="All mods are where the sort expects them."))
+            return
+        for i in issues:
+            detail = i.expected
+            if i.where and i.expected and i.where != i.expected:
+                detail = "%s  ->  %s" % (i.where, i.expected)
+            row = Adw.ActionRow(
+                title=esc(i.fn),
+                subtitle="%s: %s" % (esc(labels.get(i.kind, i.kind)),
+                                     esc(detail)))
+            self._placement_list.append(row)
 
     def _on_select_folder(self, *args):
         dialog = Gtk.FileDialog()
@@ -120,14 +247,36 @@ class ScanPage(Adw.NavigationPage):
             self._path_label.set_text(self.workspace)
             self._status_label.set_text("Folder set. Click Scan.")
 
+    def _get_toplevel_authors(self):
+        text = self._authors_entry.get_text().strip()
+        if not text:
+            return []
+        return [a.strip() for a in text.split(",") if a.strip()]
+
     def _on_scan(self, *args):
         self._status_label.set_text("Scanning...")
         self._scan_button.set_sensitive(False)
         self._result = None
 
+        authors = self._get_toplevel_authors()
+        plus_batch = self._author_plus_batch.get_active()
+        group_fw = self._group_frameworks.get_active()
+        if self.workspace:
+            try:
+                settings = storage.load_settings(self.workspace)
+                settings["toplevel_authors"] = authors
+                settings["author_plus_batch"] = plus_batch
+                settings["group_frameworks"] = group_fw
+                storage.save_settings(self.workspace, settings)
+            except Exception:
+                pass
+
         def worker():
             try:
-                result = sort.scan_workspace(self.workspace)
+                result = sort.scan_workspace(self.workspace,
+                                             toplevel_authors=authors,
+                                             author_plus_batch=plus_batch,
+                                             group_frameworks=group_fw)
                 GLib.idle_add(self._on_scan_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_scan_error, e)
@@ -136,9 +285,11 @@ class ScanPage(Adw.NavigationPage):
         t.start()
 
     def _status_chip(self, status):
-        """Small colored badge: OFFLINE (cached) / ONLINE (live) / UNVERIFIED."""
+        """Small colored badge: OFFLINE (cached) / STRUCT (offline archive) /
+        ONLINE (live) / UNVERIFIED."""
         badges = {
             "offline": ("OFFLINE", "success"),
+            "offline-structure": ("STRUCT", "success"),
             "online": ("ONLINE", "warning"),
             "unverified": ("UNVERIFIED", "error"),
         }
@@ -174,13 +325,47 @@ class ScanPage(Adw.NavigationPage):
             self._dupes_list.append(
                 Adw.ActionRow(title="No duplicates"))
 
+        self._clear_list(self._relocate_list)
+        if result.relocate:
+            for fn, src, dst, size in result.relocate:
+                src_show = esc(os.path.relpath(src, result.folder))
+                dst_show = esc(os.path.relpath(dst, result.folder))
+                row = Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
+                row.add_suffix(Gtk.Label(
+                    label="%s  ->  %s" % (src_show, dst_show),
+                    css_classes=["dim-label"]))
+                self._relocate_list.append(row)
+        else:
+            self._relocate_list.append(
+                Adw.ActionRow(
+                    title="No mis-placed already-organized mods found"))
+
+        self._populate_placement()
+
         self._clear_list(self._plan_box)
         if result.plan:
+            if not result.author_plus_batch:
+                self._plan_box.append(Adw.ActionRow(
+                    title="Author-only mode: only the listed author(s) "
+                          "are sorted; everything else stays in place"))
             for cat in sorted(result.plan):
                 files = result.plan[cat]
                 grp = Adw.PreferencesGroup(title="%s  (%d)" % (esc(cat), len(files)))
                 for fn, size in files:
-                    grp.add(self._row(fn, size, statuses.get(fn)))
+                    row = self._row(fn, size, statuses.get(fn))
+                    author = sort.extract_mod_author(fn)
+                    if author and any(
+                            author.lower() == a.strip().lower()
+                            for a in result.toplevel_authors):
+                        row.set_subtitle("%s  ->  %s/" % (
+                            human_size(size), author))
+                    elif fn in result.framework_of:
+                        arrow = "%s  ->  %s/" % (
+                            human_size(size), result.framework_of[fn])
+                        if author:
+                            arrow += "%s/" % author
+                        row.set_subtitle(arrow)
+                    grp.add(row)
                 self._plan_box.append(grp)
         else:
             self._plan_box.append(
@@ -191,25 +376,59 @@ class ScanPage(Adw.NavigationPage):
         self._scan_button.set_sensitive(True)
 
         totals = (
-            "kept %d  |  duplicates %d  |  rejects %d  |  %s"
+            "kept %d  |  duplicates %d  |  rejects %d  |  relocations %d  |  %s"
             % (len(result.kept), len(result.duplicates), len(result.rejects),
-               human_size(result.total_bytes))
+               len(result.relocate), human_size(result.total_bytes))
         )
         self._status_label.set_text(totals)
         self._populate(result)
 
         def worker():
             try:
-                statuses = verify.verification_statuses(
+                statuses, structs = verify.verification_statuses(
                     result.folder, result.kept)
+                if (result.group_frameworks and result.author_plus_batch):
+                    verify.fetch_dependencies(result.folder, result.kept)
+                    try:
+                        nested = sort.collect_nested_archives(
+                            result.folder,
+                            toplevel_authors=result.toplevel_authors)
+                        verify.fetch_dependencies(
+                            result.folder,
+                            [(fn, sz) for fn, sz, _ in nested])
+                        cache = storage.load_cache(result.folder)
+                        result.framework_of = sort.resolve_framework_groups(
+                            result.folder, result.kept, cache,
+                            toplevel_authors=result.toplevel_authors)
+                        result.relocate = sort.find_misplaced(
+                            result.folder,
+                            toplevel_authors=result.toplevel_authors,
+                            author_plus_batch=result.author_plus_batch,
+                            group_frameworks=result.group_frameworks,
+                            cache=cache)
+                    except Exception:
+                        pass
+                issues = ()
+                try:
+                    from gigasort.core.superseded import check_placement
+                    issues = check_placement(
+                        result.folder,
+                        toplevel_authors=result.toplevel_authors,
+                        author_plus_batch=result.author_plus_batch,
+                        group_frameworks=result.group_frameworks)
+                except Exception:
+                    pass
                 GLib.idle_add(self._populate, result, statuses)
+                GLib.idle_add(self._populate_struct, structs)
+                GLib.idle_add(self._populate_placement, list(issues))
             except Exception:
                 pass
 
         threading.Thread(target=worker, daemon=True).start()
 
         self._apply_button.set_visible(
-            bool(result.plan or result.rejects or result.duplicates))
+            bool(result.plan or result.rejects or result.duplicates
+                 or result.relocate))
 
     def _on_scan_error(self, error):
         self._scan_button.set_sensitive(True)
@@ -236,6 +455,7 @@ class ScanPage(Adw.NavigationPage):
         self._apply_button.set_sensitive(True)
         self._apply_button.set_visible(False)
         moved = result.get("moved", 0)
+        pruned = result.get("pruned", [])
         flagged = result.get("flagged_unverified", [])
         if flagged:
             msg = (
@@ -250,6 +470,10 @@ class ScanPage(Adw.NavigationPage):
             show_error(self, "Apply finished with skipped files", msg)
         else:
             self._status_label.set_text("Applied %d move(s)." % moved)
+        if pruned:
+            self._status_label.set_text(
+                "%s %d empty folder(s) removed." % (
+                    self._status_label.get_text(), len(pruned)))
         try:
             from gigasort.core import tags
             tags.write_tags(self.workspace)

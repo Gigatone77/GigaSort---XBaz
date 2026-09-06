@@ -5,7 +5,7 @@ import os
 
 from gigasort.constants import (
     CACHE_FILENAME, LOG_FILENAME, MANIFEST_FILENAME, TAGS_FILENAME,
-    THREAT_FILENAME, SETTINGS_FILENAME, REJECT_BIN, TRASH_BIN,
+    THREAT_FILENAME, SETTINGS_FILENAME, REFERENCE_FILENAME, REJECT_BIN, TRASH_BIN,
 )
 from gigasort.utils.io import json_load, json_dump, _atomic_write_text
 from gigasort.utils import fs
@@ -24,6 +24,17 @@ def _join(folder, name):
 # ---------------------------------------------------------------------------
 def cache_path(folder):
     return _join(folder, CACHE_FILENAME)
+
+
+def reference_path(folder):
+    """Path of the Nexus mod-ID reference cache.
+
+    Keyed by Nexus mod ID (not filename), so EVERY file on a mod page — the
+    MAIN zip, an Optional file, an "Old Version", a newly re-downloaded newer
+    build — hits one shared reference record instead of requiring its own live
+    Nexus lookup on a future sort.
+    """
+    return _join(folder, REFERENCE_FILENAME)
 
 
 def log_path(folder):
@@ -66,6 +77,18 @@ def load_cache(folder):
 
 def save_cache(folder, cache):
     json_dump(cache_path(folder), cache)
+
+
+# ---------------------------------------------------------------------------
+# Nexus mod-ID reference cache
+# ---------------------------------------------------------------------------
+# Each record: {"verified": True, "title": "...", "category": "NN Name" or None}
+def load_references(folder):
+    return json_load(reference_path(folder), {})
+
+
+def save_references(folder, refs):
+    json_dump(reference_path(folder), refs)
 
 
 def write_info_log(folder, cache):

@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 from gigasort import __version__
-from gigasort.constants import default_workspace
+from gigasort.constants import default_workspace, TOPLEVEL_AUTHORS
 
 
 def _expand_folders(value):
@@ -66,6 +66,12 @@ def build_parser():
                    action="store_true", help="Run CyberFlashSync USB backup")
     g.add_argument("--gigaslim", action="store_true",
                    help="Slim a CP2077 install (moves bloat, never deletes)")
+    g.add_argument("--check-superseded", action="store_true",
+                   help="Detect same-author mods where an older release is "
+                        "likely redundant (read-only, never deletes)")
+    g.add_argument("--prune", action="store_true",
+                    help="Remove empty folders in the workspace (nothing with "
+                         "content is ever touched)")
 
     p.add_argument("--dry-run", action="store_true",
                    help="Show what would happen without moving files")
@@ -193,6 +199,25 @@ def main(argv=None):
         from gigasort.core.gigaslim import run_gigaslim
         return run_gigaslim(folder, dry_run=args.dry_run, videos=args.videos)
 
+    if args.prune:
+        removed = sort.prune_empty_dirs(folder, dry_run=args.dry_run)
+        verb = "Would remove" if args.dry_run else "Removed"
+        if removed:
+            print("%s %d empty folder(s):" % (verb, len(removed)))
+            for rel in sorted(removed):
+                print("  • %s" % rel)
+        else:
+            print("No empty folders found%s."
+                  % (" (dry run)" if args.dry_run else ""))
+        return 0
+
+    if args.check_superseded:
+        from gigasort.core.superseded import run_superseded_report
+        from gigasort.utils import net
+        net.confirm_network("Nexus mod analysis")
+        run_superseded_report(folder)
+        return 0
+
     if args.trash:
         from gigasort.core.trash import manage_trash
         return manage_trash(folder, dry_run=args.dry_run,
@@ -210,23 +235,42 @@ def main(argv=None):
     if args.gamestructure:
         from gigasort.core.gamestructure import run_gamestructure
         run_gamestructure(folder, game_dir=args.game_dir, dry_run=args.dry_run,
-                          input_fn=input_fn)
+                          strict=args.strict, input_fn=input_fn)
         return 0
 
     if args.apply:
+        settings = storage.load_settings(folder)
+        authors = settings.get("toplevel_authors") or list(TOPLEVEL_AUTHORS)
+        plus_batch = bool(settings.get("author_plus_batch"))
+        group_fw = bool(settings.get("group_frameworks"))
         summary = sort.run_batch_sort(folder, dry_run=args.dry_run,
-                                      to_rejects=not args.keep)
+                                      to_rejects=not args.keep,
+                                      toplevel_authors=authors,
+                                      author_plus_batch=plus_batch,
+                                      group_frameworks=group_fw)
         print("Done: %d moved, %d dupes, %d rejects%s." % (
             summary["moved"], summary["duplicates"],
             summary["to_rejects"],
             " (dry run)" if summary["dry_run"] else "",
         ))
+        if summary.get("relocated"):
+            print("Relocated %d already-organized file(s) to where they "
+                  "belong." % summary["relocated"])
+        if summary.get("pruned"):
+            print("Emptied/removed %d empty folder(s) left behind by the sort."
+                  % len(summary["pruned"]))
         if args.keep:
             print("--keep set: rejects left in place.")
         if summary.get("flagged_unverified"):
             print("Unverified (left untouched):")
             for fn in summary["flagged_unverified"]:
                 print("  • %s" % fn)
+        # Post-sort analysis: superseded mods + placement check (read-only).
+        try:
+            from gigasort.core.superseded import apply_warnings
+            apply_warnings(folder)
+        except Exception:
+            pass
         return 0
 
     # Scan + verification + threat + deps report (no GUI) when any of the
@@ -256,7 +300,8 @@ def main(argv=None):
         return 0
 
     if args.verify:
-        v = verify.verify_categories(result.kept, cache, result.rejects)
+        v = verify.verify_categories(result.kept, cache, result.rejects,
+                                     folder=folder)
         print("== NEXUS VERIFICATION ==")
         for fn, (cat, title, ncat, status) in v.items():
             print("  [%-8s] %-40s -> %s  (%s)" % (status, fn, cat or "?", title or "?"))

@@ -25,6 +25,7 @@ DUPLICATES_BIN = "_DUPLICATES"
 # State files (all written inside the workspace).
 SETTINGS_FILENAME = "_GigaSort_settings.json"
 CACHE_FILENAME = "_GigaSort_verified.json"
+REFERENCE_FILENAME = "_GigaSort_references.json"
 LOG_FILENAME = "_GigaSort_verification_log.txt"
 MANIFEST_FILENAME = "_GigaSort_manifest.json"
 TAGS_FILENAME = "_GigaSort_tags.json"
@@ -48,8 +49,9 @@ BRIDGE_DIR = "_GigaSort_bridge"
 NEXUS_GAME_SLUG = "cyberpunk2077"
 NEXUS_BASE = "https://www.nexusmods.com/%s/mods/" % NEXUS_GAME_SLUG
 
-# Filename token "-12xxxx-" (or "-1xxx-"/"-2xxxx-") is the Nexus mod id.
-NEXUS_ID_RE = re.compile(r"-(\d{4,6})-", re.IGNORECASE)
+# Filename token "-12xxxx-" (or "-1xxx-"/"-2xxxx-"), including LOW 3-digit
+# ids ("-790-" = Appearance Menu Mod), is the Nexus mod id.
+NEXUS_ID_RE = re.compile(r"-(\d{3,6})-", re.IGNORECASE)
 
 # Author-name tokens that are never a real author.
 AUTHOR_STOPWORDS = {
@@ -66,7 +68,7 @@ AUTHOR_STOPWORDS = {
 RULES = [
     ("01 Eyes & Lashes", [
         r"\beyes?\b", r"eyes", r"cybereye", r"sclera", r"\bir[ei]s", r"pupil",
-        r"eyelash", r"eye ?lash", r"lash", r"eyebrow", r"brows?\b",
+        r"\beyelashes?\b", r"eye ?lash", r"\blash", r"eyebrow", r"brows?\b",
         r"mascara", r"optics", r"gith eyes", r"heterochromia",
         r"eyeshadows?", r"eye ?make ?up", r"makeup", r"eye make",
         r"black line", r"white line", r"blackline", r"whiteline",
@@ -75,7 +77,6 @@ RULES = [
     ("04 Tattoos & Cyberware", [
         r"tattoo", r"\bcyberware\b", r"implant", r"chrome", r"piercing",
         r"head cyberware", r"halo", r"cyber ?arm", r"cyberpod",
-        r"jackie", r"warrior nun",
         r"sandevistan", r"sande?evistan", r"optic flare", r"monowire",
         r"mantis blade", r"gorilla arm", r"kerensikov",
     ]),
@@ -112,8 +113,20 @@ RULES = [
         r"ccxl - [a-z]",
     ]),
     ("06 Weapons & Misc Items", [
-        r"weapon", r"tron ?disk", r"yokai", r"netrunner", r"accessor",
+        r"\bweapon", r"tron ?disk", r"yokai", r"netrunner", r"accessor",
         r"virtual atelier", r"store", r"\bshop\b", r"delta collection",
+        r"\bshotgun", r"\bpump action", r"\bgun\b", r"\bguns\b",
+        r"\brifles?\b", r"\bpistols?\b", r"\bhand ?guns?\b", r"\bsmg\b",
+        r"\bsmg pack", r"\bsniper", r"\bblade\b", r"\bkatana",
+        r"\bshiv\b", r"\bknives?\b", r"\bsword", r"\brevolver",
+        r"\bglock", r"\bberetta", r"\bdesert eagle", r"\bvector",
+        r"\bcaliber\b", r"grenade", r"\bbarrel\b", r"suppressor",
+        r"\bmuzzle", r"\bcartridges?\b", r"\bturrets?\b", r"\bmissile",
+        r"\btank (weapon|gun)", r"\bartillery", r"\bfirearm",
+        r"\blauncher", r"\bcannon\b", r"\bmg-", r"\bmg \b", r"\bsaw\b",
+        r"\bemkidnapper", r"\bgrenade ?launcher", r"\brake\b",
+        r"\b10mm\b", r"\b40mm\b", r"\b5\.56\b", r"\b50 ?cal", r"\b9mm\b",
+        r"\bdmr\b", r"\bsemis", r"\bsemi ?auto",
     ]),
     ("09 Vehicles & Transport", [
         r"\bvehicle", r"\bvehicles?", r"\bcar(s|s mod)?\b", r"\bmoto\b",
@@ -121,6 +134,17 @@ RULES = [
         r"\bquadra\b", r"\bcaliburn\b", r"\bnazare\b", r"\barch\b",
         r"\bmizutani\b", r"\btyger claw\b", r"hoverbike", r"vehical",
         r"car mod", r"delemain", r"\btaxi\b", r"\btruck\b", r"combat veh",
+    ]),
+    ("10 World Building (Locations & Props)", [
+        r"\blocation(s)?\b", r"\bprop(s)?\b", r"\binterior(s)?\b",
+        r"\bapartment(s)?\b", r"\bmegabuilding", r"\bbuilding(s)?\b",
+        r"\bskyline\b", r"\bscenery\b", r"\bbillboard(s)?\b",
+        r"\bsignage\b", r"\bgraffiti\b", r"\bstatue(s)?\b",
+        r"\bsculpture(s)?\b", r"\bfurniture\b", r"\bclutter\b",
+        r"\bworld ?build", r"\bsightseeing\b", r"hidden gems",
+        r"\blandmark(s)?\b", r"\bmonument(s)?\b", r"\bbedroom\b",
+        r"\bloft\b", r"\bpenthouse\b", r"\bstorefront(s)?\b",
+        r"\benvironment",
     ]),
     ("07 Colors, Profiles & Resources", [
         r"hair ?colou?r", r"hair ?color", r"palette", r"colour", r"color",
@@ -142,6 +166,13 @@ RULES = [
         r"video ?mod", r"quick ?load", r"no ?videos?", r"cutscene",
         r"\bconfig\b", r"\b\.ini\b", r"\bwtnc\b", r"settings",
     ]),
+    # Low-priority tribute markers: a character-name reference ("V jackie
+    # tribute", "warrior nun") routes to 04 Tattoos & Cyberware ONLY when no
+    # more specific item/category keyword has already matched earlier in the
+    # list. Kept last so "Jackie Jacket Archive XL" -> Clothing, not Tattoos.
+    ("04 Tattoos & Cyberware", [
+        r"jackie", r"warrior nun",
+    ]),
 ]
 
 # Nexus category id -> content-type folder (light mapping from the official
@@ -154,6 +185,12 @@ NEXUS_CAT_MAP = {
     "accessories": "06 Weapons & Misc Items",
     "weapons": "06 Weapons & Misc Items",
     "vehicles": "09 Vehicles & Transport",
+    "world-model": "10 World Building (Locations & Props)",
+    "locations": "10 World Building (Locations & Props)",
+    "environments": "10 World Building (Locations & Props)",
+    "clutter": "10 World Building (Locations & Props)",
+    "props": "10 World Building (Locations & Props)",
+    "interior-design": "10 World Building (Locations & Props)",
     "ui-modification": "08 Cores, Fixes & Utilities",
     "facial-skin-complexions": "03 Face & Body",
     "eyes": "01 Eyes & Lashes",
@@ -169,6 +206,54 @@ NEXUS_CAT_MAP = {
     "gameplay": "08 Cores, Fixes & Utilities",
 }
 
+# Authoritative Nexus category display names (the value behind the
+# `?categoryName=` query the mod page breadcrumb links to) mapped to our
+# destination folders. Preferred over the slug map above: the breadcrumb is
+# the category the MOD AUTHOR set, not a keyword guess.
+NEXUS_CATEGORY_NAMES = {
+    # map both the URL-encoded token (as it appears in the breadcrumb href)
+    # and its human-readable form to be defensive about how pages render.
+    "Animations": "08 Cores, Fixes & Utilities",
+    "Appearance": "03 Face & Body",
+    "Appearance+Menu+Mod+Preset": "03 Face & Body",
+    "Appearance Menu Mod Preset": "03 Face & Body",
+    "Appearance+Change+Unlocker+Preset": "03 Face & Body",
+    "Appearance Change Unlocker Preset": "03 Face & Body",
+    "Armour+and+Clothing": "05 Clothing & Armor",
+    "Armor+and+Clothing": "05 Clothing & Armor",
+    "Armour and Clothing": "05 Clothing & Armor",
+    "Armor and Clothing": "05 Clothing & Armor",
+    "Atelier+Shop": "06 Weapons & Misc Items",
+    "Atelier Shop": "06 Weapons & Misc Items",
+    "Audio": "07 Colors, Profiles & Resources",
+    "Audio+Replacer": "07 Colors, Profiles & Resources",
+    "Audio Replacer": "07 Colors, Profiles & Resources",
+    "AI+Voices": "07 Colors, Profiles & Resources",
+    "AI Voices": "07 Colors, Profiles & Resources",
+    "Characters": "03 Face & Body",
+    "Crafting": "08 Cores, Fixes & Utilities",
+    "Gameplay": "08 Cores, Fixes & Utilities",
+    "Locations": "10 World Building (Locations & Props)",
+    "Add-On+Apartment": "10 World Building (Locations & Props)",
+    "Add-On Apartment": "10 World Building (Locations & Props)",
+    "Apartment": "10 World Building (Locations & Props)",
+    "Miscellaneous": "06 Weapons & Misc Items",
+    "Modders+Resources": "07 Colors, Profiles & Resources",
+    "Modders Resources": "07 Colors, Profiles & Resources",
+    "Props+and+Decorations": "10 World Building (Locations & Props)",
+    "Props and Decorations": "10 World Building (Locations & Props)",
+    "Scripts": "08 Cores, Fixes & Utilities",
+    "User+Interface": "08 Cores, Fixes & Utilities",
+    "User Interface": "08 Cores, Fixes & Utilities",
+    "Utilities": "08 Cores, Fixes & Utilities",
+    "Vehicles": "09 Vehicles & Transport",
+    "Visuals+and+Graphics": "07 Colors, Profiles & Resources",
+    "Visuals and Graphics": "07 Colors, Profiles & Resources",
+    "Weapons": "06 Weapons & Misc Items",
+    "World+Model": "10 World Building (Locations & Props)",
+    "World Model": "10 World Building (Locations & Props)",
+}
+
 NEXUS_SEARCH_TERMS = [
     "eyes", "lashes", "eyelashes", "eyebrow", "brows", "hair", "hairstyle",
     "bob", "ponytail", "bun", "wig", "tattoo", "cyberware", "implant",
@@ -176,6 +261,7 @@ NEXUS_SEARCH_TERMS = [
     "gloves", "jacket", "pants", "suit", "goggles", "mask", "skins",
     "complexion", "body", "weapon", "accessory", "color", "colour", "palette",
     "texture", "utility", "framework", "pistol", "holster",
+    "location", "prop", "interior", "apartment", "building", "world building",
 ]
 
 TITLE_MATCHERS = [
@@ -197,6 +283,12 @@ TITLE_MATCHERS = [
     ("vehicle", "09 Vehicles & Transport"), ("vehicles", "09 Vehicles & Transport"),
     ("car", "09 Vehicles & Transport"), ("bike", "09 Vehicles & Transport"),
     ("motorcycle", "09 Vehicles & Transport"), ("quadra", "09 Vehicles & Transport"),
+    ("location", "10 World Building (Locations & Props)"),
+    ("locations", "10 World Building (Locations & Props)"),
+    ("prop", "10 World Building (Locations & Props)"),
+    ("props", "10 World Building (Locations & Props)"),
+    ("interior", "10 World Building (Locations & Props)"),
+    ("apartment", "10 World Building (Locations & Props)"),
     ("palette", "07 Colors, Profiles & Resources"),
     ("colour", "07 Colors, Profiles & Resources"),
     ("color", "07 Colors, Profiles & Resources"),
@@ -207,6 +299,22 @@ TITLE_MATCHERS = [
 # ---------------------------------------------------------------------------
 # Verification statuses / threat tiers
 # ---------------------------------------------------------------------------
+# The folder names GigaSort itself creates (the "NN Name" style folders).
+# Used to validate cached/live 'nexus_cat' values: the value must be one of
+# these REAL folders, never a slug or a made-up guess.
+KNOWN_FOLDERS = frozenset({
+    "01 Eyes & Lashes",
+    "02 Hair",
+    "03 Face & Body",
+    "04 Tattoos & Cyberware",
+    "05 Clothing & Armor",
+    "06 Weapons & Misc Items",
+    "07 Colors, Profiles & Resources",
+    "08 Cores, Fixes & Utilities",
+    "09 Vehicles & Transport",
+    "10 World Building (Locations & Props)",
+})
+
 APPROVED = "approved"
 MISMATCH = "mismatch"
 UNVERIFIED = "unverified"
@@ -245,10 +353,81 @@ GAME_ROOT_DIRS = CP2077_ROOT_DIRS
 # File extensions that signal "place under archive/pc/mod".
 ARCHIVE_INSTALL_EXTS = (".archive", ".dep", ".toc")
 
+# Authors whose mods get their own top-level folder instead of being nested
+# under the category.  Folder name = author name exactly as detected.
+TOPLEVEL_AUTHORS = (
+    "ScorpionTank",
+)
+
+# Core CP2077 frameworks keyed by their Nexus mod id. Used by the framework
+# grouping: mods that list one of these in their Nexus Requirements get
+# grouped together in a top-level folder named after the framework, together
+# with the framework mod itself. Ids that never appear simply produce no
+# group. Shared dependencies not in this map are still grouped dynamically
+# ("Framework <id>") when two or more downloads require the same one.
+#
+# NOTE: only the NICHE frameworks form group folders. The universal deps that
+# almost every CP2077 mod requires (see MAJOR_FRAMEWORKS below) would only
+# create huge meaningless folders, so they are always ignored for grouping.
+KNOWN_FRAMEWORKS = {
+    "107": "CET",
+    "2380": "RED4ext",
+    "4197": "TweakXL",
+    "4198": "ArchiveXL",
+    "3518": "Native Settings UI",
+    "790": "AMM",
+    "4262": "Equipment-EX",
+    "2987": "Virtual Atelier",
+    "2750": "Input Loader",
+    "5280": "Codeware",
+}
+
+# Universal/always-present dependency mods - required by a large share of the
+# modding scene. Grouping by these would dump most downloads into one folder,
+# so they are NEVER used to form framework groups (only niche ids are).
+# Adjust this set freely: add a framework here to stop grouping by it.
+MAJOR_FRAMEWORKS = {"107", "2380", "4197", "4198"}
+
 # Keywords that flag likely high-res / oversized texture packs (VRAM guard).
 VRAM_HIRES_WORDS = (
     "4k", "ultra", "hires", "high.res", "8k", "texture pack", "16k",
     "2k", "hd reworked", "hdr", "overhaul gfx",
+)
+
+# ---------------------------------------------------------------------------
+# CP2077 modding-convention keywords (offline recognition)
+# ---------------------------------------------------------------------------
+# Strong, low-false-positive markers that identify a real Cyberpunk 2077 mod
+# download from its *filename* alone, with no need for a live Nexus lookup.
+# These are the consistent naming conventions the CP2077 modding community
+# (CCXL / Virtual Atelier / RED4ext / CET authors) uses. A filename carrying
+# one of these AND a Nexus mod id is treated as a Cyberpunk 2077 mod even when
+# the machine is offline and the archive interior can't be inspected.
+#
+# NOTE: keep these genuinely CP2077-specific. Avoid generic words a Witcher 3 /
+# other-game mod could also use, since this list also feeds the offline safety
+# gate (which otherwise requires live web verification). Multi-word phrases are
+# matched as whole phrases (boundary-tolerant); single words are matched with
+# word boundaries.
+CP2077_STRONG_KEYWORDS = (
+    # Hair / appearance framework (the dominant CP2077 custom-content scene).
+    "ccxl",
+    # CP2077 protagonist body references (female/male V).
+    "femv", "mascv", "feme v", "male v", "female v",
+    # REDengine 4 software / loaders (Cyberpunk-only).
+    "red4ext", "redscript", "cyber engine tweaks", "cyber_engine_tweaks",
+    # 'cet' = Cyber Engine Tweaks, the CP2077-only script loader; matched as a
+    # whole word and gated to filenames that also carry a Nexus mod id.
+    "cet",
+    # Established CP2077 mod authors / store frameworks.
+    "virtual atelier", "meluminary", "sedth",
+    # CP2077 augmentation / body-kit vocabulary.
+    "cyberware", "cyberdeck", "netrunner", "sandevistan",
+    "monowire", "mantis blade", "gorilla arm", "kerensikov", "cyberpod",
+    # In-game factions / structures specific to Night City.
+    "night city", "barghest", "delamain",
+    # Iconic CP2077 vehicles that appear in downloaded archive names.
+    "caliburn", "quadra",
 )
 
 
