@@ -74,6 +74,14 @@ RULES = [
         r"black line", r"white line", r"blackline", r"whiteline",
         r"natural - b", r"glow - b",
     ]),
+    # 18+ content: strong, unambiguous markers (outweigh the clothing words
+    # below - a "Lingerie AND nude after shower" add-on is sensitive content,
+    # not apparel). "Sensitive" because not every 18+-tagged mod is sexual in
+    # nature - body-enhanced/romance packs land the same way.
+    ("11 Sensitive Content (18+)", [
+        r"nud", r"\bsex\b", r"sex anim", r"stripper", r"romanc",
+        r"\bnsfw\b", r"\bescort", r"pleasures", r"joyride", r"enhanced body",
+    ]),
     ("04 Tattoos & Cyberware", [
         r"tattoo", r"\bcyberware\b", r"implant", r"chrome", r"piercing",
         r"head cyberware", r"halo", r"cyber ?arm", r"cyberpod",
@@ -88,6 +96,8 @@ RULES = [
         r"\bpads?\b", r"shield", r"shoes?", r"balaclava", r"visors?",
         r"turtleneck", r"tshirt", r"t-shirt", r"vest", r"combat ",
         r"military", r"zenitex", r"assault ", r"/ledger\b",
+        r"bodysuit", r"leotard", r"lingerie", r"gymwear", r"catsuit",
+        r"jumpsuit", r"dress\b", r"gown\b", r"bikini", r"bra\b",
     ]),
     ("03 Face & Body", [
         r"complexion", r"\bskin\b", r"\bmesh(es)?\b", r"\bteeth\b",
@@ -134,6 +144,7 @@ RULES = [
         r"\bquadra\b", r"\bcaliburn\b", r"\bnazare\b", r"\barch\b",
         r"\bmizutani\b", r"\btyger claw\b", r"hoverbike", r"vehical",
         r"car mod", r"delemain", r"\btaxi\b", r"\btruck\b", r"combat veh",
+        r"\bkart\b",
     ]),
     ("10 World Building (Locations & Props)", [
         r"\blocation(s)?\b", r"\bprop(s)?\b", r"\binterior(s)?\b",
@@ -144,7 +155,34 @@ RULES = [
         r"\bworld ?build", r"\bsightseeing\b", r"hidden gems",
         r"\blandmark(s)?\b", r"\bmonument(s)?\b", r"\bbedroom\b",
         r"\bloft\b", r"\bpenthouse\b", r"\bstorefront(s)?\b",
-        r"\benvironment",
+        r"\benvironment", r"\bramps?\b", r"construction",
+    ]),
+    # Official Nexus 'Audio' category: sound configs, music/radio reworks,
+    # voice/ambience packs. Kept after weapons so "silencer sound" style
+    # weapon mods still route to 06, not here.
+    ("12 Audio & Sound", [
+        r"\baudio\b", r"\bsound\b", r"\bsfx\b", r"sound ?fx",
+        r"\bmusic\b", r"radio", r"\bvoice", r"\bnarrator", r"\bambient\b",
+        r"soundtrack", r"\bsongs?\b", r"\bdj\b", r"\blofi\b", r"\bbgm\b",
+        r"sound ?replac", r"radio ?station", r"\bnoise\b",
+    ]),
+    # Official Nexus 'Animations' category + Photo Mode tag: poses, AI /
+    # locomotion, third-person, camera. Word-bounded anim so it never matches
+    # inside unrelated words.
+    ("13 Animations & Photo Mode", [
+        r"\bposes?\b", r"pose ?pack", r"photomode", r"photo ?mode",
+        r"photo-mode", r"photo ?pack", r"\banimations?\b", r"\banim\b",
+        r"\bgestures?\b", r"locomotion", r"third ?person", r"\btpp\b",
+        r"\bcamera\b", r"idle ?anim", r"walking animation",
+        r"combat anim", r"character ?pose", r"framewalk", r"gait\b",
+    ]),
+    # Nexus tag 'Quests' (Braindance / gigs / missions / dialogues). 'romanc'
+    # stays gated by the Adult rule above - these are story content.
+    ("14 Quests & Story", [
+        r"\bquests?\b", r"\bmissions?\b", r"\bdialogue\b", r"\bdialog\b",
+        r"\bbraindance\b", r"\bconversation", r"\bheist\b", r"\bgig\b",
+        r"\bstory\b", r"\bdate\b", r"add.?on quest", r"side ?job",
+        r"\bpacifica\b", r"\bjournal\b",
     ]),
     ("07 Colors, Profiles & Resources", [
         r"hair ?colou?r", r"hair ?color", r"palette", r"colour", r"color",
@@ -191,6 +229,20 @@ NEXUS_CAT_MAP = {
     "clutter": "10 World Building (Locations & Props)",
     "props": "10 World Building (Locations & Props)",
     "interior-design": "10 World Building (Locations & Props)",
+    "audio": "12 Audio & Sound",
+    "sounds": "12 Audio & Sound",
+    "music": "12 Audio & Sound",
+    "voice": "12 Audio & Sound",
+    "animations": "13 Animations & Photo Mode",
+    "anim": "13 Animations & Photo Mode",
+    "poses": "13 Animations & Photo Mode",
+    "photo-mode": "13 Animations & Photo Mode",
+    "photography": "13 Animations & Photo Mode",
+    "camera": "13 Animations & Photo Mode",
+    "quests": "14 Quests & Story",
+    "dialogue": "14 Quests & Story",
+    "dialogues": "14 Quests & Story",
+    "missions": "14 Quests & Story",
     "ui-modification": "08 Cores, Fixes & Utilities",
     "facial-skin-complexions": "03 Face & Body",
     "eyes": "01 Eyes & Lashes",
@@ -213,7 +265,7 @@ NEXUS_CAT_MAP = {
 NEXUS_CATEGORY_NAMES = {
     # map both the URL-encoded token (as it appears in the breadcrumb href)
     # and its human-readable form to be defensive about how pages render.
-    "Animations": "08 Cores, Fixes & Utilities",
+    "Animations": "13 Animations & Photo Mode",
     "Appearance": "03 Face & Body",
     "Appearance+Menu+Mod+Preset": "03 Face & Body",
     "Appearance Menu Mod Preset": "03 Face & Body",
@@ -225,11 +277,12 @@ NEXUS_CATEGORY_NAMES = {
     "Armor and Clothing": "05 Clothing & Armor",
     "Atelier+Shop": "06 Weapons & Misc Items",
     "Atelier Shop": "06 Weapons & Misc Items",
-    "Audio": "07 Colors, Profiles & Resources",
-    "Audio+Replacer": "07 Colors, Profiles & Resources",
-    "Audio Replacer": "07 Colors, Profiles & Resources",
-    "AI+Voices": "07 Colors, Profiles & Resources",
-    "AI Voices": "07 Colors, Profiles & Resources",
+    "Audio": "12 Audio & Sound",
+    "Audio+Replacer": "12 Audio & Sound",
+    "Audio Replacer": "12 Audio & Sound",
+    "AI+Voices": "12 Audio & Sound",
+    "AI Voices": "12 Audio & Sound",
+    "Animations": "13 Animations & Photo Mode",
     "Characters": "03 Face & Body",
     "Crafting": "08 Cores, Fixes & Utilities",
     "Gameplay": "08 Cores, Fixes & Utilities",
@@ -262,6 +315,11 @@ NEXUS_SEARCH_TERMS = [
     "complexion", "body", "weapon", "accessory", "color", "colour", "palette",
     "texture", "utility", "framework", "pistol", "holster",
     "location", "prop", "interior", "apartment", "building", "world building",
+    "bodysuit", "leotard", "lingerie", "gymwear", "kart",
+    "audio", "sound", "sfx", "music", "radio", "voice", "ambient",
+    "pose", "photo mode", "photomode", "animation", "anim", "gesture",
+    "camera", "third person", "locomotion",
+    "quest", "dialogue", "dialog", "mission", "braindance", "gig", "story",
 ]
 
 TITLE_MATCHERS = [
@@ -278,11 +336,14 @@ TITLE_MATCHERS = [
     ("boots", "05 Clothing & Armor"), ("gloves", "05 Clothing & Armor"),
     ("pants", "05 Clothing & Armor"), ("goggles", "05 Clothing & Armor"),
     ("mask", "05 Clothing & Armor"), ("vest", "05 Clothing & Armor"),
+    ("bodysuit", "05 Clothing & Armor"), ("leotard", "05 Clothing & Armor"),
+    ("lingerie", "05 Clothing & Armor"), ("gymwear", "05 Clothing & Armor"),
     ("weapon", "06 Weapons & Misc Items"), ("pistol", "06 Weapons & Misc Items"),
     ("accessor", "06 Weapons & Misc Items"),
     ("vehicle", "09 Vehicles & Transport"), ("vehicles", "09 Vehicles & Transport"),
     ("car", "09 Vehicles & Transport"), ("bike", "09 Vehicles & Transport"),
     ("motorcycle", "09 Vehicles & Transport"), ("quadra", "09 Vehicles & Transport"),
+    ("kart", "09 Vehicles & Transport"),
     ("location", "10 World Building (Locations & Props)"),
     ("locations", "10 World Building (Locations & Props)"),
     ("prop", "10 World Building (Locations & Props)"),
@@ -294,6 +355,21 @@ TITLE_MATCHERS = [
     ("color", "07 Colors, Profiles & Resources"),
     ("complexion", "03 Face & Body"), ("skins", "03 Face & Body"),
     ("body", "03 Face & Body"), ("hair", "02 Hair"), ("eyes", "01 Eyes & Lashes"),
+    ("audio", "12 Audio & Sound"), ("sound", "12 Audio & Sound"),
+    ("sfx", "12 Audio & Sound"), ("music", "12 Audio & Sound"),
+    ("radio", "12 Audio & Sound"), ("voice", "12 Audio & Sound"),
+    ("ambient", "12 Audio & Sound"),
+    ("pose", "13 Animations & Photo Mode"),
+    ("photo mode", "13 Animations & Photo Mode"),
+    ("photomode", "13 Animations & Photo Mode"),
+    ("animation", "13 Animations & Photo Mode"), ("anim", "13 Animations & Photo Mode"),
+    ("gesture", "13 Animations & Photo Mode"), ("camera", "13 Animations & Photo Mode"),
+    ("third person", "13 Animations & Photo Mode"),
+    ("locomotion", "13 Animations & Photo Mode"),
+    ("quest", "14 Quests & Story"), ("quests", "14 Quests & Story"),
+    ("dialogue", "14 Quests & Story"), ("dialog", "14 Quests & Story"),
+    ("mission", "14 Quests & Story"), ("braindance", "14 Quests & Story"),
+    ("gig", "14 Quests & Story"), ("story", "14 Quests & Story"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -313,6 +389,10 @@ KNOWN_FOLDERS = frozenset({
     "08 Cores, Fixes & Utilities",
     "09 Vehicles & Transport",
     "10 World Building (Locations & Props)",
+    "11 Sensitive Content (18+)",
+    "12 Audio & Sound",
+    "13 Animations & Photo Mode",
+    "14 Quests & Story",
 })
 
 APPROVED = "approved"

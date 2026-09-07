@@ -4,7 +4,7 @@ import os
 
 from gigasort.core import storage
 from gigasort.utils import fs
-from gigasort.utils.format import human_size
+
 
 
 def run_undo(folder, dry_run=False, input_fn=input):

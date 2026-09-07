@@ -56,6 +56,10 @@ def build_parser():
                    help="Manage the _TRASH bin (move selected to ~deleted; never deletes)")
     g.add_argument("--delete-rejects", action="store_true",
                    help="Move verified _REJECTS items to ~deleted (restorable, never deletes)")
+    g.add_argument("--rescue-rejects", action="store_true",
+                   help="Re-verify + re-categorize files already in _REJECTS and "
+                        "move verified ones to their categories (online lookups "
+                        "included; unverified stay put, never deletes)")
     g.add_argument("--extract", action="store_true",
                    help="Extract archives into <Type>/<Author>/<Name>/")
     g.add_argument("--gamestructure", action="store_true",
@@ -146,7 +150,6 @@ def main(argv=None):
 
     from gigasort.core import storage
     from gigasort.core import sort
-    from gigasort.utils import fs
 
     if args.json:
         from gigasort.core.report import run_json_report
@@ -163,7 +166,7 @@ def main(argv=None):
             import gi
             gi.require_version("Gtk", "4.0")
             gi.require_version("Adw", "1")
-            from gi.repository import Gtk, Gio
+            from gi.repository import Gio
             Gio.AppInfo.launch_default_for_uri(
                 "file://" + folder, None)
             print("Revealed: %s" % folder)
@@ -230,6 +233,12 @@ def main(argv=None):
         from gigasort.core.trash import delete_rejects
         return delete_rejects(folder, dry_run=args.dry_run,
                               yes=args.yes, strict=args.strict)
+
+    if args.rescue_rejects:
+        from gigasort.utils import net
+        net.confirm_network("rescue-rejects")
+        return sort.rescue_rejects(folder, dry_run=args.dry_run,
+                                   input_fn=input_fn)
 
     if args.agent:
         from gigasort.core.agent import execute_agent_request

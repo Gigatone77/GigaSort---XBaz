@@ -9,8 +9,8 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
 from gigasort.core import sort, verify, storage
+from gigasort.utils import net
 from gigasort.utils.format import human_size
-from gigasort.constants import REJECT_BIN, TRASH_BIN, DUPLICATES_BIN
 from gigasort.gui.util import esc, show_error
 
 
@@ -52,6 +52,11 @@ class ScanPage(Adw.NavigationPage):
         self._status_label.set_xalign(0)
         self._status_label.set_ellipsize(3)
         controls.append(self._status_label)
+
+        self._conn_label = Gtk.Label(
+            label="Network: check…", css_classes=["giga-veri-chip", "dim-label"])
+        self._conn_label.set_ellipsize(3)
+        controls.append(self._conn_label)
 
         folder_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self._folder_button = Gtk.Button(label="Select Folder...")
@@ -182,6 +187,40 @@ class ScanPage(Adw.NavigationPage):
         self._plan_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         self._notebook.append_page(
             self._scroll(self._plan_box), Gtk.Label(label="Planned Moves"))
+
+        self._check_net()
+
+    def _check_net(self):
+        """Static connectivity indicator: shows whether live Nexus lookups
+        are actually working right now (not a per-file status). Runs in a
+        background thread so the UI never blocks on the probe."""
+        self._conn_label.set_text("Network: checking…")
+        self._conn_label.set_css_classes(["giga-veri-chip", "dim-label"])
+
+        def worker():
+            try:
+                ok = net.ALLOW_NET and net.check_connectivity()
+            except Exception:
+                ok = False
+            GLib.idle_add(self._show_net, ok)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _show_net(self, ok):
+        if not net.ALLOW_NET:
+            text = ("Network: offline (live lookups disabled) - files without "
+                    "a cached verification may stay in Rejects")
+            css = ["giga-veri-chip", "error"]
+        elif ok:
+            text = "Network: online - live Nexus lookups available"
+            css = ["giga-veri-chip", "success"]
+        else:
+            text = ("Network: OFFLINE - check your connection. No live Nexus "
+                    "lookups, so unverified files may stay in Rejects.")
+            css = ["giga-veri-chip", "error"]
+        self._conn_label.set_text(text)
+        self._conn_label.set_css_classes(css)
+        return False
 
     def _scroll(self, child):
         sc = Gtk.ScrolledWindow()
@@ -324,6 +363,7 @@ class ScanPage(Adw.NavigationPage):
         self._status_label.set_text("Scanning...")
         self._scan_button.set_sensitive(False)
         self._result = None
+        self._check_net()
 
         authors = self._get_toplevel_authors()
         plus_batch = self._author_plus_batch.get_active()
@@ -354,36 +394,16 @@ class ScanPage(Adw.NavigationPage):
         t = threading.Thread(target=worker, daemon=True)
         t.start()
 
-    def _status_chip(self, status):
-        """Small colored badge: OFFLINE (cached) / STRUCT (offline archive) /
-        ONLINE (live) / UNVERIFIED."""
-        badges = {
-            "offline": ("OFFLINE", "success"),
-            "offline-structure": ("STRUCT", "success"),
-            "online": ("ONLINE", "warning"),
-            "unverified": ("UNVERIFIED", "error"),
-        }
-        text, cls = badges.get(status, ("UNVERIFIED", "error"))
-        lbl = Gtk.Label(label=text)
-        lbl.set_css_classes([cls, "giga-veri-chip"])
-        return lbl
+    def _row(self, fn, size):
+        return Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
 
-    def _row(self, fn, size, status=None):
-        row = Adw.ActionRow(title=esc(fn), subtitle=human_size(size))
-        if status and status != "unverified":
-            row.add_suffix(self._status_chip(status))
-        return row
-
-    def _populate(self, result, statuses=None):
-        statuses = statuses or {}
-
+    def _populate(self, result):
         self._populate_hold(result.hold_conflicts)
 
         self._clear_list(self._rejects_list)
         if result.rejects:
             for fn, size in result.rejects:
-                self._rejects_list.append(
-                    self._row(fn, size, statuses.get(fn)))
+                self._rejects_list.append(self._row(fn, size))
         else:
             self._rejects_list.append(
                 Adw.ActionRow(title="No rejects - every file categorized"))
@@ -391,8 +411,7 @@ class ScanPage(Adw.NavigationPage):
         self._clear_list(self._dupes_list)
         if result.duplicates:
             for fn, size in result.duplicates:
-                self._dupes_list.append(
-                    self._row(fn, size, statuses.get(fn)))
+                self._dupes_list.append(self._row(fn, size))
         else:
             self._dupes_list.append(
                 Adw.ActionRow(title="No duplicates"))
@@ -424,7 +443,7 @@ class ScanPage(Adw.NavigationPage):
                 files = result.plan[cat]
                 grp = Adw.PreferencesGroup(title="%s  (%d)" % (esc(cat), len(files)))
                 for fn, size in files:
-                    row = self._row(fn, size, statuses.get(fn))
+                    row = self._row(fn, size)
                     author = sort.extract_mod_author(fn)
                     if author and any(
                             author.lower() == a.strip().lower()
@@ -492,7 +511,35 @@ class ScanPage(Adw.NavigationPage):
                         group_frameworks=result.group_frameworks)
                 except Exception:
                     pass
-                GLib.idle_add(self._populate, result, statuses)
+                # Web-rescue the reject pile now that verification is done: a
+                # file whose Nexus category resolves gets sorted into a real
+                # folder instead of staying a reject just because its filename
+                # missed the offline keywords.
+                rescued = 0
+                try:
+                    if result.rejects:
+                        cache = storage.load_cache(result.folder)
+                        verified = {fn for fn, st in statuses.items()
+                                    if st != "unverified"}
+                        outcome = sort.rescue_verified_rejects(
+                            result.folder, result.rejects, verified, cache)
+                        for rfn, (rcat, rsize) in outcome.items():
+                            result.rejects = [(f, s) for f, s
+                                              in result.rejects if f != rfn]
+                            result.plan.setdefault(rcat, []).append((rfn, rsize))
+                        rescued = len(outcome)
+                except Exception:
+                    rescued = 0
+
+                def finish():
+                    self._populate(result)
+                    if rescued:
+                        self._status_label.set_text(
+                            "%s  |  %d reject(s) rescued via Nexus lookup"
+                            % (self._status_label.get_text(), rescued))
+                    return False
+
+                GLib.idle_add(finish)
                 GLib.idle_add(self._populate_struct, structs)
                 GLib.idle_add(self._populate_placement, list(issues))
             except Exception:
@@ -516,8 +563,12 @@ class ScanPage(Adw.NavigationPage):
 
         def worker():
             try:
+                # Never auto-bin rejects in the GUI: an unknown/misclassified
+                # file must stay visible in the workspace for the user instead
+                # of being silently swept to _REJECTS (the Always-Ask prompt's
+                # 's' = skip / keep in place).
                 result = sort.execute_sort(self._result,
-                                           input_fn=lambda *a: "confirm")
+                                           input_fn=lambda *a: "s")
                 GLib.idle_add(self._on_apply_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_apply_error, e)

@@ -16,7 +16,7 @@ import threading
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, GLib, Pango
+from gi.repository import Gtk, Adw, GLib
 
 
 class CompanionPage(Adw.NavigationPage):
@@ -56,7 +56,10 @@ class CompanionPage(Adw.NavigationPage):
         side.append(self._subtitle)
 
         self._options = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        side.append(self._options)
+        opts_scroll = Gtk.ScrolledWindow()
+        opts_scroll.set_child(self._options)
+        opts_scroll.set_vexpand(True)
+        side.append(opts_scroll)
 
         self._run_button = Gtk.Button(label="Run")
         self._run_button.add_css_class("suggested-action")

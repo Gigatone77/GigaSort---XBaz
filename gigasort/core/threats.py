@@ -3,7 +3,7 @@
 import os
 
 from gigasort.constants import (
-    TRUSTED, ON_HOLD, WATCHED, NOMODID, SUSPICIOUS_KEYWORDS, HOLD_BIN,
+    TRUSTED, ON_HOLD, WATCHED, SUSPICIOUS_KEYWORDS, HOLD_BIN,
 )
 from gigasort.core import storage
 from gigasort.core.categorize import extract_mod_id

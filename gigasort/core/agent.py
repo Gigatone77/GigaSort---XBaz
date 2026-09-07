@@ -13,7 +13,7 @@ import sys
 
 from gigasort.constants import BRIDGE_DIR
 from gigasort.core import storage, sort, tags as tags_mod
-from gigasort.core.categorize import categorize, clean_name
+from gigasort.core.categorize import clean_name
 from gigasort.utils import fs
 
 

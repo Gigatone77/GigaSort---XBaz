@@ -28,19 +28,23 @@ class StatusPage(Adw.NavigationPage):
         outer.set_margin_bottom(12)
         outer.set_margin_start(12)
         outer.set_margin_end(12)
-        self.set_child(outer)
 
         self._path_label = Adw.ActionRow(title="Workspace",
                                          subtitle=esc(str(workspace)))
-        outer.append(self._path_label)
 
         self._dirs_group = Adw.PreferencesGroup(title="Folders")
-        outer.append(self._dirs_group)
         self._dir_rows = []
 
         self._files_group = Adw.PreferencesGroup(title="State Files")
-        outer.append(self._files_group)
         self._file_rows = []
+
+        outer.append(self._path_label)
+        outer.append(self._dirs_group)
+        outer.append(self._files_group)
+        scroll = Gtk.ScrolledWindow()
+        scroll.set_child(outer)
+        scroll.set_vexpand(True)
+        self.set_child(scroll)
 
         self.refresh()
 

@@ -9,9 +9,9 @@ from gigasort.constants import (
     GAME_ROOT_DIRS, ARCHIVE_INSTALL_EXTS, VRAM_HIRES_WORDS,
     CP2077_STRONG_KEYWORDS,
 )
-from gigasort.core.categorize import extract_mod_id, candidate_mod_id, name_tokens, clean_name
+from gigasort.core.categorize import extract_mod_id, candidate_mod_id, name_tokens
 from gigasort.utils.format import human_size
-from gigasort.utils import net
+
 
 
 # Names GigaSort itself manages in a workspace -> excluded from the

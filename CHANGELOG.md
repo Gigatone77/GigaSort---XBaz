@@ -2,6 +2,39 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [2.0.2] - 2026-09-06
+
+### Added
+- **Compatibility check noise filters** (`core/verify.py check_dependencies`):
+  the web-referenced dependency report now treats always-installed CP2077
+  frameworks (CET, RED4ext, TweakXL, ArchiveXL, Codeware, redscript, Input
+  Loader, Mod Settings, Native Settings UI, Equipment-EX, Trigger Mode
+  Control, Deceptious Quest Core, AMM) as satisfied, and skips self-referencing
+  requirements, translation/language packs, and dev-tool-only entries
+  (WolkenKit). Only genuine runtime gap downloads are reported.
+
+### Changed
+- **Live verification resilience**: transient Nexus errors (429, 5xx, socket
+  timeout) are retried twice with backoff instead of failing the lookup,
+  which had been rejecting real mods on flaky connections.
+- **Bare-id downloads** now get LIVE verification (not just offline structure
+  checks), so files whose Nexus id has no `-NNN-` filename token are
+  classified correctly.
+- **`_REJECTS` auto-rescue**: `--apply` re-verifies anything already sitting in
+  the bin; web-verified mods are moved back to their correct category instead
+  of staying stranded.
+- **`11 Sensitive Content (18+)`**: the previously-named "Adult Content (18+)"
+  folder (adult-gated Nexus pages identified via og:title/og:url). Renamed to
+  reflect that not everything login-gated there is salacious.
+- **World Building keywords**: `ramps`, `construction` added so vehicle ramp
+  prop packs route to folder 10.
+
+### Fixed
+- **Dead code removed**: unused imports (`fs`, `Gtk` in `__main__`; `clean_name`,
+  `net` in `compat`; `human_size` in `undo`; `json_load` in `gamestructure`;
+  `Gdk`, `APP_NAME` in `app`; `Pango` in `companion`) and three unused helper
+  functions (`_cat_folder_re`, `_size_of`, `_under`).
+
 ## [Unreleased]
 
 ### Added
@@ -16,6 +49,23 @@ All notable changes to **GigaSort** are listed here.
   positives low. The check is a no-op when no game directory is configured.
 - **On Hold tab** in the GUI showing conflicting mods + the installed files
   each would overwrite.
+
+## [2.0.1] - 2026-09-06
+
+### Fixed
+- **XBaz GUI pane**: the "Swap sticks (L <-> R)" toggle title contained raw
+  `<`/`>` characters, making GTK parse it as (invalid) Pango markup. The
+  toggle now renders cleanly and no Gtk-WARNING is emitted at startup
+  (`&lt;-&gt;` escaped).
+- **`--check-superseded` crash**: dependency data was cached as
+  `[game_slug, mod_id]` pairs (JSON lists), so `set(old_deps)` crashed with
+  "cannot use 'list' as a set element". Deps are now normalized to plain
+  mod-id strings when cached, and legacy pair-shaped entries are healed on
+  load. Framework grouping (`sort.py`), the missing-dependency tag
+  (`tags.py`) and superseded analysis all consumed this broken shape and now
+  work off plain string ids.
+- The verified/references caches on the real Downloads workspace were healed
+  of legacy pair-shaped deps.
 
 ## [2.0.0] - 2026-09-03
 

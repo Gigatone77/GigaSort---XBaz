@@ -20,7 +20,7 @@ from gigasort.constants import (
 )
 from gigasort.utils import fs
 from gigasort.utils.format import human_size
-from gigasort.utils.io import json_load, json_dump
+from gigasort.utils.io import json_dump
 
 
 class ExtractionError(RuntimeError):

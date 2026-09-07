@@ -148,10 +148,6 @@ def _fn_of(item):
     return item[0] if len(item) == 2 else item[2]
 
 
-def _size_of(item):
-    return item[1] if len(item) == 2 else item[3]
-
-
 def _author_is_listed(author, toplevel_authors):
     if not author:
         return False

@@ -149,6 +149,11 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
                     continue
             except Exception:
                 pass
+            # The archive interior cannot prove it offline, but the bare
+            # number is still a candidate id: give it a LIVE lookup too. A
+            # real Nexus page (or login-gated og:identity) is proof the
+            # download is a genuine mod regardless of its archive layout.
+            mod_id = candidate_mod_id(fn)
         if not mod_id:
             flagged.add(fn)
             if progress:
@@ -411,29 +416,116 @@ def verify_categories(keep, cache, rejects=(), folder=None):
 
 def check_dependencies(folder, keep, dry_run):
     """Check each keep-archive's Nexus page for required mods and flag any
-    dependency you don't appear to have. Read-only; nothing is downloaded."""
+    dependency you don't appear to have. Read-only; nothing is downloaded.
+
+    The requirements come from the Nexus page (web reference) exactly as
+    scraped. A dependency is counted as satisfied when its mod id is already
+    in the download library OR it is one of the always-installed CP2077
+    frameworks (CET/RED4ext/TweakXL/ArchiveXL and friends, which live in the
+    game dir rather than the archive shelf).
+
+    Language/translation packs (RU/FR/DE/PT-BR/JP/... add-ons) are excluded:
+    they only add translated text and do not block the base mod. Same for
+    modding-tool-only entries (WolvenKit) and self-referencing deps. This
+    keeps the report focused on genuine runtime gap downloads."""
+    from gigasort.constants import MAJOR_FRAMEWORKS
     from gigasort.utils import net
     from gigasort.utils.net import parse_required_deps
+    from gigasort.core import storage
 
+    # always-installed framework ids (game-dir resident, not archive shelf)
+    INSTALLED_ALWAYS = MAJOR_FRAMEWORKS | {
+        "7780",  # Codeware
+        "1511",  # redscript
+        "4575",  # Input Loader
+        "4885",  # Mod Settings
+        "3518",  # Native Settings UI
+        "6945",  # Equipment-EX
+        "13077",  # Trigger Mode Control
+        "7831",  # Deceptious Quest Core
+        "790",  # Appearance Menu Mod (AMM)
+    }
+    _TOOLING = {"2201"}  # WolvenKit is a dev tool, not a runtime mod
+    # translation-pack title markers -> those pages only add localized text
+    _I18N = ("translation", "translate", "portugu", " russian", "polish",
+             "german", "french", "okr ", "ukrain", "spanish", " pt-br",
+             "chinese", "simp chinese", "korean", "japanese", " - jp", " - kr",
+             "deutsch", "franc", " italian", "turkish", "ru ", " - ru", "_ru",
+             " - fr", "fr translation", " - de", " - pt", "brasilian",
+             "tradu")
+
+    refs = storage.load_references(folder) or {}
     have = set()
     for fn, _ in keep:
         mid = extract_mod_id(fn)
         if mid:
             have.add(mid)
+    present = have | INSTALLED_ALWAYS
+
+    def _is_noise(mid, ref):
+        """True when a dependency record should not count as a runtime gap."""
+        if mid in present or mid in _TOOLING:
+            return True
+        title = "".join(
+            str(ref.get(k)) or "" for k in ("title", "verified_title", "verified"))
+        title_l = title.lower()
+        if any(marker in title_l for marker in _I18N):
+            return True
+        return False
+
     missing_any = False
+    seen = set()
     for fn, _ in keep:
         mid = extract_mod_id(fn)
         if not mid:
             continue
-        html = net.fetch(net.nexus_page(mid))
-        if not html:
+        if mid in seen:
             continue
-        deps, _found = parse_required_deps(html)
-        need = [did for _game, did in deps if did not in have]
+        seen.add(mid)
+        ref = refs.get(mid) or {}
+        # prefer cached web deps; only fetch once per unique mod id when absent
+        if ref.get("deps"):
+            deps = _normalize_deps(ref.get("deps"))
+        else:
+            html = net.fetch(net.nexus_page(mid))
+            if not html:
+                continue
+            deps, _found = parse_required_deps(html)
+            deps = _normalize_deps(deps)
+        need = []
+        for did in deps:
+            if str(did) == str(mid):  # self-referencing requirement
+                continue
+            dep_ref = refs.get(str(did)) or {}
+            if not _is_noise(did, dep_ref):
+                need.append(did)
         if need:
-            print("  %s  needs: %s" % (fn, ", ".join(need)))
+            print("  %s  needs: %s" % (fn, ", ".join(sorted(need))))
             missing_any = True
     return missing_any
+
+
+def _normalize_deps(deps):
+    """Normalize cached deps to bare mod-id strings.
+
+    Older runs stored [game_slug, mod_id] pairs (JSON -> [slug, id] lists);
+    consumers (framework grouping, dependency gate, superseded analysis) need
+    hashable plain mod-id strings. Coerces either shape to sorted unique
+    string ids. Returns [] when empty/unknown.
+    """
+    out = []
+    for d in deps or []:
+        if isinstance(d, (list, tuple)) and len(d) >= 2:
+            out.append(str(d[1]))
+        else:
+            out.append(str(d))
+    seen = set()
+    uniq = []
+    for x in sorted(out):
+        if x not in seen:
+            seen.add(x)
+            uniq.append(x)
+    return uniq
 
 
 def fetch_dependencies(folder, fn_list, progress=None):
@@ -458,21 +550,32 @@ def fetch_dependencies(folder, fn_list, progress=None):
         if not mid:
             continue
         ref = refs.setdefault(mid, {})
-        ref_deps = ref.get("deps") or []
-        if ref_deps:
-            cache.setdefault(fn, {})["deps"] = ref_deps
+        # deps are normalized to plain mod-id strings; heal any legacy
+        # [game_slug, mod_id] pairs that an older run stored.
+        cur_deps = _normalize_deps(ref.get("deps"))
+        if cur_deps:
+            if cur_deps != ref.get("deps"):
+                refs[mid]["deps"] = cur_deps
+                refs_dirty = True
+            cache.setdefault(fn, {})["deps"] = cur_deps
+            changed = True
             if progress:
                 progress(fn)
             continue
         entry = cache.get(fn) or {}
-        if entry.get("deps"):
-            refs[mid]["deps"] = entry["deps"]
+        entry_deps = _normalize_deps(entry.get("deps"))
+        if entry_deps:
+            refs[mid]["deps"] = entry_deps
             refs_dirty = True
+            if entry_deps != entry.get("deps"):
+                cache[fn]["deps"] = entry_deps
+                changed = True
             continue
         html = net.fetch(net.nexus_page(mid))
         if not html:
             continue
         deps, _found = parse_required_deps(html)
+        deps = _normalize_deps(deps)
         if deps:
             refs[mid]["deps"] = deps
             refs_dirty = True

@@ -45,13 +45,6 @@ def _norm(rel):
     return "/".join(parts)
 
 
-def _under(root_abs, subdir):
-    """If `subdir` (game-relative, e.g. 'archive/pc/mod') exists under the
-    game root, return its absolute normalized path prefix; else None."""
-    base = os.path.join(root_abs, *subdir.split("/"))
-    return _norm(os.path.normpath(base).replace("\\", "/"))
-
-
 def load_installed_files(game_dir):
     """Walk the game directory and return the set of installed MOD file paths
     (normalized, case-folded) that a downloaded archive could collide with.
