@@ -17,10 +17,8 @@ class GameStructurePage(CompanionPage):
 
     def _build_sidebar(self):
         self._run_button.set_visible(False)
-        self._folder = self._add_entry(
-            "Source folder",
-            os.path.expanduser("~/Downloads"))
-        self._folder.set_text(self.workspace or os.path.expanduser("~/Downloads"))
+        self._folder = self._add_entry("Source folder", "")
+        self._folder.set_text(self.workspace or "")
         self._game_dir = self._add_entry(
             "Target game dir", "optional (default: <folder>/_game-structure)")
         self._dry = self._add_toggle("Dry run", "preview, change nothing")
@@ -53,7 +51,7 @@ class GameStructurePage(CompanionPage):
         Game Structure is a core GigaSort mode, not a standalone script, so we
         invoke the installed module rather than a separate .py companion.
         """
-        folder = self._folder.get_text().strip() or os.path.expanduser("~/Downloads")
+        folder = self._folder.get_text().strip()
         full = [sys.executable, "-m", "gigasort"] + list(argv)
         self._status_label.set_text("Running...")
         self._run_button.set_sensitive(False)

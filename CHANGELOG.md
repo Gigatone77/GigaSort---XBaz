@@ -35,15 +35,24 @@ All notable changes to **GigaSort** are listed here.
 ### Fixed
 - **Scan-tab target folder is now a text field** (GUI `pages/scan.py`): the
   workspace folder can be typed directly into an entry box (with `~`
-  expansion) instead of only via the file-explorer dialog. A `Browse...`
-  button still opens the picker for those who prefer it, and the dialog now
-  starts at whatever path is already typed.
+  expansion) instead of only via the file-explorer dialog. The explorer
+  `Browse...` button on the folder row was later removed (its folder-picker
+  result could come back null); the Game-directory row keeps its own button.
+- **GUI no longer defaults to `~/Downloads`** (`gui/window.py`, `gui/pages/
+  scan.py`, `gui/pages/gamestructure.py`, CLI help): when launched without
+  `--folder` the app opens with an EMPTY folder field instead of silently
+  pointing at `~/Downloads`. No hard-coded Downloads path remains in the GUI
+  code (headless CLI modes keep their documented default).
 - **Empty author box now means "sort everything"** (GUI `pages/scan.py`):
   with no author(s) typed and "Author + organize rest" unchecked, a scan
   planned nothing at all (`Nothing to move`, no Apply prompt). An empty
   author field now forces full-batch mode, so typing any path and hitting
   Scan produces a real plan and the Apply button. Typing specific authors
   still uses the author-folder-only behavior.
+- **Folder picker `Browse...` button removed** (GUI `pages/scan.py`): the
+  workspace folder is now entered by typing only. The file dialog could
+  return null after selecting a folder; the text entry alone is simpler and
+  reliable. (The Game-directory row keeps its own Browse button.)
 - **Latent `NameError` in offline readme verification**
   (`core/verify.py` `verification_statuses`): the readme-fallback mod-id lookup
   called `compat.readme_mod_id` without importing `compat`, which would crash

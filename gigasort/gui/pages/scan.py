@@ -63,16 +63,10 @@ class ScanPage(Adw.NavigationPage):
         folder_label.set_xalign(0)
         folder_box.append(folder_label)
         self._folder_entry = Gtk.Entry(
-            placeholder_text="Path to mod folder to scan (e.g. ~/Downloads)")
+            placeholder_text="Path to mod folder to scan")
         self._folder_entry.set_text(self.workspace or "")
         self._folder_entry.set_hexpand(True)
-        self._folder_entry.set_tooltip_text(
-            "Enter the workspace folder path directly, or press the button to "
-            "pick it with a file dialog.")
         folder_box.append(self._folder_entry)
-        self._folder_button = Gtk.Button(label="Browse...")
-        self._folder_button.connect("clicked", self._on_select_folder)
-        folder_box.append(self._folder_button)
         outer.append(folder_box)
 
         authors_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -310,17 +304,6 @@ class ScanPage(Adw.NavigationPage):
                                      esc(detail)))
             self._placement_list.append(row)
 
-    def _on_select_folder(self, *args):
-        from gi.repository import Gio
-        dialog = Gtk.FileDialog()
-        dialog.set_title("Select mod workspace folder")
-        cur = os.path.expanduser(self._folder_entry.get_text().strip())
-        if cur and os.path.isdir(cur):
-            folder = Gio.File.new_for_path(cur)
-        else:
-            folder = None
-        dialog.select_folder(self.get_root(), None, self._on_folder_selected, folder)
-
     def _on_select_game_dir(self, *args):
         from gi.repository import Gio
         dialog = Gtk.FileDialog()
@@ -337,16 +320,6 @@ class ScanPage(Adw.NavigationPage):
             return
         if file:
             self._game_dir_entry.set_text(file.get_path())
-
-    def _on_folder_selected(self, dialog, result):
-        try:
-            file = dialog.select_folder_finish(result)
-        except GLib.Error:
-            return
-        if file:
-            self._folder_entry.set_text(file.get_path())
-            self.workspace = file.get_path()
-            self._status_label.set_text("Folder set. Click Scan.")
 
     def _get_toplevel_authors(self):
         text = self._authors_entry.get_text().strip()

@@ -6,7 +6,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw
 
 from gigasort import APP_NAME, __version__
-from gigasort.constants import default_workspace
 from gigasort.gui.util import esc
 from gigasort.gui.pages.scan import ScanPage
 from gigasort.gui.pages.undo import UndoPage
@@ -28,7 +27,7 @@ class MainWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
         self.set_title("%s %s" % (APP_NAME, __version__))
         self.set_default_size(WINDOW_WIDTH, WINDOW_HEIGHT)
-        self.workspace = workspace or default_workspace()
+        self.workspace = workspace
 
         toolbar = Adw.ToolbarView()
         self.set_content(toolbar)

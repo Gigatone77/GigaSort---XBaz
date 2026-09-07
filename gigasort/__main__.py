@@ -24,8 +24,7 @@ def build_parser():
     )
     p.add_argument("-V", "--version", action="version", version="%(prog)s " + __version__)
     p.add_argument("-w", "--workspace", "--folder", dest="workspace", default=None,
-                   help="Mod workspace folder (default: ~/Downloads); "
-                        "comma-separated to sort several folders")
+                   help="Mod workspace folder; comma-separated to sort several folders")
 
     g = p.add_mutually_exclusive_group()
     g.add_argument("--apply", action="store_true",
@@ -334,9 +333,11 @@ def main(argv=None):
         print("Moved %d duplicate archive(s) to _DUPLICATES." % n)
         return 0
 
-    # No flags -> launch the GUI. CLI modes above remain headless.
+    # No flags -> launch the GUI. The GUI never hard-defaults to ~/Downloads:
+    # if no workspace was given, it opens with an empty folder field for the
+    # user to fill in (headless modes above keep the default_workspace()).
     from gigasort.gui.app import run_app
-    return run_app(workspace=folder)
+    return run_app(workspace=args.workspace)
 
 
 def _merge_verify(cache, verify_map):
