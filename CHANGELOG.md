@@ -43,6 +43,11 @@ All notable changes to **GigaSort** are listed here.
   `--folder` the app opens with an EMPTY folder field instead of silently
   pointing at `~/Downloads`. No hard-coded Downloads path remains in the GUI
   code (headless CLI modes keep their documented default).
+- **Empty-workspace launch crash fixed** (GUI): pages that scanned the
+  workspace at startup (StatusPage) no longer crash when no folder is chosen
+  yet - `refresh()` shows "not set" until a folder is entered. The workspace
+  typed in the Scan tab is also propagated to Undo/Status/Rejects/Game
+  Structure pages after a sort so they reflect the folder actually used.
 - **Empty author box now means "sort everything"** (GUI `pages/scan.py`):
   with no author(s) typed and "Author + organize rest" unchecked, a scan
   planned nothing at all (`Nothing to move`, no Apply prompt). An empty
