@@ -445,7 +445,8 @@ TOPLEVEL_AUTHORS = (
 # grouped together in a top-level folder named after the framework, together
 # with the framework mod itself. Ids that never appear simply produce no
 # group. Shared dependencies not in this map are still grouped dynamically
-# ("Framework <id>") when two or more downloads require the same one.
+# ("Framework (Nexus mod <id>)", where <id> is the dependency's Nexus mod id)
+# when two or more downloads require the same one.
 #
 # NOTE: only the NICHE frameworks form group folders. The universal deps that
 # almost every CP2077 mod requires (see MAJOR_FRAMEWORKS below) would only

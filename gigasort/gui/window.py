@@ -7,6 +7,7 @@ from gi.repository import Gtk, Adw
 
 from gigasort import APP_NAME, __version__
 from gigasort.constants import default_workspace
+from gigasort.gui.util import esc
 from gigasort.gui.pages.scan import ScanPage
 from gigasort.gui.pages.undo import UndoPage
 from gigasort.gui.pages.status import StatusPage
@@ -61,7 +62,7 @@ class MainWindow(Adw.ApplicationWindow):
             ("scan", "Scan and Sort", "view-list-symbolic", self.scan_page),
             ("undo", "Undo", "edit-undo-symbolic", self.undo_page),
             ("status", "Workspace", "folder-symbolic", self.status_page),
-            ("rejects", "Rejects & Overrides", "edit-find-replace-symbolic",
+            ("rejects", esc("Rejects & Overrides"), "edit-find-replace-symbolic",
              self.rejects_page),
         ]
 

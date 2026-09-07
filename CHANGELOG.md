@@ -44,6 +44,18 @@ All notable changes to **GigaSort** are listed here.
   `found` parameter (None) was read instead of the normalized `self.found`
   (`found or {}`). Pre-selecting the category dropdown now reads `self.found`
   like every other call site.
+- **Rejects & Overrides sidebar entry rendered with no text**
+  (GUI `window.py`): the sidebar row title `Rejects & Overrides` contains a
+  bare `&`, which libadwaita's `ActionRow` parses as Pango markup (its
+  `use-markup` defaults to True). The invalid `& ` entity made GTK drop the
+  whole title, so the tab button appeared blank. The title is now escaped
+  (`&amp;`) via `gui.util.esc` like every other user-facing string.
+- **Dynamic framework group folders now cite the Nexus mod id explicitly**
+  (core `sort.py` `resolve_framework_groups`): when an unrecognized shared
+  dependency groups two or more downloads, the folder is now named
+  `Framework (Nexus mod <id>)` instead of the ambiguous `Framework <id>` - the
+  `<id>` is that requirement's Nexus mod id, so the folder name reads as "the
+  mod with code <id> on Nexus" (`nexusmods.com/cyberpunk2077/mods/<id>`).
 - **Module-`os` shadowing** (`core/compat.py`): a function-local
   `import ... os` shadowed the module-level import - a latent
   `UnboundLocalError` hazard (ruff F823).

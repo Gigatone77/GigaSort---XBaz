@@ -237,7 +237,10 @@ def resolve_framework_groups(folder, keep, cache, toplevel_authors=None):
         its name matches a framework trigger) joins its own folder so core +
         dependents sit together;
       - a dependency not in KNOWN_FRAMEWORKS that is required by 2+ downloads
-        creates a dynamic "Framework <id>" group.
+        creates a dynamic "Framework (Nexus mod <id>)" group - the <id> is the
+        requirement's Nexus mod id, so the folder name reads "the mod with code
+        <id> on Nexus" (users can look up that id at
+        nexusmods.com/cyberpunk2077/mods/<id>).
     Universal/always-present frameworks (MAJOR_FRAMEWORKS: CET, RED4ext,
     TweakXL, ArchiveXL) never form group folders - nearly every mod carries
     one, so they'd just create huge meaningless folders. Files belonging to a
@@ -291,7 +294,7 @@ def resolve_framework_groups(folder, keep, cache, toplevel_authors=None):
             continue
         for d in deps:
             if d not in KNOWN_FRAMEWORKS and counter[d] >= 2:
-                groups[fn] = "Framework %s" % d
+                groups[fn] = "Framework (Nexus mod %s)" % d
                 break
     return groups
 
