@@ -60,8 +60,8 @@ class _OverrideRow(Adw.ActionRow):
         cur = categorize(fn)
         if cur in options:
             self._combo.set_selected(options.index(cur))
-        elif found.get("folder") in options:
-            self._combo.set_selected(options.index(found["folder"]))
+        elif self.found.get("folder") in options:
+            self._combo.set_selected(options.index(self.found["folder"]))
         self._combo.set_tooltip_text(
             "Category folder the file should be sorted into")
 

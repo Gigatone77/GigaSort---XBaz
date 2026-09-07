@@ -20,3 +20,4 @@ GAMESTRUCTURE/
 # Editors / OS
 *.swp
 .DS_Store
+bin/
