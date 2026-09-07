@@ -54,7 +54,7 @@ class ScanPage(Adw.NavigationPage):
         controls.append(self._status_label)
 
         self._conn_label = Gtk.Label(
-            label="Network: check…", css_classes=["giga-veri-chip", "dim-label"])
+            label="Offline", css_classes=["giga-veri-chip", "dim-label"])
         self._conn_label.set_ellipsize(3)
         controls.append(self._conn_label)
 
@@ -194,7 +194,7 @@ class ScanPage(Adw.NavigationPage):
         """Static connectivity indicator: shows whether live Nexus lookups
         are actually working right now (not a per-file status). Runs in a
         background thread so the UI never blocks on the probe."""
-        self._conn_label.set_text("Network: checking…")
+        self._conn_label.set_text("check…")
         self._conn_label.set_css_classes(["giga-veri-chip", "dim-label"])
 
         def worker():
@@ -209,15 +209,10 @@ class ScanPage(Adw.NavigationPage):
 
     def _show_net(self, ok, reason=None):
         if not net.ALLOW_NET:
-            text = "Network: offline (live lookups disabled)"
-            css = ["giga-veri-chip", "error"]
-        elif ok:
-            text = "Network: online" if not reason \
-                else "Network: online - %s" % reason
-            css = ["giga-veri-chip", "success"]
+            text, css = "Offline", ["giga-veri-chip", "error"]
         else:
-            text = "Network: offline - %s" % (reason or "no connection")
-            css = ["giga-veri-chip", "error"]
+            text, css = ("Online", ["giga-veri-chip", "success"]) \
+                if ok else ("Offline", ["giga-veri-chip", "error"])
         self._conn_label.set_text(text)
         self._conn_label.set_css_classes(css)
         return False

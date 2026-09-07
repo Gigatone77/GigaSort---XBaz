@@ -5,6 +5,25 @@ All notable changes to **GigaSort** are listed here.
 ## [2.0.3] - 2026-09-06
 
 ### Added
+- **Rejects & Overrides tab** (new GUI page, wired into the main-window
+  sidebar alongside the core Scan/Undo/Workspace pages): lists everything the
+  sorter could not route - archives parked in `_REJECTS` plus unrecognized
+  archives still loose at the workspace root - and lets you act on them:
+    - **Run search protocol**: fires the same no-CAPTCHA web search the sorter
+      uses on a new mod (`utils/net.py investigate_mod`), showing the verified
+      Nexus title, detected category folder (pre-selected in the dropdown) and
+      the mod's GitHub repo when the search finds one.
+    - **Apply override**: persists the chosen category as BOTH a new
+      `_GigaSort_web_overrides.json` entry (the human-verified source that
+      beats every keyword rule) and a `_GigaSort_references.json` mod-id record
+      plus an approved `_GigaSort_verified.json` cache entry, then moves the
+      archive into its category folder via `sort._move_skip_collision` (a
+      destination collision goes to `_DUPLICATES` - never overwritten, never
+      deleted). The next sort recognizes and routes the file by itself.
+- **Simplified connectivity indicator**: the Network chip on the Scan page
+  (and the new tab) now shows just **Online** / **Offline** instead of the
+  verbose "online - <reason>" strings, matching the user-space ask that the
+  indicator stay a simple at-a-glance status.
 - **Web-category override layer**: `_GigaSort_web_overrides.json` in the
   workspace root maps exact archive filenames to the category folder a human
   verified ONLINE. `resolve_category()` now checks this BEFORE the offline

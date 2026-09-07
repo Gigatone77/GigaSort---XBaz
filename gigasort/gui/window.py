@@ -10,6 +10,7 @@ from gigasort.constants import default_workspace
 from gigasort.gui.pages.scan import ScanPage
 from gigasort.gui.pages.undo import UndoPage
 from gigasort.gui.pages.status import StatusPage
+from gigasort.gui.pages.rejects import RejectsPage
 from gigasort.gui.pages.gigaslim import GigaSlimPage
 from gigasort.gui.pages.cyberflash import CyberFlashSyncPage
 from gigasort.gui.pages.xbaz import XBazPage
@@ -53,12 +54,15 @@ class MainWindow(Adw.ApplicationWindow):
         self.scan_page = ScanPage(workspace=self.workspace)
         self.undo_page = UndoPage(workspace=self.workspace, scan_page=self.scan_page)
         self.status_page = StatusPage(workspace=self.workspace)
+        self.rejects_page = RejectsPage(workspace=self.workspace)
         self.scan_page.status_callback = self._on_sort_applied
 
         pages = [
             ("scan", "Scan and Sort", "view-list-symbolic", self.scan_page),
             ("undo", "Undo", "edit-undo-symbolic", self.undo_page),
             ("status", "Workspace", "folder-symbolic", self.status_page),
+            ("rejects", "Rejects & Overrides", "edit-find-replace-symbolic",
+             self.rejects_page),
         ]
 
         def add_row(page_id, title, icon_name, page):

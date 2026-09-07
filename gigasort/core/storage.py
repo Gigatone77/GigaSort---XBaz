@@ -54,6 +54,11 @@ def load_web_overrides(folder):
     return json_load(web_overrides_path(folder), {})
 
 
+def save_web_overrides(folder, overrides):
+    """Persist the human-confirmed web-category override map."""
+    json_dump(web_overrides_path(folder), overrides)
+
+
 def log_path(folder):
     return _join(folder, LOG_FILENAME)
 
