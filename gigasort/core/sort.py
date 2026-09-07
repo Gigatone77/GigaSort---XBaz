@@ -130,10 +130,15 @@ def collect_nested_archives(folder, toplevel_authors=None):
     return archives
 
 
-def resolve_category(fn, cache=None):
+def resolve_category(fn, cache=None, web_overrides=None):
     """Best-known category folder for an archive.
 
     Preference order (each source is exhausted before the next is trusted):
+      0. human-confirmed web overrides (``_GigaSort_web_overrides.json``,
+         keyed by exact filename) — this is LIVE online info a person already
+         acted on, so it beats EVERY deterministic guess below, including a
+         keyword match. Prevents an offline keyword from silently reverting a
+         verified web move on the next sort;
       1. offline filename-keyword categorize() — deterministic and reliable,
          and it wins over a conflicting cached 'nexus_cat' because that field
          is itself only a loose page-keyword guess, never a verified Nexus
@@ -144,6 +149,9 @@ def resolve_category(fn, cache=None):
 
     Returns the folder name (e.g. "02 Hair") or None when nothing matches.
     """
+    override = (web_overrides or {}).get(fn)
+    if isinstance(override, str) and _CAT_FOLDER_RE.match(override):
+        return override
     kw = categorize(fn)
     if kw:
         return kw
@@ -173,6 +181,7 @@ def find_misplaced(folder, toplevel_authors=None, author_plus_batch=False,
     else:
         toplevel_authors = list(toplevel_authors)
     cache = cache or {}
+    web_overrides = storage.load_web_overrides(folder)
 
     nested = collect_nested_archives(folder, toplevel_authors)
 
@@ -192,7 +201,7 @@ def find_misplaced(folder, toplevel_authors=None, author_plus_batch=False,
         if _author_matches(author, toplevel_authors):
             target = author
         elif author_plus_batch:
-            cat = resolve_category(fn, cache)
+            cat = resolve_category(fn, cache, web_overrides)
             if cat is None:
                 if group_frameworks and _framework_self_name(fn):
                     cat = "08 Cores, Fixes & Utilities"
@@ -522,10 +531,14 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=False,
         cache = storage.load_cache(folder)
     except Exception:
         pass
+    try:
+        web_overrides = storage.load_web_overrides(folder)
+    except Exception:
+        web_overrides = {}
 
     plan, rejects = {}, []
     for fn, size in keep:
-        cat = resolve_category(fn, cache)
+        cat = resolve_category(fn, cache, web_overrides)
         author = extract_mod_author(fn)
         is_top = _author_matches(author, toplevel_authors)
         if is_top:

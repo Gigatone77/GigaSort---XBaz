@@ -487,7 +487,7 @@ def check_placement(folder, cache=None, entries=None, toplevel_authors=None,
     for fn, _size in result.kept:
         if not candidate_mod_id(fn) or not extract_mod_author(fn):
             continue
-        cat = resolve_category(fn, cache)
+        cat = resolve_category(fn, cache, storage.load_web_overrides(folder))
         author = extract_mod_author(fn)
         if author_plus_batch and cat:
             issues.append(PlacementIssue("root", fn, "workspace root", cat))

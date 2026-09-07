@@ -5,7 +5,8 @@ import os
 
 from gigasort.constants import (
     CACHE_FILENAME, LOG_FILENAME, MANIFEST_FILENAME, TAGS_FILENAME,
-    THREAT_FILENAME, SETTINGS_FILENAME, REFERENCE_FILENAME, REJECT_BIN, TRASH_BIN,
+    THREAT_FILENAME, SETTINGS_FILENAME, REFERENCE_FILENAME,
+    WEB_OVERRIDES_FILENAME, REJECT_BIN, TRASH_BIN,
 )
 from gigasort.utils.io import json_load, json_dump, _atomic_write_text
 from gigasort.utils import fs
@@ -35,6 +36,22 @@ def reference_path(folder):
     Nexus lookup on a future sort.
     """
     return _join(folder, REFERENCE_FILENAME)
+
+
+def web_overrides_path(folder):
+    """Path of the human-confirmed web-category override map.
+
+    Maps exact archive filenames to the category folder a VERIFIED ONLINE source
+    (Nexus page category / Google-confirmed identity) assigned them. These
+    overrides WIN over offline filename-keyword routing so that live, verified
+    web info is never silently reverted by a keyword guess on the next sort.
+    """
+    return _join(folder, WEB_OVERRIDES_FILENAME)
+
+
+def load_web_overrides(folder):
+    """Load {filename: category-folder} overrides; {} when absent/invalid."""
+    return json_load(web_overrides_path(folder), {})
 
 
 def log_path(folder):
