@@ -37,6 +37,13 @@ All notable changes to **GigaSort** are listed here.
   (`core/verify.py` `verification_statuses`): the readme-fallback mod-id lookup
   called `compat.readme_mod_id` without importing `compat`, which would crash
   verification of any archive whose filename carries no Nexus id.
+- **Rejects & Overrides row crash when no search result exists yet**
+  (GUI `pages/rejects.py` `_OverrideRow`): a row created for a listed file
+  that hadn't been searched crashed with
+  `AttributeError: 'NoneType' object has no attribute 'get'` because the raw
+  `found` parameter (None) was read instead of the normalized `self.found`
+  (`found or {}`). Pre-selecting the category dropdown now reads `self.found`
+  like every other call site.
 - **Module-`os` shadowing** (`core/compat.py`): a function-local
   `import ... os` shadowed the module-level import - a latent
   `UnboundLocalError` hazard (ruff F823).
