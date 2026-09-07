@@ -61,10 +61,6 @@ class WtncPage(Adw.NavigationPage):
         self._fetch_btn = Gtk.Button(label="Fetch manifest from GitHub")
         self._fetch_btn.connect("clicked", self._on_fetch)
         header.append(self._fetch_btn)
-
-        self._refresh_btn = Gtk.Button(label="Refresh")
-        self._refresh_btn.connect("clicked", self._on_refresh)
-        header.append(self._refresh_btn)
         outer.append(header)
 
         hint = Gtk.Label(
@@ -110,8 +106,7 @@ class WtncPage(Adw.NavigationPage):
     # -- helpers ------------------------------------------------------------
     def _set_busy(self, busy):
         self._busy = busy
-        for btn in (self._fetch_btn, self._refresh_btn, self._preview_btn,
-                    self._move_btn):
+        for btn in (self._fetch_btn, self._preview_btn, self._move_btn):
             btn.set_sensitive(not busy)
 
     def _worker(self, fn, done):
@@ -152,7 +147,35 @@ class WtncPage(Adw.NavigationPage):
         if not self.workspace:
             return
         self._set_busy(True)
-        self._status.set_text("Moving incompatible mods to %s…" % NOT_WTNC_BIN)
+        self._status.set_text("Sweeping (preview)…")
+        self._worker(
+            lambda: wtnc.run_wtnc_sweep(self.workspace, dry_run=True),
+            self._confirm_move)
+
+    def _confirm_move(self, summary):
+        self._set_busy(False)
+        self._render(summary)
+        n = summary.get("counts", {}).get("not-in-wtnc", 0)
+        if not n:
+            return
+        dlg = Adw.AlertDialog.new(
+            "Move %d archive(s)?" % n,
+            "These %d mod(s) are not on the WTNC curated list and will be "
+            "pushed into '%s'. Collision-safe, never deleted, easily reversed "
+            "by dragging them back." % (n, NOT_WTNC_BIN))
+        dlg.add_response("cancel", "Cancel")
+        dlg.add_response("move", "Move")
+        dlg.set_default_response("move")
+        dlg.connect("response", self._on_move_confirmed, summary)
+        dlg.present(self)
+
+    def _on_move_confirmed(self, dlg, response, summary):
+        if response != "move":
+            self._status.set_text("Move cancelled - nothing changed.")
+            return
+        n = summary.get("counts", {}).get("not-in-wtnc", 0)
+        self._set_busy(True)
+        self._status.set_text("Moving %d incompatible archive(s)…" % n)
         self._worker(
             lambda: wtnc.run_wtnc_sweep(self.workspace, dry_run=False,
                                         confirm=False),
@@ -180,11 +203,14 @@ class WtncPage(Adw.NavigationPage):
             ["giga-veri-chip", "success" if summary.get("fetched") else "dim-label"])
 
         c = summary.get("counts", {})
+        extra = summary.get("extra_compat_ids") or []
+        extra_txt = ("   |   extra-compat ids: %s" % ", ".join(extra)
+                     if extra else "")
         self._summary.set_text(
             "in WTNC list: %d   |   NOT compatible: %d   |   left in place "
-            "(uncertain/no id): %d"
+            "(uncertain/no id): %d%s"
             % (c.get("in-wtnc", 0), c.get("not-in-wtnc", 0),
-               c.get("skip-candidate", 0) + c.get("no-id", 0)))
+               c.get("skip-candidate", 0) + c.get("no-id", 0), extra_txt))
 
         self._clear()
         shown = 0

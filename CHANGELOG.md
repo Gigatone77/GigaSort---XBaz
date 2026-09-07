@@ -35,6 +35,16 @@ All notable changes to **GigaSort** are listed here.
     - The GUI tab defaults to preview and has "Fetch manifest from GitHub",
       "Run sweep (preview)" and "Move incompatible to _NOT_WTNC" actions; the
       manifest source chip shows live-GitHub vs cached.
+    - **Freshness + preview polish (follow-up)**: a cached modlist older than
+      7 days is now auto-refreshed from GitHub (falling back to the cached
+      copy if offline) instead of being silently reused - a move that may
+      relocate 1000+ files never runs on stale data. The CLI/GUI label now
+      reports whether the sweep ran on a live fetch or a cached copy. The CLI
+      truncates long lists to 50 lines (full data stays in
+      `_GigaSort_wtnc_report.json`). The GUI dropped its redundant Refresh
+      button; "Move incompatible" now previews first and asks for
+      confirmation with the exact count before moving; the summary line shows
+      the active extra-compat ids.
 
 ## [2.0.3] - 2026-09-06
 

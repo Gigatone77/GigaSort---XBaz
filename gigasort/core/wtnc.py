@@ -95,16 +95,38 @@ def _save_manifest_cache(folder, rec):
         pass
 
 
-def fetch_manifest(folder, force=False):
+def _cache_age_days(rec):
+    """Age in whole days of a cached manifest record (None if unparseable)."""
+    fetched = (rec or {}).get("fetched_at")
+    if not fetched:
+        return None
+    try:
+        dt = datetime.fromisoformat(fetched)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return max(0.0, (datetime.now(timezone.utc) - dt).total_seconds() / 86400.0)
+    except Exception:
+        return None
+
+
+def fetch_manifest(folder, force=False, max_age_days=7):
     """Return the WTNC manifest record; never raises.
 
-    Cache-first, then a live GET of the GitHub Modlist.md. On any fetch
-    failure the last cached parse is returned (so offline runs still work);
-    with no cache and no network the record carries an "error" key.
+    Cache-first for fast offline runs, but a cached parse older than
+    `max_age_days` is treated as STALE: the parser tries a live GitHub refresh
+    first and only falls back to the cached copy if that fails - so a sweep
+    that may move a thousand files never silently runs on very old data.
+    `force=True` always refreshes. The returned record carries "stale" and
+    "stale_refresh_error" when the live refresh failed and an aged cache is
+    being reused.
     """
     cached = _load_manifest_cache(folder)
-    if cached and cached.get("mod_count") and not force:
-        return cached
+    age = _cache_age_days(cached)
+    stale = bool(cached and (age is None or age > max_age_days))
+    if cached and cached.get("mod_count") and not force and not stale:
+        rec = dict(cached)
+        rec["source_event"] = "cache"
+        return rec
     last_error = "unreachable"
     try:
         req = urllib.request.Request(WTNC_MANIFEST_URL,
@@ -115,6 +137,7 @@ def fetch_manifest(folder, force=False):
             "source": WTNC_MANIFEST_URL,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
             "fetched": True,
+            "source_event": "github-live",
             "manifest": parse_modlist(text),
         }
         rec["mod_count"] = len(rec["manifest"])
@@ -123,9 +146,13 @@ def fetch_manifest(folder, force=False):
     except Exception as e:
         last_error = str(e) or last_error
     if cached:
-        return cached
+        rec = dict(cached)
+        rec["stale"] = stale
+        rec["stale_refresh_error"] = last_error
+        rec["source_event"] = "cache-stale"
+        return rec
     return {"source": WTNC_MANIFEST_URL, "error": last_error,
-            "manifest": {}, "mod_count": 0}
+            "manifest": {}, "mod_count": 0, "source_event": "none"}
 
 
 def library_archives(folder):
@@ -250,6 +277,18 @@ def _move_to_bin(folder, src, dry_run=False, input_fn=None):
     return "moved"
 
 
+def _print_rel_list(paths, records, folder, limit=50):
+    """Print at most `limit` paths (full data stays in the report JSON)."""
+    total = len(paths)
+    for path in sorted(paths, key=lambda p: p.lower())[:limit]:
+        r = records[path]
+        print("  %-8s %s  | %s" % (r["mod_id"] or "-", r.get("title") or "",
+                                   os.path.relpath(path, folder)))
+    if total > limit:
+        print("  ... and %d more (full list in %s)"
+              % (total - limit, WTNC_REPORT_FILENAME))
+
+
 def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
     """Full compatibility sweep against the WTNC collection.
 
@@ -266,9 +305,15 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
         print("! Manifest unreachable and no cached copy: %s" % manifest["error"])
         print("  (run again online, or that's it for now.)")
         return {"error": manifest["error"]}
-    src = "GitHub (live)" if manifest.get("fetched") else "cached copy"
+    live = manifest.get("source_event") == "github-live"
+    src = "GitHub (live)" if live else "cached copy"
     print("Modlist: %d curated mod(s) (%s, fetched %s)"
           % (manifest["mod_count"], src, manifest.get("fetched_at", "never")))
+    if manifest.get("stale"):
+        print("! Live refresh failed (%s) - reusing the %s-day-old cached "
+              "copy; run 'gigasort --check-wtnc' online to refresh."
+              % (manifest.get("stale_refresh_error", "unreachable"),
+                 int(_cache_age_days(manifest) or 0)))
     print("Workspace: %s" % folder)
     print()
 
@@ -281,7 +326,6 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
     for path, rec in records.items():
         by_v[rec["verdict"]].append(path)
 
-    o = os.path.relpath
     print("== SUMMARY ==")
     print("  %-14s %d" % ("in WTNC list", len(by_v["in-wtnc"])))
     print("  %-14s %d" % ("not in list", len(by_v["not-in-wtnc"])))
@@ -291,17 +335,12 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
 
     if by_v["in-wtnc"]:
         print("== CLASSIFIES AS PART OF THE WTNC COLLECTION ==")
-        for path in sorted(by_v["in-wtnc"], key=lambda p: p.lower()):
-            r = records[path]
-            print("  %-8s %s  | %s" % (r["mod_id"], r["title"],
-                                       o(path, folder)))
+        _print_rel_list(by_v["in-wtnc"], records, folder)
         print()
 
     print("== NOT COMPATIBLE WITH WTNC -> '%s' ==" % NOT_WTNC_BIN)
     if by_v["not-in-wtnc"]:
-        for path in sorted(by_v["not-in-wtnc"], key=lambda p: p.lower()):
-            r = records[path]
-            print("  %-8s %s" % (r["mod_id"] or "-", o(path, folder)))
+        _print_rel_list(by_v["not-in-wtnc"], records, folder)
         if dry_run:
             print("  (dry run: would move %d to %s)"
                   % (len(by_v["not-in-wtnc"]), NOT_WTNC_BIN))
@@ -314,18 +353,15 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
     if by_v["skip-candidate"] or by_v["no-id"]:
         print()
         print("== LEFT IN PLACE (identity not strong enough to move) ==")
-        for path in sorted(by_v["skip-candidate"] + by_v["no-id"],
-                           key=lambda p: p.lower()):
-            r = records[path]
-            print("  %-8s %s  (%s)" % (r["mod_id"] or "-",
-                                       o(path, folder), r["reason"]))
+        _print_rel_list(by_v["skip-candidate"] + by_v["no-id"],
+                        records, folder)
         print()
 
     summary = {"workspace": os.path.normpath(os.path.abspath(folder)),
                "swept_at": datetime.now(timezone.utc).isoformat(),
                "manifest_mod_count": manifest["mod_count"],
                "extra_compat_ids": sorted(extra),
-               "fetched": bool(manifest.get("fetched")),
+               "fetched": live,
                "dry_run": bool(dry_run),
                "counts": {v: len(by_v[v]) for v in order + ("in-wtnc",)},
                "records": {os.path.relpath(p, folder): r
