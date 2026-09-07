@@ -199,24 +199,24 @@ class ScanPage(Adw.NavigationPage):
 
         def worker():
             try:
-                ok = net.ALLOW_NET and net.check_connectivity()
+                ok, reason = net.probe_connectivity() if net.ALLOW_NET \
+                    else (False, "live lookups disabled")
             except Exception:
-                ok = False
-            GLib.idle_add(self._show_net, ok)
+                ok, reason = False, "probe failed"
+            GLib.idle_add(self._show_net, ok, reason)
 
         threading.Thread(target=worker, daemon=True).start()
 
-    def _show_net(self, ok):
+    def _show_net(self, ok, reason=None):
         if not net.ALLOW_NET:
-            text = ("Network: offline (live lookups disabled) - files without "
-                    "a cached verification may stay in Rejects")
+            text = "Network: offline (live lookups disabled)"
             css = ["giga-veri-chip", "error"]
         elif ok:
-            text = "Network: online - live Nexus lookups available"
+            text = "Network: online" if not reason \
+                else "Network: online - %s" % reason
             css = ["giga-veri-chip", "success"]
         else:
-            text = ("Network: OFFLINE - check your connection. No live Nexus "
-                    "lookups, so unverified files may stay in Rejects.")
+            text = "Network: offline - %s" % (reason or "no connection")
             css = ["giga-veri-chip", "error"]
         self._conn_label.set_text(text)
         self._conn_label.set_css_classes(css)

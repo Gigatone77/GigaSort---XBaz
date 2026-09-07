@@ -1,13 +1,17 @@
-"""Network primitives and Nexus lookups.
+"""Network primitives and no-CAPTCHA search lookups.
 
-The ONLY network access in GigaSort goes through `fetch()`. It is strictly
-read-only (plain HTTP GET, never POSTs, never writes data to disk). All Nexus
-URLs use the configurable game slug from constants.
+The online sources GigaSort uses are anonymous search engines that answer
+plain read-only GETs WITHOUT human verification (no login, no CAPTCHA, no
+browser fingerprinting): DuckDuckGo Lite is the primary channel (Google
+AI Mode and the plain web view bot-wall anonymous requests with 429s/anomaly
+pages, so they are only kept as a final fallback). Every "verify this Nexus
+mod id" goes through the search result page - the Nexus site itself is never
+fetched. GitHub is an INFO resource only (public read-only release API),
+found through the same search, and is never a verification gate.
 """
 
 import re
 import socket
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -19,8 +23,7 @@ except Exception:  # pragma: no cover
     _NET_OK = False
 
 from gigasort.constants import (
-    NEXUS_BASE, NEXUS_CATEGORY_NAMES, NEXUS_SEARCH_TERMS,
-    TITLE_MATCHERS,
+    NEXUS_CATEGORY_NAMES, TITLE_MATCHERS,
 )
 
 USER_AGENT = "GigaSort/2.0 (Linux; +https://github.com/Gigatone77/gigasort)"
@@ -28,69 +31,103 @@ USER_AGENT = "GigaSort/2.0 (Linux; +https://github.com/Gigatone77/gigasort)"
 ALLOW_NET = True  # module-level; flipped by confirm_network()
 
 
-def nexus_page(mod_id):
-    return "%s%s" % (NEXUS_BASE, mod_id)
+def _probe_one(url, timeout):
+    """GET `url`; return (ok, reason). ok=True means ANY HTTP response
+    arrived (the network reached the host); reason is a short string for
+    failures (and for a reachable-but-blocking HTTP status)."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if resp.status < 400:
+                return True, None
+            return True, "HTTP %d from %s" % (resp.status, _host_of(url))
+    except urllib.error.HTTPError as e:
+        return True, "HTTP %d from %s" % (e.code, _host_of(url))
+    except socket.gaierror:
+        return False, "DNS resolution failed"
+    except socket.timeout:
+        return False, "connection timed out"
+    except urllib.error.URLError as e:
+        msg = str(getattr(e, "reason", "") or e) or "unreachable"
+        return False, msg[:60]
+    except OSError as e:
+        return False, (str(e).strip() or "network error")[:60]
+    except Exception:
+        return False, "network error"
 
 
-def fetch(url, timeout=15):
-    """Fetch a URL, returning decoded HTML (or None on failure). Read-only.
+def _host_of(url):
+    try:
+        return urllib.parse.urlsplit(url).netloc
+    except Exception:
+        return url
 
-    Transient failures (Nexus rate-limit 429 / Cloudflare 5xx / socket
-    timeouts) are retried twice with a short backoff so one network hiccup
-    never permanently bins a good mod. Permanent errors (404, malformed URL,
-    login-gated 403) return None immediately.
+
+def mod_question(mod_id):
+    """The search question that doubles as a lookup AND a handshake."""
+    return "what is the cyberpunk 2077 nexus mod %s?" % mod_id
+
+
+def probe_connectivity(query=None, timeout=6):
+    """Probe whether a search engine answers without human verification;
+    return (online, reason).
+
+    The handshake IS a real question (`query`) fired at the primary
+    no-CAPTCHA engine - the same ask a lookup makes. Returns (True, None)
+    when that engine answers with real results; on failure, a SHORT human
+    reason. When the network works but the engine bot-walls the request
+    (anomaly/CAPTCHA/429 page) we report online with that wall as the reason,
+    so lookups then fail fast instead of hanging.
     """
-    if not _NET_OK or not ALLOW_NET:
-        return None
-    for attempt, delay in ((1, 1.5), (2, 3.0), (3, 0.0)):
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                if resp.status >= 400:
-                    return None
-                return resp.read().decode("utf-8", errors="replace")
-        except urllib.error.HTTPError as e:
-            # 429/5xx are transient: slow down and retry. 4xx otherwise is
-            # permanent (never retry).
-            if e.code in (429, 500, 502, 503, 504) and attempt < 3:
-                time.sleep(delay)
-                continue
-            return None
-        except (urllib.error.URLError, socket.timeout, OSError):
-            if attempt < 3:
-                time.sleep(delay)
-                continue
-        except Exception:
-            return None
-    return None
+    if not _NET_OK:
+        return False, "network module unavailable"
+    if _search_gave_up:
+        return False, "search engines blocked this run (rate-limited)"
+    q = urllib.parse.quote_plus(query) if query else "what+is+this"
+    ok, reason = _probe_primary(_LITE_ENDPOINT % q, timeout)
+    if ok and not reason:
+        return True, None
+    net_ok, net_reason = _probe_one("https://httpbin.org/get", timeout)
+    if net_ok:
+        return False, ("search engines block anonymous lookups (%s)"
+                       % (reason or "human-verification wall"))
+    return False, reason or net_reason or "no response"
+
+
+def _probe_primary(url, timeout):
+    """GET the primary search URL; return (ok, reason).
+
+    ok=True means an HTTP response arrived AND the body looks like real
+    results (has result links and is not an anomaly/CAPTCHA wall). reason
+    is None when truly answering, else a short description of the wall.
+    """
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = resp.read().decode("utf-8", errors="replace")
+    except Exception:
+        return _probe_one(url, timeout)
+    if _usable_results(body):
+        return True, None
+    return True, "blocked by bot-wall / CAPTCHA"
 
 
 def check_connectivity(top_only=False):
-    """True if the network is reachable. _NET_OK is import-ability; this does
-    a real short-timeout GET to a neutral, permissive endpoint (httpbin.org).
-    Nexus itself is behind Cloudflare and rejects many plain-urllib requests
-    with 403 even when the network is fine, so we probe elsewhere.
-    """
-    if not _NET_OK:
-        return False
-    probe = "https://httpbin.org/get"
-    try:
-        req = urllib.request.Request(probe, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=4) as resp:
-            return resp.status < 500
-    except Exception:
-        return False
+    """True if the network is reachable (bool form of probe_connectivity())."""
+    return probe_connectivity()[0]
 
 
 def notify_net_status():
-    """Print a one-line banner showing current internet status; return it."""
-    online = check_connectivity()
+    """Print a single Online/Offline connectivity line; return `online`.
+
+    Just 'offline - <why>' when there is a problem, so the reason is always
+    stated without any extra prose.
+    """
+    online, reason = probe_connectivity()
     if online:
-        print("[net] online - live Nexus lookups available. "
-              "Info is still cross-checked against your verified log/cache.")
+        print("[net] online" if not reason else "[net] online - %s" % reason)
     else:
-        print("[net] OFFLINE - no live internet. Using ONLY your verified "
-              "cache/log (local); online-only lookups are skipped.")
+        print("[net] offline - %s" % reason)
     return online
 
 
@@ -101,305 +138,325 @@ def confirm_network(feature, input_fn=input):
     verified local data is used. Returns True if live lookups permitted.
     """
     global ALLOW_NET
-    online = notify_net_status()
+    online, reason = probe_connectivity()
     if not online:
         ALLOW_NET = False
-        print("  %s will use only your verified cache/log (offline)." % feature)
+        print("[net] offline - %s: %s uses only the verified cache." % (reason, feature))
         return False
-    print("  %s uses the internet (read-only). Prefer verified data?" % feature)
+    if reason:
+        print("[net] online - %s." % reason)
+    print("[net] online: %s uses the internet (read-only)." % feature)
     try:
-        ans = input_fn("  [l] live - allow read-only internet lookups | "
-                       "[c] cache - offline only (verified log) [c]: ").strip().lower()
+        ans = input_fn("  [l] live | [c] cache (verified only) [c]: ").strip().lower()
     except (EOFError, KeyboardInterrupt):
         ans = "c"
     if ans in ("l", "live", "y", "yes"):
         ALLOW_NET = True
-        print("  Live lookups enabled. Verified cache is still used first.")
+        print("  Live lookups enabled (verified cache still checked first).")
         return True
     ALLOW_NET = False
-    print("  Offline mode: only verified cache/log used (no live lookups).")
+    print("  Offline mode: verified cache/log only.")
     return False
 
 
-def _is_mod_page_title(title):
-    """A real Nexus mod page <title> reads '<Mod Name> at Cyberpunk 2077
-    Nexus - Mods and community'. The game home / landing / 404 / redirect
-    pages read 'Cyberpunk 2077 Nexus - Mods and community' (no ' at ')."""
-    low = (title or "").lower()
-    return " at cyberpunk 2077 nexus" in low
-
-
-def og_identity(html):
-    """Extract OpenGraph identity from a Nexus page (og:title + og:url).
-
-    Login-walled ADULT mod pages cannot be read anonymously (their <title>
-    is the LANDING page 'Cyberpunk 2077 Nexus - Mods and community' plus a
-    global '<h1>Please log in</h1>'), but they STILL embed their real mod
-    identity in the og:title / og:url meta tags. Dead/nonexistent ids carry
-    NEITHER meta. Returns (og_title, og_url) or (None, None)."""
-    if not html:
-        return None, None
-    og_title = og_url = None
-    for pat_attr, pat_content in (
-        (r'<meta[^>]+property="og:title"[^>]+content="([^"]*)"',
-         r'<meta[^>]+content="([^"]*)"[^>]+property="og:title"'),
-        (r'<meta[^>]+property="og:url"[^>]+content="([^"]*)"',
-         r'<meta[^>]+content="([^"]*)"[^>]+property="og:url"'),
-    ):
-        for pat in (pat_attr, pat_content):
-            m = re.search(pat, html, re.I)
-            val = _html_mod.unescape(m.group(1)).strip() if m else None
-            if val:
-                if "og:url" in pat_attr or "og:url" in pat_content:
-                    og_url = val
-                else:
-                    og_title = val
-                break
-    return (og_title or None, og_url or None)
-
-
-def is_login_gated(html):
-    """True when Nexus served its login-wall (landing title + Please log in)
-    rather than a readable page. Adult pages are gated this way."""
-    if not html:
-        return False
-    return "Please log in" in html and not _is_mod_page_title(_page_title(html))
-
-
-def _page_title(html):
-    m = re.search(r"<title>(.*?)</title>", html, re.I | re.S)
-    if not m:
-        return None
-    t = _html_mod.unescape(m.group(1)).strip()
-    return re.sub(r"\s*\|\s*Nexus Mods.*$", "", t).strip() or None
-
-
-def og_links_to(og_url, mod_id):
-    """True when an og:url points at the requested mod page (any Nexus
-    mods/<id> for this game, ignoring trailing fragments)."""
-    if not og_url or not mod_id:
-        return False
-    return ("/mods/%s" % str(mod_id)) in og_url
-
-
-def breadcrumb_category(html):
-    """Extract the AUTHORITATIVE Nexus category display name from a mod
-    page's breadcrumb (the '?categoryName=' value of the final crumb link).
-
-    Returns the human-readable category name (e.g. 'Weapons', 'Armour and
-    Clothing', 'Locations'), or None when the page has no usable breadcrumb.
-    This is the category the mod AUTHOR set on their page -- much more
-    reliable than guessing from body keywords.
+def _serp_has_mod(html, mod_id):
+    """True when a search result page carries the official Nexus page for
+    `mod_id`. Accepts the plain mods/<id>, Google-rewritten, and URL-encoded
+    (%2F) link forms - DuckDuckGo wraps every result in a /l/?uddg=
+    redirect, which URL-encodes the mods/<id> path. That exact-id official
+    link is GigaSort's web-verification marker -- dead ids produce no such
+    link.
     """
-    if not html:
-        return None
-    m = re.search(r'[?&]categoryName=([^"&]+)', html)
-    if not m:
-        return None
-    raw = m.group(1)
-    name = urllib.parse.unquote_plus(raw).strip()
-    if not name or name.lower() == "mods":
-        return None
-    return name
-
-
-def lookup_nexus_category(mod_id, timeout=15):
-    """Fetch a Nexus mod page, return (title, category_folder) or (None, None).
-
-    The category always comes from the mod page's OWN breadcrumb
-    ('categoryName=<author-set category>') when present, then falls back to
-    the title/body keyword matchers. Whatever the source, the value is
-    validated to be one of GigaSort's real destination folders -- a slug, a
-    made-up name, or a landing/404/redirect page can NEVER contribute a
-    category. Only real mod pages are trusted: unless the <title> proves it
-    is a mod page ('<Name> at Cyberpunk 2077 Nexus...'), returns nothing.
-
-    LOGIN-WALLED ADULT PAGES (Sep 5 stipulation): anonymous fetches of an
-    adult mod return the LANDING page + 'Please log in' -- identical to a
-    dead/404 id -- so the <title> gate alone can never distinguish them.
-    The reliable discriminator is that login-walled adult pages still embed
-    their real identity in the og:title + og:url meta tags while dead ids
-    carry NEITHER. When og:identity is present AND the og:url points at the
-    exact mod id, the page IS a real (adult) CP2077 mod: it verifies with the
-    og:title and is routed to the "11 Sensitive Content (18+)" folder.
-    """
-    url = "%s%s" % (NEXUS_BASE, mod_id)
-    html = fetch(url, timeout=timeout)
-    if not html:
-        return None, None
-
-    title = _page_title(html) or ""
-
-    if not _is_mod_page_title(title):
-        # Landing/404/redirect OR a login-walled adult page. Only a matching
-        # og:identity proves this is a real (gated) mod; otherwise it is a
-        # dead id and must NOT become a verified adult entry.
-        og_title, og_url = og_identity(html)
-        if og_title and og_links_to(og_url, mod_id):
-            return og_title, "11 Sensitive Content (18+)"
-        return None, None
-
-    cat_name = breadcrumb_category(html)
-    if cat_name in NEXUS_CATEGORY_NAMES:
-        return title, NEXUS_CATEGORY_NAMES[cat_name]
-
-    for word, folder in TITLE_MATCHERS:
-        if word in title.lower():
-            return title, folder
-
+    if not html or not mod_id:
+        return False
     low = html.lower()
-    for term in NEXUS_SEARCH_TERMS:
-        if term in low:
-            folder = next((f for w, f in TITLE_MATCHERS if w == term), None)
-            if folder:
-                return title, folder
-    return title, None
+    return (("/mods/%s" % mod_id) in low
+            or ("mods%%2f%s" % mod_id) in low
+            or ("mods%%252f%s" % mod_id) in low)
 
 
-def fetch_nexus_title(mod_id, timeout=15):
-    """Fetch a Nexus page and return the <title> string (or None).
+def _serp_title_for(html, mod_id):
+    """The headline of the search result that links the mod page.
 
-    Also returns the og:title for login-walled adult pages (whose <title> is
-    only the landing page); dead ids produce no identity at all. Useful for
-    comparing mod names within the same author where the game context is
-    already known. Read-only; never downloads.
+    Works for Brave (direct links, breadcrumb + title inside one anchor),
+    DuckDuckGo Lite (plain anchor text, /l/?uddg= encoded URLs), and
+    rendered Google (h2/h3 headline inside the anchor). The mod id must
+    directly follow the /mods/ path separator (slashes or their %2F /
+    %252F encodings). Returns a clean title string or None. Never raises.
     """
-    if not mod_id:
+    if not html or not mod_id:
         return None
-    html = fetch("%s%s" % (NEXUS_BASE, mod_id), timeout=timeout)
-    if not html:
+    m = re.search(
+        r'<a[^>]+href="(?P<url>[^"]*mods(?:%%252f|%%2f|/)+%s[^"]*)"[^>]*>'
+        r'(?P<body>.*?)</a>' % mod_id,
+        html, re.I | re.S)
+    if not m:
         return None
-    title = _page_title(html)
-    if title and _is_mod_page_title(title):
-        return title
-    og_title, og_url = og_identity(html)
-    if og_title and og_links_to(og_url, mod_id):
-        return og_title
-    return title or None
-
-
-def verified_nexus_title(mod_id, timeout=15):
-    """Web-verify that `mod_id` is a REAL Cyberpunk 2077 mod on Nexus.
-
-    Fetches the page under the cyberpunk2077 slug and returns the mod title
-    only when it genuinely resolves to a CP2077 mod page (the <title> must be
-    a mod page '<Name> at Cyberpunk 2077 Nexus ...' — the game home/landing
-    page title 'Cyberpunk 2077 Nexus - Mods and community' is REJECTED, since
-    a redirect/404 also lands there). Invalid/other-game/error pages return
-    None, so callers can treat a non-None result as authoritative web
-    verification. Read-only; never downloads.
-
-    LOGIN-WALLED ADULT MODS are accepted too: their <title> is the landing
-    page, but the og:title + og:url metas carry the real identity (dead ids
-    carry neither). Their og:title is returned as the verified title.
-    """
-    if not mod_id:
+    body = m.group("body")
+    h = re.search(r'<h[1-6][^>]*>(.*?)</h[1-6]>', body, re.I | re.S)
+    if h:
+        body = h.group(1)
+    title = _html_mod.unescape(re.sub(r"<[^>]+>", " ", body))
+    title = re.sub(r"\s+", " ", title).strip()
+    if not title:
         return None
-    html = fetch("%s%s" % (NEXUS_BASE, mod_id), timeout=timeout)
-    if not html:
-        return None
-    title = _page_title(html)
-    if title and _is_mod_page_title(title):
-        low_title = title.lower()
-        if "cyberpunk" not in low_title or "nexus" not in low_title:
-            return None
-        return title
-    og_title, og_url = og_identity(html)
-    if og_title and og_links_to(og_url, mod_id):
-        return og_title
-    return None
+    # Brave repeats the breadcrumb inside the title text and the mod name
+    # begins right after the mod id token ("… › mods › 31304 Name (…) at
+    # Cyberpunk 2077 Nexus …"). Slice there only when a nexus breadcrumb
+    # precedes the id; DDG/Google titles carry no id token and stay as-is.
+    pos = title.rfind(mod_id)
+    if pos != -1 and "nexusmods" in title[:pos].lower():
+        title = title[pos + len(mod_id):].strip(" :,.-›|")
+    return re.sub(r"\s+", " ", title).strip() or None
 
 
-
-def parse_required_deps(html):
-    """Extract Nexus mod IDs from a page's Requirements section.
-
-    Returns ([(game_slug, mod_id)], found) — a list and whether the section
-    was found at all.
-    """
-    if not html:
-        return [], False
-    idx = html.lower().find("requirement")
+def _title_category_folder(title):
+    """Folder from a search-result mod title's '<Name> at Cyberpunk 2077
+    Nexus - <Category> - Mods and community' crumb, exact-matched against
+    the real Nexus category names (and GigaSort folder names). None when
+    absent."""
+    title = re.sub(r"\s+", " ", (title or ""))
+    low = title.lower()
+    idx = low.find("at cyberpunk 2077 nexus")
     if idx == -1:
-        return [], False
-    window = html[idx: idx + 60000]
-    seen = set()
-    out = []
-    for m in re.finditer(r"nexusmods\.com/([a-z0-9-]+)/mods/(\d+)", window):
-        key = (m.group(1), m.group(2))
-        if key not in seen:
-            seen.add(key)
-            out.append(key)
-    return out, True
-
-
-_NEXUS_URL_RE = re.compile(
-    r'https?://www\.nexusmods\.com/cyberpunk2077/mods/(\d+)')
-
-# Google's public, rate-friendly HTML endpoint. A plain, honest GET (no
-# browser impersonation / TLS fingerprinting) against Google's web search is
-# permitted and returns results without cookies. We only ever issue
-# read-only GETs; we never log in, never mutate anything, and never exceed
-# a tiny number of light searches.
-_SEARCH_ENDPOINT = "https://www.google.com/search?q=%s"
-
-
-def _google_search_html(query, timeout=10):
-    """Return Google search result HTML (or None). Read-only, plain GET."""
-    try:
-        q = urllib.parse.quote_plus(query)
-        req = urllib.request.Request(
-            _SEARCH_ENDPOINT % q, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            if resp.status >= 400:
-                return None
-            return resp.read().decode("utf-8", errors="replace")
-    except Exception:
         return None
-
-
-def search_nexus_mod_id(query, timeout=10):
-    """Best-effort last-resort web verification via Google search.
-
-    When the Nexus page cannot be fetched directly (403/blocked/bot-wall) a
-    Google search for the filename/author/title may still surface the
-    canonical nexusmods.com/cyberpunk2077/mods/<id> URL in the result
-    snippets. This is a WEAK signal (search engines index mirrors/hubs too,
-    and a bad query can return a wrong project) so callers must treat it as
-    evidence only, never as the sole authority. Returns a credible
-    (game_slug, mod_id) when an official Nexus link appears in the results,
-    else None. Read-only.
-    """
-    if not ALLOW_NET or not _NET_OK:
-        return None
-    html = _google_search_html(query, timeout=timeout)
-    if not html:
-        return None
-    for m in _NEXUS_URL_RE.finditer(html):
-        return ("cyberpunk2077", m.group(1))
+    rest = title[idx + len("at cyberpunk 2077 nexus"):].strip(" :,.-")
+    parts = [p.strip().strip(" .-") for p in re.split(r"[-,]", rest)
+             if p.strip()]
+    for part in parts:
+        pl = part.lower()
+        if not pl or pl in ("mods and community", "nexus mods and community"):
+            continue
+        return _CATEGORY_FOLDER_BY_NAME.get(pl)
     return None
 
 
-def search_nexus_category(mod_id, query, timeout=10):
-    """Best-effort Nexus category via Google search snippet keywords.
+# Lowercased lookup: Nexus category name / GigaSort folder -> destination.
+_CATEGORY_FOLDER_BY_NAME = {}
+for _name, _folder in NEXUS_CATEGORY_NAMES.items():
+    _CATEGORY_FOLDER_BY_NAME.setdefault(_name.lower(), _folder)
+    _CATEGORY_FOLDER_BY_NAME.setdefault(_folder.lower(), _folder)
 
-    Returns a GigaSort folder when the snippet text (which can include
-    Nexus's '<Name> at Cyberpunk 2077 Nexus - <Category>' crumbs) keyword-
-    matches a known folder for the specific mod, else None. NEVER raises."""
-    if not ALLOW_NET or not _NET_OK:
+
+# Anonymous, no-human-verification search endpoints. Plain honest GETs: no
+# login, no CAPTCHA, no browser impersonation/TLS fingerprinting. Brave
+# Search answers scripted requests here with direct result links; DuckDuckGo
+# Lite works but rate-limits bursts into an anomaly wall (DDG html and
+# Google bot-wall/429 us, so they stay as final fallbacks). One question is
+# sent to the first engine that returns real results; lookups never re-ask.
+_SEARCH_ENDPOINTS = (
+    "https://search.brave.com/search?q=%s",
+    "https://lite.duckduckgo.com/lite/?q=%s",
+    "https://html.duckduckgo.com/html/?q=%s",
+    "https://www.google.com/search?q=%s&udm=50",
+)
+_LITE_ENDPOINT = _SEARCH_ENDPOINTS[0]
+
+
+def _usable_results(html):
+    """True when a fetched page actually carries search results rather than
+    a bot-wall / pre-JS shell.
+
+    Wall pages: DDG's 'anomaly' page (no result links), Google's 92KB
+    pre-JS shell (1 lone support link, no results), bare challenges, and
+    forward-only redirect shells. Real result pages (Brave/DDG/Google-
+    rendered) carry MANY external links. A result page can legitimately
+    contain the substring "captcha" (Brave ships its CAPTCHA dictionary
+    inside its JS bundle), so a bare substring match is never treated as a
+    wall - only a page with too few external links is.
+    """
+    if not html:
+        return False
+    low = html.lower()
+    if low.count('href="http') + low.count(
+            "href='http") + low.count("href=/l/") < 14:
+        return False
+    if "anomaly" in low and "uddg=" not in low:
+        return False
+    return True
+
+
+# When EVERY engine wall-blocks in a row, further live lookups cannot succeed
+# this run, so after a couple of consecutive all-engine failures the chain
+# gives up and every following question returns None instantly (never burns
+# timeouts). The refs cache + archive-structure gate cover the rest offline.
+_SEARCH_STRIKES_MAX = 2
+_search_strikes = 0
+_search_gave_up = False
+
+
+def _search_strike():
+    """Record one all-engines failure; give up after the burst threshold."""
+    global _search_strikes, _search_gave_up
+    _search_strikes += 1
+    if _search_strikes >= _SEARCH_STRIKES_MAX:
+        _search_gave_up = True
+
+
+def _search_strikes_reset():
+    global _search_strikes
+    _search_strikes = 0
+
+
+def _search_html(query, timeout=5):
+    """Return real search-result HTML from the first engine that answers
+    (or None). Read-only plain GETs only.
+
+    One question, one linear pass down the engine chain - never re-asked.
+    After a few consecutive all-engine wall-blocks the whole run gives up on
+    live lookups, so a rate-limited burst can never turn into a long hang:
+    the verify path then relies on the offline refs cache + archive-structure
+    gate instead (already the designed fallback).
+    """
+    global _search_gave_up
+    if _search_gave_up:
+        return None
+    q = urllib.parse.quote_plus(query)
+    for endpoint in _SEARCH_ENDPOINTS:
+        try:
+            req = urllib.request.Request(
+                endpoint % q, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                if resp.status >= 400:
+                    continue
+                html = resp.read().decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        if _usable_results(html):
+            _search_strikes_reset()
+            return html
+    _search_strike()
+    return None
+
+
+def _serp_keyword_folder(title):
+    """Category folder from keyword-scanning a mod title only.
+
+    Returns a GigaSort folder when the VERIFIED MOD'S OWN TITLE carries a
+    known category keyword (engines snapshot Nexus '<Name> at Cyberpunk 2077
+    Nexus - <Category>' crumbs in the title). Only the mod's own headline is
+    scanned - never the surrounding page/sidebar text - so a category word in
+    an unrelated result snippet (e.g. 'Sharingan eyes' near a weapon mod)
+    can't leak in and misfile the mod. Called only AFTER a link to the mod
+    itself was confirmed, using that same result's title. Never raises.
+    """
+    if not title:
         return None
     try:
-        html = _google_search_html(query, timeout=timeout)
-        if not html:
-            return None
-        low = html.lower()
-        # Only trust a folder match if this search result page actually shows
-        # the requested mod's Nexus link (never guess from unrelated results).
-        if "/mods/%s" % mod_id not in html:
-            return None
+        low = re.sub(r"\s+", " ", (title or "")).lower()
         for word, folder in TITLE_MATCHERS:
             if word in low:
                 return folder
+    except Exception:
+        pass
+    return None
+
+
+def _mod_anchor_html(html, mod_id):
+    """The raw inner HTML of the result anchor that links the mod page.
+
+    Everything surrounding the anchor (page chrome, sidebar, other results)
+    is excluded so info like a GitHub repo is only ever read from the mod's
+    own result context. None when the link cannot be isolated.
+    """
+    if not html or not mod_id:
         return None
+    m = re.search(
+        r'<a[^>]+href="(?P<url>[^"]*mods(?:%%252f|%%2f|/)+%s[^"]*)"'
+        r'[^>]*>(?P<body>.*?)</a>' % mod_id,
+        html, re.I | re.S)
+    return m.group("url") + " " + m.group("body") if m else None
+
+
+def investigate_mod(mod_id, query=None, timeout=5):
+    """One linear search question per mod: single fetch, single parse.
+
+    Returns a dict with every piece of info that one read-only, no-CAPTCHA
+    search question yields, or None when no engine answers:
+      verified: the official nexusmods.com/cyberpunk2077/mods/<id> link is
+                present in the results (GigaSort's web-verification marker).
+      title:    the result headline of that Nexus page.
+      folder:   category folder from the title crumb, else a single keyword
+                pass over the same page (never a second query).
+      github:   'owner/repo' if the results surfaced a GitHub repo for it
+                (info-only resource - often carries newer/more current info;
+                never a verification gate).
+    The Nexus site itself is never contacted. One question, one fetch, one
+    parse - no retries, no forked queries.
+    """
+    if not ALLOW_NET or not _NET_OK or not mod_id:
+        return None
+    q = query or mod_question(mod_id)
+    html = _search_html(q, timeout=timeout)
+    if not html:
+        return None
+    out = {"verified": False}
+    if _serp_has_mod(html, mod_id):
+        title = _serp_title_for(html, mod_id) or "Cyberpunk 2077 mod %s" % mod_id
+        folder = (_title_category_folder(title)
+                  or _serp_keyword_folder(title))
+        out.update({"verified": True, "title": title, "folder": folder})
+        # GitHub is an INFO resource only (often newer/more current than
+        # Nexus, never a verification gate). It is only trusted when the
+        # repo appears in the SAME result anchor as the official Nexus link,
+        # so unrelated sidebar/snippet repos can never be attached to this
+        # mod. Repo URLs inside DDG's /l/?uddg= redirects are URL-encoded,
+        # so every redirect target is decoded before scanning.
+        anchor = _mod_anchor_html(html, mod_id) or ""
+        scan = anchor
+        for m in re.finditer(r'uddg=([^&"\']+)', anchor):
+            try:
+                scan += " " + urllib.parse.unquote(m.group(1))
+            except Exception:
+                pass
+        m = re.search(
+            r'github\.com/(?P<owner>[\w.-]+)/(?P<repo>[A-Za-z0-9_.-]+)', scan)
+        if m:
+            out["github"] = "%s/%s" % (m.group("owner"), m.group("repo"))
+    return out
+
+
+def lookup_nexus_category(mod_id, query=None, timeout=5):
+    """Google-only mod verification: return (title, category_folder).
+
+    A mod id web-verifies when the single Google question for it carries
+    its official nexusmods.com/cyberpunk2077/mods/<id> link. Returns
+    (None, None) when there is no usable evidence. Read-only; the Nexus
+    page itself is never fetched.
+    """
+    res = investigate_mod(mod_id, query=query, timeout=timeout)
+    if not res or not res.get("verified"):
+        return None, None
+    return res.get("title"), res.get("folder")
+
+
+def fetch_nexus_title(mod_id, query=None, timeout=5):
+    """Google-only mod title for a Nexus id (never fetches Nexus itself).
+
+    Returns the SERP headline of the official nexusmods.com/.../mods/<id>
+    result, or None when the id does not web-verify. Read-only.
+    """
+    res = investigate_mod(mod_id, query=query, timeout=timeout)
+    if not res or not res.get("verified"):
+        return None
+    return res.get("title")
+
+
+def github_latest_release(owner_repo, timeout=10):
+    """Newest release tag of a GitHub repo via the public read-only API
+    (no auth, no writes). Returns the tag string or None."""
+    if not ALLOW_NET or not _NET_OK or not owner_repo or "/" not in owner_repo:
+        return None
+    url = "https://api.github.com/repos/%s/releases/latest" % owner_repo
+    try:
+        req = urllib.request.Request(url, headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/vnd.github+json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            if resp.status >= 400:
+                return None
+            data = resp.read().decode("utf-8", "replace")
+        m = re.search(r'"tag_name"\s*:\s*"([^"]+)"', data)
+        return m.group(1) if m else None
     except Exception:
         return None

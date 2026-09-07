@@ -101,19 +101,30 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
             refs = {}
     refs_dirty = False
 
-    # Connectivity probe: a single failed probe must NOT permanently disable
-    # live lookups for the whole batch (one hiccup != offline). We only use it
-    # to avoid a 15s urllib timeout PER FILE when the network is genuinely
-    # down: if the probe fails we still try ONE live lookup; only when that
-    # also yields nothing do we treat the run as offline.
-    online_ok = True
-    probe_done = False
+    # Connectivity is decided LAZILY: the FIRST live lookup's real Google
+    # question doubles as the handshake (no synthetic probe). When Google
+    # answers offline, the reason is stated once and live per-file lookups
+    # are skipped for the rest of the run - no grinding on a dead network.
+    # Verified cache, the mod-ID reference cache and offline archive-structure
+    # verification still work; anything left unverifiable is reported and
+    # left in place.
+    online = True
+    offline_reason = None
+    handshake_done = False
 
-    def _maybe_probe():
-        nonlocal online_ok, probe_done
-        if net.ALLOW_NET and not probe_done:
-            online_ok = net.check_connectivity()
-            probe_done = True
+    def _handshake(mod_id):
+        nonlocal online, offline_reason, handshake_done
+        if handshake_done or not net.ALLOW_NET:
+            return
+        handshake_done = True
+        _, offline_reason = \
+            net.probe_connectivity(net.mod_question(mod_id))
+        online = offline_reason is None
+        if not online:
+            print("[net] offline - %s: live lookups skipped (verified "
+                  "cache / archive structure only)." % offline_reason)
+
+    failed_ids = set()
 
     from gigasort.core import compat
     for fn, _size in keep:
@@ -169,25 +180,41 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
         if from_ref.get("verified"):
             title = from_ref.get("title")
             ncat = from_ref.get("category")
-        elif net.ALLOW_NET:
-            _maybe_probe()
-            # If the probe failed we still try live lookups, but bound the
-            # per-file timeout so a genuinely dead network doesn't stall the
-            # whole batch at 15s per file. One hiccup must not skip lookups.
-            to = 15 if online_ok else 6
-            # Primary live path: one fetch that BOTH proves the page is a real
-            # CP2077 mod (strict '<Name> at Cyberpunk 2077 Nexus' title) AND
-            # captures the author-set Nexus category from the breadcrumb.
-            title, ncat = net.lookup_nexus_category(mod_id, timeout=to)
-            if not title:
-                # Title-only fallback when lookup's strict gating refused the
-                # page (e.g. category-less render); still authoritative.
-                title = net.verified_nexus_title(mod_id, timeout=to)
-            if title:
+        elif net.ALLOW_NET and online and mod_id not in failed_ids:
+            # The first real question to the search engine is the handshake;
+            # after a single offline verdict the branch is skipped for every
+            # id.
+            _handshake(mod_id)
+            if not online:
+                continue
+            # One linear search question per mod (investigate_mod) that in a
+            # single fetch proves the page (the official nexusmods.com/...
+            # /mods/<id> link), captures the title + category, and notes any
+            # GitHub repo inside that same result context. No second
+            # questions, no fallback lookups, no re-fetch for github.
+            res = net.investigate_mod(mod_id, timeout=5)
+            if res and res.get("verified"):
+                title = res.get("title") or "Cyberpunk 2077 mod %s" % mod_id
+                ncat = res.get("folder")
                 # Cache the verified page by mod ID for future sorts.
                 refs[mod_id] = {"verified": True, "title": title,
                                 "category": ncat}
+                # GitHub enrichment (info-only, never a verification gate):
+                # often carries better / more current info than Nexus. Only
+                # set when the same result context flagged an own-mod repo;
+                # its newest release tag comes from the public read-only
+                # GitHub API.
+                repo = res.get("github")
+                if repo:
+                    refs[mod_id]["github"] = repo
+                    latest = net.github_latest_release(repo)
+                    if latest:
+                        refs[mod_id]["github_latest"] = latest
                 refs_dirty = True
+            else:
+                # One failed live fetch per id, not per file: other files on
+                # the same dead/blocked page must not re-fetch it this run.
+                failed_ids.add(mod_id)
         if title:
             verified.add(fn)
             cache[fn] = {
@@ -249,17 +276,26 @@ def verification_statuses(folder, kept, progress=None):
         fn for fn, e in cache.items()
         if e and e.get("status") == APPROVED
     }
-    # Same bounded-probe policy as build_allowlist(): a failed probe never
-    # disables live lookups, it only cuts the per-file timeout when the
-    # network looks genuinely dead.
-    online_ok = True
-    probe_done = False
+    # Same lazy-handshake connectivity policy as build_allowlist(): the first
+    # real Google question is the handshake; when offline the reason is
+    # stated once and live per-file lookups are skipped.
+    online = True
+    offline_reason = None
+    handshake_done = False
 
-    def _maybe_probe():
-        nonlocal online_ok, probe_done
-        if net.ALLOW_NET and not probe_done:
-            online_ok = net.check_connectivity()
-            probe_done = True
+    def _handshake(mod_id):
+        nonlocal online, offline_reason, handshake_done
+        if handshake_done or not net.ALLOW_NET:
+            return
+        handshake_done = True
+        _, offline_reason = \
+            net.probe_connectivity(net.mod_question(mod_id))
+        online = offline_reason is None
+        if not online:
+            print("[net] offline - %s: live lookups skipped (verified "
+                  "cache / archive structure only)." % offline_reason)
+
+    failed_ids = set()
 
     statuses = {}
     structs = {}
@@ -283,18 +319,21 @@ def verification_statuses(folder, kept, progress=None):
             # Mod page already confirmed on a previous run: no network needed.
             title = from_ref.get("title")
             ncat = from_ref.get("category")
-        elif mod_id and net.ALLOW_NET:
-            _maybe_probe()
-            to = 15 if online_ok else 6
-            # Primary live path captures the author-set Nexus category from the
-            # breadcrumb in the SAME fetch that proves the page.
-            title, ncat = net.lookup_nexus_category(mod_id, timeout=to)
-            if not title:
-                title = net.verified_nexus_title(mod_id, timeout=to)
-            if title:
+        elif mod_id and net.ALLOW_NET and online and mod_id not in failed_ids:
+            # The first real search-engine question is the handshake; after a
+            # single offline verdict the branch is skipped for every id.
+            _handshake(mod_id)
+            if not online:
+                continue
+            res = net.investigate_mod(mod_id, timeout=5)
+            if res and res.get("verified"):
+                title = res.get("title") or "Cyberpunk 2077 mod %s" % mod_id
+                ncat = res.get("folder")
                 refs[mod_id] = {"verified": True, "title": title,
                                 "category": ncat}
                 refs_dirty = True
+            else:
+                failed_ids.add(mod_id)
         if title:
             statuses[fn] = "offline" if from_ref.get("verified") else "online"
             cache[fn] = {
@@ -428,8 +467,6 @@ def check_dependencies(folder, keep, dry_run):
     modding-tool-only entries (WolvenKit) and self-referencing deps. This
     keeps the report focused on genuine runtime gap downloads."""
     from gigasort.constants import MAJOR_FRAMEWORKS
-    from gigasort.utils import net
-    from gigasort.utils.net import parse_required_deps
     from gigasort.core import storage
 
     # always-installed framework ids (game-dir resident, not archive shelf)
@@ -482,15 +519,8 @@ def check_dependencies(folder, keep, dry_run):
             continue
         seen.add(mid)
         ref = refs.get(mid) or {}
-        # prefer cached web deps; only fetch once per unique mod id when absent
-        if ref.get("deps"):
-            deps = _normalize_deps(ref.get("deps"))
-        else:
-            html = net.fetch(net.nexus_page(mid))
-            if not html:
-                continue
-            deps, _found = parse_required_deps(html)
-            deps = _normalize_deps(deps)
+        # cached web deps only (live Nexus pages are never fetched)
+        deps = _normalize_deps(ref.get("deps")) if ref.get("deps") else []
         need = []
         for did in deps:
             if str(did) == str(mid):  # self-referencing requirement
@@ -536,8 +566,6 @@ def fetch_dependencies(folder, fn_list, progress=None):
     optional builds) need no repeated lookups. Returns the updated cache.
     Never writes user data - cache only.
     """
-    from gigasort.utils import net
-    from gigasort.utils.net import parse_required_deps
     from gigasort.core import storage
 
     cache = storage.load_cache(folder)
@@ -570,16 +598,10 @@ def fetch_dependencies(folder, fn_list, progress=None):
                 cache[fn]["deps"] = entry_deps
                 changed = True
             continue
-        html = net.fetch(net.nexus_page(mid))
-        if not html:
-            continue
-        deps, _found = parse_required_deps(html)
-        deps = _normalize_deps(deps)
-        if deps:
-            refs[mid]["deps"] = deps
-            refs_dirty = True
-        cache.setdefault(fn, {}).setdefault("deps", [])[:] = deps
-        changed = True
+        # Deps are cache-only: live Nexus pages are never fetched (Google-only
+        # policy), so a mod with no recorded requirements simply stays that
+        # way and framework grouping falls back to name matching for it.
+        continue
         if progress:
             progress(fn)
     if changed:

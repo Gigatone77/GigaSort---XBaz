@@ -39,6 +39,7 @@ GS_STRUCTURE_DIR = "GAMESTRUCTURE"   # staging output folder
 GS_STAGE_DIR = "_GigaSort_stage"     # temporary extraction scratch
 GS_BACKUP_DIR = "_GigaSort_backup"   # timestamped conflict backups
 GS_MOD_INDEX = "_MOD_INFO.json"      # master index of extracted mods
+GS_COLLECTION_CACHE = "_GigaSort_collection.json"  # recognized modlist cache
 
 # Agent bridge.
 BRIDGE_DIR = "_GigaSort_bridge"

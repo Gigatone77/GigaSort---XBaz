@@ -1059,6 +1059,20 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
     # Game-directory conflicts -> _ON_HOLD (reviewed, not placed normally).
     held_conflicts = route_hold_conflicts(result, verified, dry_run=dry_run)
 
+    # Recognize + cache the installed collection structure (e.g. CyberVision's
+    # zw_<order>_<id>_* loadout) so downloads can be compared against the
+    # same installed set on later runs without rescanning the game tree.
+    if game_dir:
+        try:
+            from gigasort.core import collection
+            col = collection.build_collection_cache(folder, game_dir)
+            if col:
+                print("Collection cache: %s (%d ordered mods -> %s)" % (
+                    col.get("name") or col.get("convention"),
+                    col.get("mod_count"), "_GigaSort_collection.json"))
+        except Exception:
+            pass
+
     # Every planned move is allowed only if the file is verified.
     for cat, files in list(result.plan.items()):
         for fn, _ in files:
