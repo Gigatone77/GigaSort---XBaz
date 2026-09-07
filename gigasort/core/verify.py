@@ -8,7 +8,6 @@ it alone.
 """
 
 import os
-import re
 
 from gigasort.constants import (
     APPROVED, MISMATCH, UNVERIFIED, NOMODID, AUTO, NEXUS_CAT_MAP,
@@ -241,7 +240,7 @@ def verification_statuses(folder, kept, progress=None):
     show an offline vs online indicator. Newly confirmed hits are cached for
     future offline confirmation, exactly as the sort's gate does.
     """
-    from gigasort.core import storage
+    from gigasort.core import compat, storage
 
     cache = storage.load_cache(folder)
     refs = storage.load_references(folder) or {}

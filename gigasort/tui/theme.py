@@ -1,7 +1,6 @@
 """Theme engine + interactive theme editor (ANSI truecolor)."""
 
 import json
-import os
 import re
 
 from gigasort.core import storage

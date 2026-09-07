@@ -283,7 +283,6 @@ NEXUS_CATEGORY_NAMES = {
     "Audio Replacer": "12 Audio & Sound",
     "AI+Voices": "12 Audio & Sound",
     "AI Voices": "12 Audio & Sound",
-    "Animations": "13 Animations & Photo Mode",
     "Characters": "03 Face & Body",
     "Crafting": "08 Cores, Fixes & Utilities",
     "Gameplay": "08 Cores, Fixes & Utilities",

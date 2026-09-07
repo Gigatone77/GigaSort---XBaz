@@ -139,7 +139,6 @@ class CompanionPage(Adw.NavigationPage):
         for c in self.SCRIPT_CANDIDATES:
             if os.path.isfile(c):
                 return os.path.abspath(c)
-        here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         local = os.path.join(os.path.expanduser("~/.local/share/gigasort"),
                              self.SCRIPT or "")
         if local and os.path.isfile(local):

@@ -13,6 +13,23 @@ All notable changes to **GigaSort** are listed here.
   on a later sort. Precedence: web override > offline keyword > cached
   `nexus_cat`. Used by scan_workspace, find_misplaced and the placement sweep.
 
+### Fixed
+- **Latent `NameError` in offline readme verification**
+  (`core/verify.py` `verification_statuses`): the readme-fallback mod-id lookup
+  called `compat.readme_mod_id` without importing `compat`, which would crash
+  verification of any archive whose filename carries no Nexus id.
+- **Module-`os` shadowing** (`core/compat.py`): a function-local
+  `import ... os` shadowed the module-level import - a latent
+  `UnboundLocalError` hazard (ruff F823).
+
+### Removed
+- **Dead-code sweep**: 23 ruff F-rule findings across the package and the
+  Games companion scripts (CyberFlashSync / GigaSlim / XBaz): unused imports
+  (`sys`, `shutil`, `re`, `Gtk`, `os`, `Gio`, `tags_mod`, `errno`,
+  `subprocess`), unused locals (`last`, `rows`, `inner`, `path_next`,
+  `has_folder`, `here`, `dev`/`fstype`, `exc`, `m`), a duplicate `"Animations"`
+  category key, and a dead `except ... as e` binding. No behavior change.
+
 ## [2.0.2] - 2026-09-06
 
 ### Added

@@ -42,7 +42,6 @@ def fetch(url, timeout=15):
     """
     if not _NET_OK or not ALLOW_NET:
         return None
-    last = None
     for attempt, delay in ((1, 1.5), (2, 3.0), (3, 0.0)):
         try:
             req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
@@ -54,12 +53,10 @@ def fetch(url, timeout=15):
             # 429/5xx are transient: slow down and retry. 4xx otherwise is
             # permanent (never retry).
             if e.code in (429, 500, 502, 503, 504) and attempt < 3:
-                last = e
                 time.sleep(delay)
                 continue
             return None
-        except (urllib.error.URLError, socket.timeout, OSError) as e:
-            last = e
+        except (urllib.error.URLError, socket.timeout, OSError):
             if attempt < 3:
                 time.sleep(delay)
                 continue

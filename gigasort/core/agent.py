@@ -9,7 +9,6 @@ guards and writes result.json. Supported ops: info, batch-sort, move, tags.
 
 import json
 import os
-import sys
 
 from gigasort.constants import BRIDGE_DIR
 from gigasort.core import storage, sort, tags as tags_mod

@@ -59,9 +59,6 @@ def run_json_report(folder):
 
 def run_locate(folder):
     """Print a map of everything GigaSort manages in the workspace."""
-    rows = [
-        ("workspace", folder, "the ONLY folder this tool touches"),
-    ]
     dirs = [
         ("category folders", "(01 Eyes & Lashes ...)"),
         (REJECT_BIN, "review / uncategorized"),

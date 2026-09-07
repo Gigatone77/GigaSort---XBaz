@@ -9,7 +9,6 @@ the known install paths (ToolBox bundle, beside this package, ~/.local/bin).
 """
 
 import os
-import shutil
 import subprocess
 import sys
 

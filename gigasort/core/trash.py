@@ -51,8 +51,6 @@ def _list_bin(folder, bin_name):
 def manage_trash(folder, dry_run=False, non_interactive=False):
     """List the _TRASH bin. With confirmation, delete VERIFIED-only items.
     Unverified items are never deleted and are reported."""
-    import shutil
-
     bdir, items = _list_bin(folder, TRASH_BIN)
     print("TRASH BIN  (%s)" % TRASH_BIN)
     if not items:

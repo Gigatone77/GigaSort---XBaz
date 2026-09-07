@@ -990,7 +990,7 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
     that is not confirmed (no Nexus mod id, or the page does not resolve to a
     real CP2077 mod) is routed to _REJECTS instead of being sorted or deleted.
     """
-    from gigasort.core import tags as tags_mod, verify
+    from gigasort.core import verify
 
     if toplevel_authors is None:
         toplevel_authors = list(TOPLEVEL_AUTHORS)

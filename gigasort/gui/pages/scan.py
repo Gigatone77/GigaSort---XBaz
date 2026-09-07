@@ -314,9 +314,7 @@ class ScanPage(Adw.NavigationPage):
     def _on_select_folder(self, *args):
         dialog = Gtk.FileDialog()
         dialog.set_title("Select mod workspace folder")
-        has_folder = self.workspace and __import__("os").path.isdir(self.workspace)
         if self.workspace:
-            import os
             from gi.repository import Gio
             folder = Gio.File.new_for_path(self.workspace)
         else:
@@ -333,7 +331,6 @@ class ScanPage(Adw.NavigationPage):
                              self._on_game_dir_selected, start)
 
     def _on_game_dir_selected(self, dialog, result):
-        from gi.repository import Gio
         try:
             file = dialog.select_folder_finish(result)
         except GLib.Error:
@@ -342,8 +339,6 @@ class ScanPage(Adw.NavigationPage):
             self._game_dir_entry.set_text(file.get_path())
 
     def _on_folder_selected(self, dialog, result):
-        import os
-        from gi.repository import Gio
         try:
             file = dialog.select_folder_finish(result)
         except GLib.Error:

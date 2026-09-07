@@ -62,7 +62,7 @@ def _read_entry_text(path, entry):
         if ext == ".zip":
             with zipfile.ZipFile(path) as zf:
                 return zf.read(entry).decode("utf-8", "replace")
-        import subprocess, tempfile, shutil, os as _os
+        import subprocess, tempfile
         with tempfile.TemporaryDirectory() as tmp:
             _extract = {
                 ".rar": ["unrar", "x", "-o+", path, entry],
@@ -129,7 +129,6 @@ def _list_entries_7z(path):
     import subprocess
     r = subprocess.run(["7z", "l", "-slt", path], capture_output=True, text=True)
     out = []
-    path_next = False
     for line in (r.stdout or "").splitlines():
         if line.startswith("Path = "):
             p = line[7:].strip()
@@ -168,7 +167,6 @@ def preview_archive(path):
         return "game-shaped"
     if len(tops) == 1:
         # single top-level wrapper (nested bundle)
-        inner = list(tops)[0]
         if any(os.path.splitext(e)[1].lower() in ARCHIVE_INSTALL_EXTS
                for e in entries):
             return "nested"
