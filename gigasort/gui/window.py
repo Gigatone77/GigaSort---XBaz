@@ -120,5 +120,8 @@ class MainWindow(Adw.ApplicationWindow):
         sidebar_list.select_row(sidebar_list.get_row_at_index(0))
 
     def _on_sort_applied(self):
+        for page in (self.undo_page, self.status_page, self.rejects_page,
+                     self.gamestructure_page):
+            page.workspace = self.scan_page.workspace
         self.undo_page.refresh()
         self.status_page.refresh()

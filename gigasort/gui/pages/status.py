@@ -56,6 +56,11 @@ class StatusPage(Adw.NavigationPage):
             self._files_group.remove(row)
         self._file_rows = []
 
+        self._path_label.set_subtitle(esc(str(self.workspace or "not set")))
+
+        if not self.workspace:
+            return
+
         dirs = [
             (REJECT_BIN, "review / uncategorized"),
             (TRASH_BIN, "marked for deletion"),
