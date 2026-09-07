@@ -11,6 +11,7 @@ from gigasort.gui.pages.scan import ScanPage
 from gigasort.gui.pages.undo import UndoPage
 from gigasort.gui.pages.status import StatusPage
 from gigasort.gui.pages.rejects import RejectsPage
+from gigasort.gui.pages.wtnc import WtncPage
 from gigasort.gui.pages.gigaslim import GigaSlimPage
 from gigasort.gui.pages.cyberflash import CyberFlashSyncPage
 from gigasort.gui.pages.xbaz import XBazPage
@@ -55,6 +56,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.undo_page = UndoPage(workspace=self.workspace, scan_page=self.scan_page)
         self.status_page = StatusPage(workspace=self.workspace)
         self.rejects_page = RejectsPage(workspace=self.workspace)
+        self.wtnc_page = WtncPage(workspace=self.workspace)
         self.scan_page.status_callback = self._on_sort_applied
 
         pages = [
@@ -63,6 +65,8 @@ class MainWindow(Adw.ApplicationWindow):
             ("status", "Workspace", "folder-symbolic", self.status_page),
             ("rejects", esc("Rejects & Overrides"), "edit-find-replace-symbolic",
              self.rejects_page),
+            ("wtnc", esc("WTNC Collection"), "starred-symbolic",
+             self.wtnc_page),
         ]
 
         def add_row(page_id, title, icon_name, page):
@@ -121,7 +125,7 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _on_sort_applied(self):
         for page in (self.undo_page, self.status_page, self.rejects_page,
-                     self.gamestructure_page):
+                     self.wtnc_page, self.gamestructure_page):
             page.workspace = self.scan_page.workspace
         self.undo_page.refresh()
         self.status_page.refresh()

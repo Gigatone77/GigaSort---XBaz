@@ -75,6 +75,11 @@ def build_parser():
     g.add_argument("--prune", action="store_true",
                     help="Remove empty folders in the workspace (nothing with "
                          "content is ever touched)")
+    g.add_argument("--check-wtnc", action="store_true",
+                   help="Sweep the library against the Welcome to Night City "
+                        "(z9er) collection: list mods NOT on the curated "
+                        "modlist and move them to _NOT_WTNC. Add --dry-run "
+                        "to preview the move (never deletes).")
 
     p.add_argument("--dry-run", action="store_true",
                    help="Show what would happen without moving files")
@@ -222,6 +227,16 @@ def main(argv=None):
         net.confirm_network("Nexus mod analysis")
         run_superseded_report(folder)
         return 0
+
+    if args.check_wtnc:
+        from gigasort.core.wtnc import run_wtnc_sweep
+        interactive = sys.stdin.isatty() and not args.yes
+        return run_wtnc_sweep(
+            folder,
+            dry_run=args.dry_run,
+            input_fn=_yes_input if args.yes else input,
+            confirm=interactive and not args.dry_run,
+        )
 
     if args.trash:
         from gigasort.core.trash import manage_trash

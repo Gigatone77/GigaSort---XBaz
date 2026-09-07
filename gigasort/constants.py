@@ -21,6 +21,7 @@ REJECT_BIN = "_REJECTS"      # review / uncategorized holder
 TRASH_BIN = "_TRASH"          # marked for deletion (wiped only per-file)
 HOLD_BIN = "_ON_HOLD"         # threat-gated, waiting on the user
 DUPLICATES_BIN = "_DUPLICATES"
+NOT_WTNC_BIN = "_NOT_WTNC"    # "Not compatible with WTNC" sweep bin
 
 # State files (all written inside the workspace).
 SETTINGS_FILENAME = "_GigaSort_settings.json"
@@ -40,6 +41,24 @@ GS_STAGE_DIR = "_GigaSort_stage"     # temporary extraction scratch
 GS_BACKUP_DIR = "_GigaSort_backup"   # timestamped conflict backups
 GS_MOD_INDEX = "_MOD_INFO.json"      # master index of extracted mods
 GS_COLLECTION_CACHE = "_GigaSort_collection.json"  # recognized modlist cache
+
+# Welcome to Night City (z9er / Cyberpunk THING) collection compatibility sweep.
+# The canonical source is z9er's open project repo (the GitHub behind the Nexus
+# collection slug `iszwwe`): Wabbajack/Modlist.md lists every curated mod with
+# its Nexus id. Cached offline as _GigaSort_wtnc.json; the per-run
+# classification lives in _GigaSort_wtnc_report.json.
+WTNC_MANIFEST_URL = ("https://raw.githubusercontent.com/z9er/CyberpunkTHING/"
+                     "main/Wabbajack/Modlist.md")
+WTNC_MANIFEST_FILENAME = "_GigaSort_wtnc.json"
+WTNC_REPORT_FILENAME = "_GigaSort_wtnc_report.json"
+# User-editable {mod_id: note} list of extra ids treated as compatible even
+# though they are absent from the parsed Modlist.md (e.g. collection-infra
+# mods like the WTNC team's own WTNC Config). Auto-seeded on first run.
+WTNC_EXTRA_COMPAT_FILENAME = "_GigaSort_wtnc_compat.json"
+WTNC_EXTRA_COMPAT_SEED = {
+    "10426": "WTNC Config - the WTNC team's own configuration mod (part of "
+             "the collection; not listed in Wabbajack/Modlist.md)",
+}
 
 # Agent bridge.
 BRIDGE_DIR = "_GigaSort_bridge"

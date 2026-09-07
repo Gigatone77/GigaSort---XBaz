@@ -2,6 +2,40 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [2.0.4] - 2026-09-07
+
+### Added
+- **WTNC Collection tab + `--check-wtnc`** (new core module
+  `gigasort/core/wtnc.py`, new GUI page `gui/pages/wtnc.py`): Welcome to
+  Night City / Cyberpunk THING compatibility sweep against z9er's curated
+  modlist (the open project repo that feeds Nexus collection `iszwwe`).
+    - **Manifest**: fetches `Wabbajack/Modlist.md` from
+      `github.com/z9er/CyberpunkTHING` and parses every Nexus mod id into
+      `_GigaSort_wtnc.json` (cache-first, so offline runs reuse the last good
+      parse; a failed fetch never raises).
+    - **Sweep**: scans the WHOLE library (root archives + organized
+      category/author/framework folders; `_`-prefixed bins and state/scratch
+      dirs are skipped) and classifies every archive as on-the-list /
+      not-on-the-list / uncertain-no-id. Mods whose Nexus id is absent from
+      the WTNC modlist are moved into the **`_NOT_WTNC`** bin ("Not compatible
+      with WTNC") - collision-safe, never overwrites, never deletes.
+    - **Safety**: only archives with a classic `-NNNN-` Nexus id token or an
+      approved verified-cache entry are ever moved; bare CCXL-candidate ids
+      and id-less files are left in place and reported. CLI default asks for
+      confirmation on a real move (`--yes` auto-approves); `--check-wtnc`
+      + `--dry-run` previews. A per-run report is written to
+      `_GigaSort_wtnc_report.json`.
+    - **Extra-compat overrides** (`_GigaSort_wtnc_compat.json`): a small
+      user-editable `{mod_id: note}` map of ids treated as compatible even
+      when absent from the parsed `Modlist.md`. Auto-seeded on first run with
+      the WTNC team's own WTNC Config (10426) - collection infra that ships
+      with the collection but is deliberately not a line in the Wabbajack
+      list - so the sweep does not false-positive on it. Add/remove ids there
+      rather than editing the manifest.
+    - The GUI tab defaults to preview and has "Fetch manifest from GitHub",
+      "Run sweep (preview)" and "Move incompatible to _NOT_WTNC" actions; the
+      manifest source chip shows live-GitHub vs cached.
+
 ## [2.0.3] - 2026-09-06
 
 ### Added
