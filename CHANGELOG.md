@@ -38,6 +38,12 @@ All notable changes to **GigaSort** are listed here.
   expansion) instead of only via the file-explorer dialog. A `Browse...`
   button still opens the picker for those who prefer it, and the dialog now
   starts at whatever path is already typed.
+- **Empty author box now means "sort everything"** (GUI `pages/scan.py`):
+  with no author(s) typed and "Author + organize rest" unchecked, a scan
+  planned nothing at all (`Nothing to move`, no Apply prompt). An empty
+  author field now forces full-batch mode, so typing any path and hitting
+  Scan produces a real plan and the Apply button. Typing specific authors
+  still uses the author-folder-only behavior.
 - **Latent `NameError` in offline readme verification**
   (`core/verify.py` `verification_statuses`): the readme-fallback mod-id lookup
   called `compat.readme_mod_id` without importing `compat`, which would crash

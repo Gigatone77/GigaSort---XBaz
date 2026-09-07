@@ -366,6 +366,10 @@ class ScanPage(Adw.NavigationPage):
 
         authors = self._get_toplevel_authors()
         plus_batch = self._author_plus_batch.get_active()
+        if not authors:
+            # No author(s) typed = treat as a full sort of the whole folder:
+            # an empty author box otherwise plans nothing (no Apply prompt).
+            plus_batch = True
         group_fw = self._group_frameworks.get_active()
         game_dir = self._game_dir_entry.get_text().strip()
         if self.workspace:
