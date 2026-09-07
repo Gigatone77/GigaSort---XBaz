@@ -22,7 +22,8 @@ def build_parser():
         prog="gigasort",
         description="Cyberpunk 2077 mod-archive organizer",
     )
-    p.add_argument("-V", "--version", action="version", version="%(prog)s " + __version__)
+    p.add_argument("-V", "--version", action="version",
+                   version="%(prog)s " + __version__)
     p.add_argument("-w", "--workspace", "--folder", dest="workspace", default=None,
                    help="Mod workspace folder; comma-separated to sort several folders")
 
@@ -52,9 +53,11 @@ def build_parser():
     g.add_argument("--clean-dupes", action="store_true",
                    help="Categorize and move duplicate archives to _DUPLICATES")
     g.add_argument("--trash", action="store_true",
-                   help="Manage the _TRASH bin (move selected to ~deleted; never deletes)")
+                   help="Manage the _TRASH bin (move selected to ~deleted; "
+                        "never deletes)")
     g.add_argument("--delete-rejects", action="store_true",
-                   help="Move verified _REJECTS items to ~deleted (restorable, never deletes)")
+                   help="Move verified _REJECTS items to ~deleted "
+                        "(restorable, never deletes)")
     g.add_argument("--rescue-rejects", action="store_true",
                    help="Re-verify + re-categorize files already in _REJECTS and "
                         "move verified ones to their categories (online lookups "
@@ -112,10 +115,6 @@ def _require_dir(folder):
     return folder
 
 
-def _noop_input(*a):
-    return ""
-
-
 def _yes_input(*a):
     return "confirm"
 
@@ -133,7 +132,7 @@ def main(argv=None):
             print("[GigaSort] workspace %d/%d : %s" % (idx, len(roots), root))
             a = [sys.executable, "-m", "gigasort"]
             skip = False
-            for i, x in enumerate(sys.argv[1:]):
+            for _i, x in enumerate(sys.argv[1:]):
                 if skip:
                     skip = False
                     continue
@@ -331,7 +330,7 @@ def main(argv=None):
         v = verify.verify_categories(result.kept, cache, result.rejects,
                                      folder=folder)
         print("== NEXUS VERIFICATION ==")
-        for fn, (cat, title, ncat, status) in v.items():
+        for fn, (cat, title, _ncat, status) in v.items():
             print("  [%-8s] %-40s -> %s  (%s)" % (status, fn, cat or "?", title or "?"))
         if not args.dry_run:
             storage.save_cache(folder, _merge_verify(cache, v))

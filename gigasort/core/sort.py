@@ -424,7 +424,7 @@ def rescue_rejects(folder, dry_run=False, input_fn=input, toplevel_authors=None)
 
     rescued = []
     still = []
-    for fn, size in items:
+    for fn, _size in items:
         if fn not in verified:
             still.append((fn, "UNVERIFIED - left in place"))
             continue
@@ -611,65 +611,6 @@ def build_verified_gate(folder, kept):
         storage.save_cache(folder, cache)
     return verified, flagged
 
-
-
-def print_plan(result, dry_run):
-    """Report rejects, duplicates and planned moves — always before commit."""
-    print("=" * 70)
-    print("REJECT PILE  (files that matched no category)")
-    print("=" * 70)
-    if result.rejects:
-        for fn, size in result.rejects:
-            print("  %s   (%s)" % (fn, human_size(size)))
-        print("  Rejects go into exactly one of: '%s' (review) or '%s' "
-              "(trash, never auto-deleted)." % (REJECT_BIN, TRASH_BIN))
-    else:
-        print("  (none - every file categorized)")
-    print()
-
-    print("=" * 70)
-    print("DUPLICATES  (suffixed copies kept separately, never deleted)")
-    print("=" * 70)
-    if result.duplicates:
-        for fn, size in result.duplicates:
-            print("  %s   (%s)" % (fn, human_size(size)))
-    else:
-        print("  (none)")
-    print()
-
-    print("=" * 70)
-    print("PLANNED MOVES" + ("  (DRY RUN - nothing moved)" if dry_run else ""))
-    print("=" * 70)
-    if not result.author_plus_batch:
-        print("  (author-only mode - only listed authors are sorted;")
-        print("   every other file is left in place)")
-    for cat in sorted(result.plan):
-        files = result.plan[cat]
-        print("\n[%s]  (%d files)" % (cat, len(files)))
-        for fn, size in files:
-            author = extract_mod_author(fn)
-            dst_show = os.path.join(cat, fn)
-            if author and _author_matches(author, result.toplevel_authors):
-                dst_show = os.path.join(author, fn)
-            elif fn in result.framework_of:
-                fw = os.path.join(cat, result.framework_of[fn])
-                dst_show = (os.path.join(fw, author, fn) if author
-                            else os.path.join(fw, fn))
-            print("    -> %s   (%s)" % (dst_show, human_size(size)))
-    print()
-
-    print("=" * 70)
-    print("RELOCATE  (already-organized mods sitting in the wrong folder)")
-    print("=" * 70)
-    if result.relocate:
-        for fn, src, dst, size in result.relocate:
-            src_show = os.path.relpath(src, result.folder)
-            dst_show = os.path.relpath(dst, result.folder)
-            print("  %s   (%s)\n     %s\n  -> %s"
-                  % (fn, human_size(size), src_show, dst_show))
-    else:
-        print("  (none - already-organized files are where they belong)")
-    print()
 
 
 def _to_bin(folder, filename, bin_name, dry_run, input_fn=input):

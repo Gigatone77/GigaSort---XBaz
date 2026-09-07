@@ -131,25 +131,6 @@ def guarded_move(root, src, dst, action="move", strict=False, dry_run=False,
         record_fn(src, dst)
 
 
-def guarded_remove(root, path, action="delete", confirmed=False, strict=False,
-                   input_fn=input):
-    """NO-DELETE rule: refrains from permanently deleting anything.
-
-    Instead of os.remove / shutil.rmtree, the path is MOVED into a hidden
-    `~deleted/` sub-folder beside it so it is always recoverable by hand.
-    Keeps the WARN confirmation and the BLOCK boundary check from the fence.
-    """
-    guard_under(root, path)
-    if not confirmed:
-        enforce(root, action, path, strict=strict, input_fn=input_fn)
-    parent = os.path.dirname(os.path.abspath(path))
-    deleted_dir = os.path.join(parent, "~deleted")
-    dst = os.path.join(deleted_dir, os.path.basename(path))
-    if os.path.abspath(path) != os.path.abspath(dst):
-        os.makedirs(deleted_dir, exist_ok=True)
-        shutil.move(path, dst)
-
-
 def guarded_makedirs(root, path, strict=False, input_fn=input):
     """Create a directory tree under the workspace fence."""
     guard_under(root, path)

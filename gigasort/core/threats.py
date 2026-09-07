@@ -1,9 +1,7 @@
 """Nexus-identity reputation gate (--gate)."""
 
-import os
-
 from gigasort.constants import (
-    TRUSTED, ON_HOLD, WATCHED, SUSPICIOUS_KEYWORDS, HOLD_BIN,
+    TRUSTED, ON_HOLD, WATCHED, SUSPICIOUS_KEYWORDS,
 )
 from gigasort.core import storage
 from gigasort.core.categorize import extract_mod_id
@@ -53,8 +51,3 @@ def run_threat_gate(folder, keep, cache):
         identity = _identity_ok(fn, mod_id, cache)
         out[fn] = assess_threat(fn, mod_id, identity, threats)
     return out
-
-
-def withheld_paths(folder):
-    """Return the _ON_HOLD folder (created lazily by callers)."""
-    return os.path.join(folder, HOLD_BIN)

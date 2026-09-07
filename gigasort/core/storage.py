@@ -4,11 +4,11 @@ original single-file tool so existing workspaces keep working)."""
 import os
 
 from gigasort.constants import (
-    CACHE_FILENAME, LOG_FILENAME, MANIFEST_FILENAME, TAGS_FILENAME,
+    CACHE_FILENAME, MANIFEST_FILENAME, TAGS_FILENAME,
     THREAT_FILENAME, SETTINGS_FILENAME, REFERENCE_FILENAME,
     WEB_OVERRIDES_FILENAME, REJECT_BIN, TRASH_BIN,
 )
-from gigasort.utils.io import json_load, json_dump, _atomic_write_text
+from gigasort.utils.io import json_load, json_dump
 from gigasort.utils import fs
 
 # Hidden, restorable sub-folder inside each bin. One-bin rule copies are
@@ -57,10 +57,6 @@ def load_web_overrides(folder):
 def save_web_overrides(folder, overrides):
     """Persist the human-confirmed web-category override map."""
     json_dump(web_overrides_path(folder), overrides)
-
-
-def log_path(folder):
-    return _join(folder, LOG_FILENAME)
 
 
 def manifest_path(folder):
@@ -113,21 +109,6 @@ def save_references(folder, refs):
     json_dump(reference_path(folder), refs)
 
 
-def write_info_log(folder, cache):
-    """Write the human-readable verification log; return entry count."""
-    lines = ["GigaSort verification log", "=" * 50, ""]
-    count = 0
-    for fn, entry in (cache or {}).items():
-        if entry.get("status") == "approved":
-            lines.append("APPROVED  %s" % fn)
-            lines.append("    category : %s" % entry.get("category"))
-            lines.append("    nexus    : %s (%s)"
-                         % (entry.get("nexus_title"), entry.get("nexus_cat")))
-            count += 1
-    _atomic_write_text(log_path(folder), "\n".join(lines) + "\n")
-    return count
-
-
 # ---------------------------------------------------------------------------
 # manifest (whole-run undo)
 # ---------------------------------------------------------------------------
@@ -152,10 +133,6 @@ def record_move(folder, src, dst, dry_run=False):
 # ---------------------------------------------------------------------------
 # tags (processed-mods handle for the agent)
 # ---------------------------------------------------------------------------
-def load_tags(folder):
-    return json_load(tags_path(folder), {})
-
-
 def save_tags(folder, data):
     json_dump(tags_path(folder), data)
 

@@ -83,7 +83,7 @@ def run_locate(folder):
         (THREAT_FILENAME, "threat watchlist"),
     ]
     print("  state files:")
-    for fname, why in files:
+    for fname, _why in files:
         p = os.path.join(folder, fname)
         exists = "present" if os.path.exists(p) else "absent"
         print("    %-32s %s  [%s]" % (fname, p, exists))

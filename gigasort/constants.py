@@ -32,7 +32,6 @@ LOG_FILENAME = "_GigaSort_verification_log.txt"
 MANIFEST_FILENAME = "_GigaSort_manifest.json"
 TAGS_FILENAME = "_GigaSort_tags.json"
 THREAT_FILENAME = "_GigaSort_threats.json"
-LAUNCH_BACKUP_FILENAME = "_GigaSort_launch_backup.json"
 GS_MANIFEST = "_GigaSort_gamestruct.json"
 
 # Game-structure sort.
@@ -66,10 +65,6 @@ BRIDGE_DIR = "_GigaSort_bridge"
 # ---------------------------------------------------------------------------
 # Nexus
 # ---------------------------------------------------------------------------
-# The Nexus game slug. Cyberpunk 2077 is the default/target.
-NEXUS_GAME_SLUG = "cyberpunk2077"
-NEXUS_BASE = "https://www.nexusmods.com/%s/mods/" % NEXUS_GAME_SLUG
-
 # Filename token "-12xxxx-" (or "-1xxx-"/"-2xxxx-"), including LOW 3-digit
 # ids ("-790-" = Appearance Menu Mod), is the Nexus mod id.
 NEXUS_ID_RE = re.compile(r"-(\d{3,6})-", re.IGNORECASE)
@@ -327,21 +322,6 @@ NEXUS_CATEGORY_NAMES = {
     "World Model": "10 World Building (Locations & Props)",
 }
 
-NEXUS_SEARCH_TERMS = [
-    "eyes", "lashes", "eyelashes", "eyebrow", "brows", "hair", "hairstyle",
-    "bob", "ponytail", "bun", "wig", "tattoo", "cyberware", "implant",
-    "piercing", "chrome", "armor", "armour", "vest", "helmet", "boots",
-    "gloves", "jacket", "pants", "suit", "goggles", "mask", "skins",
-    "complexion", "body", "weapon", "accessory", "color", "colour", "palette",
-    "texture", "utility", "framework", "pistol", "holster",
-    "location", "prop", "interior", "apartment", "building", "world building",
-    "bodysuit", "leotard", "lingerie", "gymwear", "kart",
-    "audio", "sound", "sfx", "music", "radio", "voice", "ambient",
-    "pose", "photo mode", "photomode", "animation", "anim", "gesture",
-    "camera", "third person", "locomotion",
-    "quest", "dialogue", "dialog", "mission", "braindance", "gig", "story",
-]
-
 TITLE_MATCHERS = [
     ("bob", "02 Hair"), ("ponytail", "02 Hair"), ("hairstyle", "02 Hair"),
     ("pigtail", "02 Hair"), ("wig", "02 Hair"), ("bun", "02 Hair"),
@@ -433,14 +413,6 @@ SUSPICIOUS_KEYWORDS = (
     "crack", "keygen", "activator", "crypto", "bitcoin", "malware",
     "trojan", "backdoor", "rat",
 )
-
-# ---------------------------------------------------------------------------
-# Keyboard (TUI)
-# ---------------------------------------------------------------------------
-KEY_CTRL_A = "\x01"
-KEY_CTRL_Z = "\x1a"
-KEY_ENTER = "\r"
-KEY_ESC = "\x1b"
 
 # ---------------------------------------------------------------------------
 # Cyberpunk 2077 game structure (used by --preview and --gamestructure)

@@ -7,8 +7,6 @@ from gigasort.constants import (
     RULES, NEXUS_ID_RE, AUTHOR_STOPWORDS,
 )
 
-DUP_SUFFIX = re.compile(r"^(.*?)(?: ?\((\d+)\))?(\.[A-Za-z0-9]+)$")
-
 
 def clean_name(path):
     """Strip the ' (1)' / ' (2)' suffix the browser adds to repeated downloads."""

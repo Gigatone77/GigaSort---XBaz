@@ -1,5 +1,7 @@
 """Shared GTK helpers for the GigaSort GUI."""
 
+import gi
+gi.require_version("Adw", "1")
 from gi.repository import GLib, Adw
 
 

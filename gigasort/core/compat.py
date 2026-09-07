@@ -1,5 +1,5 @@
 """Compatibility checks: modlist matching, need-redownload, VRAM guard,
-non-mod warnings, and archive install-shape preview."""
+and archive install-shape preview."""
 
 import os
 import re
@@ -11,15 +11,6 @@ from gigasort.constants import (
 )
 from gigasort.core.categorize import extract_mod_id, candidate_mod_id, name_tokens
 from gigasort.utils.format import human_size
-
-
-
-# Names GigaSort itself manages in a workspace -> excluded from the
-# non-mod-items warning.
-NON_MOD_SKIP = {
-    "_DUPLICATES", "_REJECTS", "_TRASH", "_ON_HOLD", "_GigaSort_stage",
-    "GAMESTRUCTURE", "_GigaSort_backup",
-}
 
 
 # ---------------------------------------------------------------------------
@@ -398,32 +389,3 @@ def vram_guard(folder, vram_gb, archives):
             low = fn.lower()
             if any(w in low for w in VRAM_HIRES_WORDS):
                 print("  [high-res flag]   %s (%s)" % (fn, human_size(size)))
-
-
-def non_mod_items(folder):
-    """Detect non-archive, non-GigaSort files/folders in the workspace."""
-    miss = []
-    try:
-        for fn in os.listdir(folder):
-            if fn.startswith("_"):
-                continue
-            if fn in NON_MOD_SKIP:
-                continue
-            full = os.path.join(folder, fn)
-            if os.path.isdir(full):
-                miss.append((fn, True))
-            elif os.path.isfile(full) and not fn.lower().endswith(
-                    (".zip", ".rar", ".7z")):
-                miss.append((fn, False))
-    except OSError:
-        pass
-    return miss
-
-
-def warn_non_mod_items(folder):
-    miss = non_mod_items(folder)
-    if not miss:
-        return
-    print("\n-- NOTE: the workspace also contains non-mod items --")
-    for fn, is_dir in miss:
-        print("   %s %s" % ("[dir]" if is_dir else "[file]", fn))

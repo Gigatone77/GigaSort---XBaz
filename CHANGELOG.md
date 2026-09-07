@@ -4,6 +4,24 @@ All notable changes to **GigaSort** are listed here.
 
 ## [2.0.4] - 2026-09-07
 
+### Dead code sweep (follow-up)
+- Removed the orphaned `gigasort/tui/` package (module CLI/GUI never import it;
+  it was only referenced by the old single-file monolith).
+- Removed unreferenced constants (`NEXUS_GAME_SLUG`, `NEXUS_BASE`,
+  `NEXUS_SEARCH_TERMS`, `LAUNCH_BACKUP_FILENAME`, `KEY_CTRL_A/Z`, `KEY_ENTER`,
+  `KEY_ESC`) and unreferenced helpers across `utils`/`core`
+  (`guarded_remove`, `truncate`, `wrap`, `file_size`, `dir_size`, `read_key`
+  + raw-key machinery, `notify_net_status`, `write_info_log`/`log_path`,
+  `load_tags`, `print_plan`, `non_mod_items`/`warn_non_mod_items`
+  /`NON_MOD_SKIP`, `withheld_paths`, `DUP_SUFFIX`, `_noop_input`).
+- Reused the previously-dangling `GS_MOD_INDEX` constant in `tags.py`
+  (it duplicated the literal `"_MOD_INFO.json"`). Final file-count
+  `print_plan`/`warn_non_mod_items` were the last consumers of their own
+  callers, so the whole chains went.
+- Added `gi.require_version("Adw", "1")` to `gui/util.py` so a standalone
+  import no longer warns.
+- `ruff check --select F,E501,B ` clean repo-wide.
+
 ### Added
 - **WTNC Collection tab + `--check-wtnc`** (new core module
   `gigasort/core/wtnc.py`, new GUI page `gui/pages/wtnc.py`): Welcome to

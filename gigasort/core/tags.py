@@ -3,6 +3,7 @@
 import os
 
 from gigasort.core import storage
+from gigasort.constants import GS_MOD_INDEX
 from gigasort.core.categorize import extract_mod_id, extract_mod_author
 from gigasort.utils.io import json_load as _json_load
 
@@ -55,7 +56,7 @@ def _collect_processed(folder):
         })
         handled.add(base)
 
-    mod_index = os.path.join(folder, "_MOD_INFO.json")
+    mod_index = os.path.join(folder, GS_MOD_INDEX)
     data = _json_load(mod_index, []) or []
     for rec in data or []:
         if isinstance(rec, dict):

@@ -221,7 +221,7 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
 
     # compute archive sizes for a storage pre-flight
     need = 0
-    for method, items in plan.items():
+    for _method, items in plan.items():
         for fn, _r in items:
             need += os.path.getsize(os.path.join(folder, fn))
     if not _check_storage(folder, need):
@@ -233,7 +233,7 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
     skipped = 0
     total = sum(len(items) for items in plan.values())
     try:
-        for method, items in plan.items():
+        for _method, items in plan.items():
             for fn, r in items:
                 idx = compiled + skipped + 1
                 if total > 1:

@@ -117,20 +117,6 @@ def check_connectivity(top_only=False):
     return probe_connectivity()[0]
 
 
-def notify_net_status():
-    """Print a single Online/Offline connectivity line; return `online`.
-
-    Just 'offline - <why>' when there is a problem, so the reason is always
-    stated without any extra prose.
-    """
-    online, reason = probe_connectivity()
-    if online:
-        print("[net] online" if not reason else "[net] online - %s" % reason)
-    else:
-        print("[net] offline - %s" % reason)
-    return online
-
-
 def confirm_network(feature, input_fn=input):
     """Prompt before an internet-dependent feature; set offline/online.
 
@@ -141,7 +127,8 @@ def confirm_network(feature, input_fn=input):
     online, reason = probe_connectivity()
     if not online:
         ALLOW_NET = False
-        print("[net] offline - %s: %s uses only the verified cache." % (reason, feature))
+        print("[net] offline - %s: %s uses only the verified cache."
+              % (reason, feature))
         return False
     if reason:
         print("[net] online - %s." % reason)
