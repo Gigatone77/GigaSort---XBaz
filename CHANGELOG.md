@@ -33,6 +33,11 @@ All notable changes to **GigaSort** are listed here.
   `nexus_cat`. Used by scan_workspace, find_misplaced and the placement sweep.
 
 ### Fixed
+- **Scan-tab target folder is now a text field** (GUI `pages/scan.py`): the
+  workspace folder can be typed directly into an entry box (with `~`
+  expansion) instead of only via the file-explorer dialog. A `Browse...`
+  button still opens the picker for those who prefer it, and the dialog now
+  starts at whatever path is already typed.
 - **Latent `NameError` in offline readme verification**
   (`core/verify.py` `verification_statuses`): the readme-fallback mod-id lookup
   called `compat.readme_mod_id` without importing `compat`, which would crash

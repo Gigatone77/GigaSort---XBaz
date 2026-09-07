@@ -59,16 +59,20 @@ class ScanPage(Adw.NavigationPage):
         controls.append(self._conn_label)
 
         folder_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        self._folder_button = Gtk.Button(label="Select Folder...")
+        folder_label = Gtk.Label(label="Folder:")
+        folder_label.set_xalign(0)
+        folder_box.append(folder_label)
+        self._folder_entry = Gtk.Entry(
+            placeholder_text="Path to mod folder to scan (e.g. ~/Downloads)")
+        self._folder_entry.set_text(self.workspace or "")
+        self._folder_entry.set_hexpand(True)
+        self._folder_entry.set_tooltip_text(
+            "Enter the workspace folder path directly, or press the button to "
+            "pick it with a file dialog.")
+        folder_box.append(self._folder_entry)
+        self._folder_button = Gtk.Button(label="Browse...")
         self._folder_button.connect("clicked", self._on_select_folder)
         folder_box.append(self._folder_button)
-
-        self._path_label = Gtk.Label(label=str(self.workspace))
-        self._path_label.set_use_markup(False)
-        self._path_label.set_hexpand(True)
-        self._path_label.set_xalign(0)
-        self._path_label.set_ellipsize(3)
-        folder_box.append(self._path_label)
         outer.append(folder_box)
 
         authors_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
@@ -307,11 +311,12 @@ class ScanPage(Adw.NavigationPage):
             self._placement_list.append(row)
 
     def _on_select_folder(self, *args):
+        from gi.repository import Gio
         dialog = Gtk.FileDialog()
         dialog.set_title("Select mod workspace folder")
-        if self.workspace:
-            from gi.repository import Gio
-            folder = Gio.File.new_for_path(self.workspace)
+        cur = os.path.expanduser(self._folder_entry.get_text().strip())
+        if cur and os.path.isdir(cur):
+            folder = Gio.File.new_for_path(cur)
         else:
             folder = None
         dialog.select_folder(self.get_root(), None, self._on_folder_selected, folder)
@@ -339,8 +344,8 @@ class ScanPage(Adw.NavigationPage):
         except GLib.Error:
             return
         if file:
+            self._folder_entry.set_text(file.get_path())
             self.workspace = file.get_path()
-            self._path_label.set_text(self.workspace)
             self._status_label.set_text("Folder set. Click Scan.")
 
     def _get_toplevel_authors(self):
@@ -353,6 +358,10 @@ class ScanPage(Adw.NavigationPage):
         self._status_label.set_text("Scanning...")
         self._scan_button.set_sensitive(False)
         self._result = None
+        self.workspace = os.path.expanduser(
+            self._folder_entry.get_text().strip())
+        if not self.workspace:
+            self.workspace = None
         self._check_net()
 
         authors = self._get_toplevel_authors()
