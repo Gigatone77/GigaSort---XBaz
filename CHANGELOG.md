@@ -2,6 +2,17 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [2.0.3] - 2026-09-06
+
+### Added
+- **Web-category override layer**: `_GigaSort_web_overrides.json` in the
+  workspace root maps exact archive filenames to the category folder a human
+  verified ONLINE. `resolve_category()` now checks this BEFORE the offline
+  filename-keyword rule, so a live-verified web category (Nexus page category /
+  Google-confirmed identity) can never be silently reverted by a keyword guess
+  on a later sort. Precedence: web override > offline keyword > cached
+  `nexus_cat`. Used by scan_workspace, find_misplaced and the placement sweep.
+
 ## [2.0.2] - 2026-09-06
 
 ### Added
