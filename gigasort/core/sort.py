@@ -19,12 +19,23 @@ from gigasort.core.categorize import (
     candidate_mod_id,
 )
 from gigasort.core import storage
-from gigasort.utils import fs, net
+from gigasort.utils import fs
 from gigasort.utils.format import human_size
 
 # Categories always look like "NN Name"; anything in the verified cache that
 # matches this is an authoritative folder decision (from Nexus or a prior run).
 _CAT_FOLDER_RE = re.compile(r"^\d{2} ")
+
+
+def _ensure_offline_archive(folder):
+    """Build the offline info archive (once per workspace) + seed the ID
+    cache, so every sort benefits from the library's own verified identity
+    history with zero network access. Never raises."""
+    try:
+        from gigasort.core import signature
+        signature.ensure_archive(folder)
+    except Exception:
+        pass
 
 
 @dataclass
@@ -135,10 +146,10 @@ def resolve_category(fn, cache=None, web_overrides=None):
 
     Preference order (each source is exhausted before the next is trusted):
       0. human-confirmed web overrides (``_GigaSort_web_overrides.json``,
-         keyed by exact filename) — this is LIVE online info a person already
-         acted on, so it beats EVERY deterministic guess below, including a
-         keyword match. Prevents an offline keyword from silently reverting a
-         verified web move on the next sort;
+         keyed by exact filename) — real, person-confirmed info, so it beats
+         EVERY deterministic guess below, including a keyword match. Prevents
+         an offline keyword from silently reverting a verified move on the
+         next sort;
       1. offline filename-keyword categorize() — deterministic and reliable,
          and it wins over a conflicting cached 'nexus_cat' because that field
          is itself only a loose page-keyword guess, never a verified Nexus
@@ -304,13 +315,13 @@ def rescue_category(folder, fn, cache=None):
     missed every folder rule.
 
     The ONLY thing allowed to pull a file out of the reject pile is an
-    authoritative Nexus category: checked first from the mod-ID REFERENCE
-    cache (keyed by mod id, filled from a previous run's live lookup), then
-    the per-filename verified cache (nexus_cat), then the live Nexus page
-    when online. A filename guess never overrides the offline keyword result
+    authoritative Nexus category — resolved entirely OFFLINE from the mod-ID
+    REFERENCE cache (keyed by mod id, seeded from a previous run or the
+    bundled offline info archive), then the per-filename verified cache
+    (nexus_cat). A filename guess never overrides the offline keyword result
     here.
 
-    All sources yield REAL folder names ("NN Name" style) -- never slugs. A
+    All sources yield REAL folder names ("NN Name" style) — never slugs. A
     value only counts when it is one of GigaSort's known folders.
 
     Returns the target folder name, or None when no Nexus category resolves
@@ -326,29 +337,16 @@ def rescue_category(folder, fn, cache=None):
     mid = extract_mod_id(fn) or candidate_mod_id(fn)
     if not mid:
         return None
-    # Reference cache (verified on a previous run, keyed by mod id) resolves
-    # offline without touching the network.
-    if folder or True:
-        try:
-            from gigasort.core import storage
-            refs = storage.load_references(folder) or {}
-            ref_entry = refs.get(mid) or {}
-            if ref_entry.get("verified") and isinstance(
-                    ref_entry.get("category"), str) \
-                    and ref_entry["category"] in KNOWN_FOLDERS:
-                return ref_entry["category"]
-        except Exception:
-            pass
-    if not net.ALLOW_NET:
-        return None
+    # Reference cache / offline info archive (keyed by mod id) resolves the
+    # authoritative category without any network access.
     try:
-        _title, ncat = net.lookup_nexus_category(mid)
-        if isinstance(ncat, str) and ncat in KNOWN_FOLDERS:
-            if cache:
-                cache.setdefault(fn, {})["nexus_cat"] = ncat
-                cache[fn]["category"] = ncat
-                storage.save_cache(folder, cache)
-            return ncat
+        from gigasort.core import storage
+        refs = storage.load_references(folder) or {}
+        ref_entry = refs.get(mid) or {}
+        if ref_entry.get("verified") and isinstance(
+                ref_entry.get("category"), str) \
+                and ref_entry["category"] in KNOWN_FOLDERS:
+            return ref_entry["category"]
     except Exception:
         pass
     return None
@@ -361,7 +359,7 @@ def rescue_verified_rejects(folder, rejects, verified, cache=None):
     Verdict flow for every reject file:
       1) offline category keywords        (already failed -> this is why it's here)
       2) cached Nexus category            (nexus_cat recorded at verification)
-      3) live Nexus page category         (only when ALLOW_NET)
+      3) reference-cache Nexus category   (mod-ID refs, offline)
     Only a file that fails all three stays in _REJECTS.
 
     Safety: only files already in `verified` are considered; everything else
@@ -381,16 +379,16 @@ def rescue_verified_rejects(folder, rejects, verified, cache=None):
 def rescue_rejects(folder, dry_run=False, input_fn=input, toplevel_authors=None):
     """Re-verify + re-categorize files already sitting inside the _REJECTS bin.
 
-    Files that ended up in _REJECTS on a previous run are web-verified but
+    Files that ended up in _REJECTS on a previous run are offline-verified but
     uncategorized (their filename missed the offline keywords AND no Nexus
     category resolved at the time - often because the tool thought it was
     offline). This pass looks each one up AGAIN (mod-ID reference cache ->
-    verified cache -> live Nexus page, now including login-gated adult pages)
+    verified cache -> offline info archive)
     and moves every verified file that has since gained a real folder out of
     the bin and into its category. Genuinely unclassifiable/unverified files
     stay in the bin, reported.
 
-    Safety: only web-verified Cyberpunk 2077 mods are moved; everything else
+    Safety: only offline-verified Cyberpunk 2077 mods are moved; everything else
     is reported and LEFT IN PLACE. Never deletes, never overwrites.
     Returns the number of files rescued from the bin.
     """
@@ -597,11 +595,12 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=False,
 
 
 def build_verified_gate(folder, kept):
-    """Web-verify the keep list per the 'never touch unverified' rule.
+    """Offline-verify the keep list per the 'never touch unverified' rule.
 
     Returns (verified_fns, flagged_fns): the allowlist used by the move paths.
     Only filenames in verified_fns may be moved. Uses the local verified cache
-    first, then a read-only Nexus lookup.
+    first, then the offline info archive (bundled seeds / WTNC list / library
+    history). Zero network access.
     """
     from gigasort.core import storage, verify
     cache = storage.load_cache(folder)
@@ -659,21 +658,47 @@ def route_hold_conflicts(result, verified, dry_run=False, input_fn=input):
     return moved
 
 
-def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
-    """Execute the plan under the safety guards. Returns moved count.
+def _move_skip_collision(folder, src, dst, dry_run=False, input_fn=None,
+                         dup_bin=DUPLICATES_BIN):
+    """Move src -> dst, but never abort the whole sort on a name collision.
 
-    SAFETY: the 'never touch unverified' rule is absolute here. Only files
-    web-verified as real Cyberpunk 2077 mods (or already APPROVED in cache)
-    may be moved, trashed, or otherwise altered. Everything else is reported
-    and LEFT IN PLACE regardless of the user's reject choice.
+    If `dst` already holds a file with the same name (a leftover root copy of a
+    mod that is already organized/rejected below the workspace root), the
+    source is a duplicate download: it is MOVED into `dup_bin` instead of
+    erroring out, so one run can finish regardless of pre-existing copies.
+    If the duplicate bin already holds that name too, the source is left in
+    place (never overwritten, never deleted).
     """
-    folder = result.folder
+    if os.path.abspath(src) == os.path.abspath(dst):
+        return False
+    if os.path.exists(dst):
+        dup_dst = os.path.join(folder, dup_bin, os.path.basename(src))
+        if os.path.exists(dup_dst):
+            return False
+        fs.guarded_makedirs(folder, os.path.dirname(dup_dst),
+                            input_fn=input_fn or input,
+                            strict=False)
+        fs.guarded_move(folder, src, dup_dst, dry_run=dry_run,
+                        input_fn=input_fn or input)
+        storage.record_move(folder, src, dup_dst, dry_run)
+        return True
+    fs.guarded_makedirs(folder, os.path.dirname(dst), input_fn=input_fn or input)
+    fs.guarded_move(folder, src, dst, dry_run=dry_run, input_fn=input_fn or input)
+    storage.record_move(folder, src, dst, dry_run)
+    return True
+
+
+def _execute_plan(folder, result, dry_run, input_fn, toplevel_authors,
+                  plus_batch, groups, reject_mode="prompt", to_rejects=True):
+    """Verified-only move engine shared by execute_sort (interactive reject
+    prompt) and run_batch_sort (headless auto-bin). Returns the summary dict.
+
+    reject_mode:
+      "prompt"  interactive b/i/r/s prompt for verified rejects (execute_sort;
+                a skip-returning input_fn leaves them in place, e.g. the GUI)
+      "auto"    auto-bin verified rejects to _REJECTS when to_rejects (headless)
+    """
     moved = 0
-    if toplevel_authors is None:
-        toplevel_authors = result.toplevel_authors or list(TOPLEVEL_AUTHORS)
-    else:
-        toplevel_authors = list(toplevel_authors)
-    plus_batch = result.author_plus_batch
 
     # In author-only mode only files from listed authors are ever touched;
     # everything else is left exactly where it is.
@@ -683,27 +708,27 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
 
     plan_files = [fn for files in result.plan.values() for fn, _ in files]
     reject_files = [fn for fn, _ in result.rejects] if plus_batch else []
-    to_verify = [(fn, 0) for fn in plan_files + reject_files]
-    to_verify += relevant_dupes
-    to_verify += [(fn, s) for fn, _src, _dst, s in result.relocate]
+
     # Also re-verify anything already sitting in the _REJECTS bin: a file may
-    # have been binned by a TRANSIENT lookup failure (rate-limit/5xx) on an
-    # earlier run even though it is a real Nexus mod. Including it in the
-    # gate lets this run repair that - a verified mod is never stranded just
-    # because one fetch hiccoughed.
+    # have been binned by a stale/category-less guess on an earlier run even
+    # though it is a real mod. Including it in the gate lets this run repair
+    # that - a verified mod is never stranded just because one run misjudged.
     bin_dir = os.path.join(folder, REJECT_BIN)
     bin_files = []
     if os.path.isdir(bin_dir):
         bin_files = [(fn, 0) for fn in os.listdir(bin_dir)
                      if os.path.isfile(os.path.join(bin_dir, fn))]
-        to_verify += bin_files
-    verified, flagged = build_verified_gate(folder, to_verify)
+
+    verified, flagged = build_verified_gate(
+        folder, [(fn, 0) for fn in plan_files + reject_files]
+        + relevant_dupes
+        + [(fn, s) for fn, _s, _d, s in result.relocate] + bin_files)
 
     # Rescue verified mods from the reject pile. 'Matched no category keyword'
-    # is NOT the same as 'not a mod': a web-verified Nexus mod whose filename
-    # missed the offline keywords is re-classified from its authoritative
-    # Nexus category (cached first, live page when online) and sorted into a
-    # real folder. Only genuinely unclassifiable files remain rejects.
+    # is NOT the same as 'not a mod': an offline-verified Nexus mod whose
+    # filename missed the offline keywords is re-classified from its
+    # authoritative record (cached ref / offline info archive) and sorted
+    # into a real folder. Only genuinely unclassifiable files remain rejects.
     rescued = {}
     if result.rejects and plus_batch:
         rescued = rescue_verified_rejects(
@@ -712,42 +737,43 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
             result.rejects = [(f, s) for f, s in result.rejects if f != rfn]
             result.plan.setdefault(rcat, []).append((rfn, rsize))
         if rescued:
-            print("Rescued %d verified mod(s) from rejects (Nexus category):"
+            print("Rescued %d verified mod(s) from rejects (cached category):"
                   % len(rescued))
             for rfn, (_rcat, _sz) in rescued.items():
                 print("  -> %s" % rfn)
 
-    # Rejects (report + prompt, mirroring the always-ask behaviour).
-    if result.rejects and plus_batch:
-        print("\n" + "=" * 70)
-        print("REJECT PILE - action required")
-        print("=" * 70)
-        verified_rejects = [fn for fn, _ in result.rejects if fn in verified]
-        unverified = [fn for fn, _ in result.rejects if fn not in verified]
-        reject_sizes = dict(result.rejects)
-        for fn, _size in result.rejects:
-            print("  • %s  (no category after keyword + Nexus triple-check)" % fn)
-        if unverified:
-            print("\n  UNVERIFIED (left in place, never touched):")
-            for fn in unverified:
-                print("    • %s" % fn)
-        if not verified_rejects:
-            print("\n  No verified rejects to act on - all reject files kept.")
-        else:
+    # Rejects: interactive prompt (execute_sort) or headless auto-bin.
+    verified_rejects = [fn for fn, _ in result.rejects if fn in verified]
+    to_rejects_moved = 0
+    if result.rejects and plus_batch and verified_rejects:
+        if reject_mode == "prompt":
+            print("\n" + "=" * 70)
+            print("REJECT PILE - action required")
+            print("=" * 70)
+            reject_sizes = dict(result.rejects)
+            for fn, _size in result.rejects:
+                print("  %s  (no category after keyword + cached check)" % fn)
+            unverified = [fn for fn, _ in result.rejects if fn not in verified]
+            if unverified:
+                print("\n  UNVERIFIED (left in place, never touched):")
+                for fn in unverified:
+                    print("    %s" % fn)
             try:
                 mode = input_fn("  [b] Batch to _REJECTS | [i] Individual | "
-                                "[r] Batch to _TRASH | [s] Skip: ").strip().lower()
+                                "[r] Batch to _TRASH | [s] Skip: "
+                                ).strip().lower()
             except (EOFError, KeyboardInterrupt):
                 mode = "s"
             if mode == "s":
                 print("  Skipping rejects - left in place.")
             elif mode == "i":
                 for fn in verified_rejects:
-                    print("\n  • %s (%s)" % (fn, human_size(reject_sizes[fn])))
+                    print("\n  %s (%s)" % (fn, human_size(reject_sizes[fn])))
                     act = input_fn("      [1] _REJECTS | [2] _TRASH | [k] keep: "
                                    "").strip().lower()
                     if act == "1":
                         _to_bin(folder, fn, REJECT_BIN, dry_run, input_fn)
+                        to_rejects_moved += 1
                     elif act == "2":
                         _to_bin(folder, fn, TRASH_BIN, dry_run, input_fn)
             elif mode == "r":
@@ -757,7 +783,18 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
             else:
                 for fn in verified_rejects:
                     _to_bin(folder, fn, REJECT_BIN, dry_run, input_fn)
+                    to_rejects_moved += 1
                 print("  Batch: moved verified rejects to %s." % REJECT_BIN)
+        else:
+            if to_rejects:
+                fs.guarded_makedirs(folder, bin_dir)
+                for fn in verified_rejects:
+                    storage.prepare_one_bin(folder, fn, REJECT_BIN, dry_run)
+                    src = os.path.join(folder, fn)
+                    dst = os.path.join(bin_dir, fn)
+                    if os.path.abspath(src) != os.path.abspath(dst):
+                        _move_skip_collision(folder, src, dst, dry_run=dry_run)
+                        to_rejects_moved += 1
 
     # Game-directory conflicts -> _ON_HOLD (a verified mod that would
     # overwrite an installed file is reviewed, not sorted into its category).
@@ -768,17 +805,6 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
     #   listed author     -> <author>/<file>                (top-level folder)
     #   niche framework   -> <cat>/<framework>/<author?>/<file>
     #   otherwise         -> <cat>/<author?>/<file>
-    # The framework folder lives INSIDE the mod's category, so a framework
-    # (e.g. Virtual Atelier) can exist in several category folders while each
-    # mod - including the core framework zip - stays within its own category.
-    groups = {}
-    if result.group_frameworks and plus_batch:
-        try:
-            groups = resolve_framework_groups(
-                folder, result.kept, storage.load_cache(folder),
-                toplevel_authors=toplevel_authors)
-        except Exception:
-            groups = {}
     for cat, files in result.plan.items():
         for fn, _ in files:
             if fn not in verified:
@@ -814,19 +840,6 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
                                     input_fn=input_fn):
                 moved += 1
 
-    # Already-organized files sitting in the wrong place -> relocate them to
-    # where this mode would have put them (verified only).
-    relocated = 0
-    for fn, src, dst, _size in result.relocate:
-        if fn not in verified:
-            flagged.add(fn)
-            continue
-        fs.guarded_makedirs(folder, os.path.dirname(dst), input_fn=input_fn)
-        if _move_skip_collision(folder, src, dst, dry_run=dry_run,
-                                input_fn=input_fn):
-            relocated += 1
-    moved += relocated
-
     # Duplicates -> _DUPLICATES (verified only, listed authors in the
     # author-only mode).
     if relevant_dupes:
@@ -842,16 +855,30 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
                                     input_fn=input_fn):
                 moved += 1
 
-    if flagged:
-        print("\nNOT TOUCHED (%d unverified - never moved/trashed):" % len(flagged))
-        for fn in sorted(flagged):
-            print("  • %s" % fn)
+    # Already-organized files sitting in the wrong place -> relocate them to
+    # where this mode would have put them (verified only).
+    relocated = 0
+    for fn, src, dst, _size in result.relocate:
+        if fn not in verified:
+            flagged.add(fn)
+            continue
+        fs.guarded_makedirs(folder, os.path.dirname(dst), input_fn=input_fn)
+        if _move_skip_collision(folder, src, dst, dry_run=dry_run,
+                                input_fn=input_fn):
+            relocated += 1
+    moved += relocated
 
-    # Repair stranded _REJECTS: a verified Nexus mod whose category now
-    # resolves (cached ref, live Nexus page, or login-gated og:identity) is
+    if flagged:
+        print("\nNOT TOUCHED (%d unverified - never moved/trashed):"
+              % len(flagged))
+        for fn in sorted(flagged):
+            print("  %s" % fn)
+
+    # Repair stranded _REJECTS: an offline-verified Nexus mod whose category
+    # now resolves (cached ref / offline info archive) is
     # pulled OUT of the reject bin and sorted into its folder. The bin may
-    # have been caused by a transient lookup failure on an earlier run.
-    # Only web-verified files move; everything else stays in the bin,
+    # be leftover from a run before the offline info archive was available.
+    # Only offline-verified files move; everything else stays in the bin,
     # reported. Never deletes.
     rescued_bin = 0
     if plus_batch and bin_files:
@@ -880,48 +907,52 @@ def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
     pruned = prune_empty_dirs(folder, dry_run=dry_run)
 
     _write_tags_safe(folder)
+
     return {
         "moved": moved,
-        "to_rejects": 0,
+        "to_rejects": to_rejects_moved,
         "rescued": len(rescued),
         "duplicates": len(result.duplicates),
         "archives": len(result.kept) + len(result.duplicates),
         "dry_run": bool(dry_run),
         "flagged_unverified": sorted(flagged),
         "relocated": relocated,
+        "frameworks": sorted(set(groups.values())),
         "pruned": pruned,
         "held_conflicts": held_conflicts,
     }
 
 
-def _move_skip_collision(folder, src, dst, dry_run=False, input_fn=None,
-                         dup_bin=DUPLICATES_BIN):
-    """Move src -> dst, but never abort the whole sort on a name collision.
+def execute_sort(result, dry_run=False, input_fn=input, toplevel_authors=None):
+    """Execute a scanned plan under the safety guards. Returns a summary dict.
 
-    If `dst` already holds a file with the same name (a leftover root copy of a
-    mod that is already organized/rejected below the workspace root), the
-    source is a duplicate download: it is MOVED into `dup_bin` instead of
-    erroring out, so one run can finish regardless of pre-existing copies.
-    If the duplicate bin already holds that name too, the source is left in
-    place (never overwritten, never deleted).
+    Reject handling is interactive (a skip-returning input_fn leaves verified
+    rejects in place). SAFETY: only files offline-verified as real Cyberpunk
+    2077 mods may be moved/trashed; everything else is reported and left in
+    place regardless of the user's reject choice.
     """
-    if os.path.abspath(src) == os.path.abspath(dst):
-        return False
-    if os.path.exists(dst):
-        dup_dst = os.path.join(folder, dup_bin, os.path.basename(src))
-        if os.path.exists(dup_dst):
-            return False
-        fs.guarded_makedirs(folder, os.path.dirname(dup_dst),
-                            input_fn=input_fn or input,
-                            strict=False)
-        fs.guarded_move(folder, src, dup_dst, dry_run=dry_run,
-                        input_fn=input_fn or input)
-        storage.record_move(folder, src, dup_dst, dry_run)
-        return True
-    fs.guarded_makedirs(folder, os.path.dirname(dst), input_fn=input_fn or input)
-    fs.guarded_move(folder, src, dst, dry_run=dry_run, input_fn=input_fn or input)
-    storage.record_move(folder, src, dst, dry_run)
-    return True
+    folder = result.folder
+    _ensure_offline_archive(folder)
+
+    if toplevel_authors is None:
+        toplevel_authors = result.toplevel_authors or list(TOPLEVEL_AUTHORS)
+    else:
+        toplevel_authors = list(toplevel_authors)
+    plus_batch = result.author_plus_batch
+
+    # Niche-framework grouping, resolved from the current cache only (no
+    # network; the offline archive/heal path already ran before the gate).
+    groups = {}
+    if result.group_frameworks and plus_batch:
+        try:
+            groups = resolve_framework_groups(
+                folder, result.kept, storage.load_cache(folder),
+                toplevel_authors=toplevel_authors)
+        except Exception:
+            groups = {}
+
+    return _execute_plan(folder, result, dry_run, input_fn, toplevel_authors,
+                         plus_batch, groups, reject_mode="prompt")
 
 
 def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None,
@@ -930,11 +961,14 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
     """Headless, non-interactive sort (used by --apply and the agent bridge's
     batch-sort op). Returns a summary dict.
 
-    SAFETY: only web-verified Cyberpunk 2077 mods are ever moved. Any file
-    that is not confirmed (no Nexus mod id, or the page does not resolve to a
-    real CP2077 mod) is routed to _REJECTS instead of being sorted or deleted.
+    SAFETY: only offline-verified Cyberpunk 2077 mods are ever moved. Any file
+    that is not confirmed (no Nexus mod id, or no offline record/CP2077
+    structure) is simply left in place and reported; verified rejects go to
+    _REJECTS when to_rejects is set. Never deletes.
     """
     from gigasort.core import verify
+
+    _ensure_offline_archive(folder)
 
     if toplevel_authors is None:
         toplevel_authors = list(TOPLEVEL_AUTHORS)
@@ -945,22 +979,16 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
                             author_plus_batch=author_plus_batch,
                             group_frameworks=group_frameworks,
                             game_dir=game_dir)
-    moved = 0
     plus_batch = author_plus_batch or result.author_plus_batch
 
-    # In author-only mode only listed authors' files are ever touched.
-    relevant_dupes = [(fn, s) for fn, s in result.duplicates
-                      if plus_batch or _author_matches(
-                          extract_mod_author(fn), toplevel_authors)]
-    plan_files = [fn for files in result.plan.values() for fn, _ in files]
-    reject_files = [fn for fn, _ in result.rejects] if plus_batch else []
-    relocate_files = [(fn, s) for fn, _src, _dst, s in result.relocate]
-
-    # Fetch dep data first so framework grouping is complete before moving.
+    # Dep data first so framework grouping is complete before moving.
     groups = {}
     if plus_batch and group_frameworks:
         try:
             nested = collect_nested_archives(folder, toplevel_authors)
+            plan_files = [fn for files in result.plan.values()
+                          for fn, _ in files]
+            reject_files = [fn for fn, _ in result.rejects] if plus_batch else []
             verify.fetch_dependencies(
                 folder, [(fn, 0) for fn in plan_files + reject_files])
             verify.fetch_dependencies(
@@ -974,34 +1002,6 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
                 group_frameworks=group_frameworks, cache=cache)
         except Exception:
             groups = {}
-    relocate_files = [(fn, s) for fn, _src, _dst, s in result.relocate]
-
-    # Also re-verify anything already sitting in the _REJECTS bin: a file may
-    # have been binned by a TRANSIENT lookup failure (rate-limit/5xx) on an
-    # earlier run even though it is a real Nexus mod. Including it in the
-    # gate lets this run repair that - a verified mod is never stranded just
-    # because one fetch hiccoughed.
-    bin_dir = os.path.join(folder, REJECT_BIN)
-    bin_files = []
-    if os.path.isdir(bin_dir):
-        bin_files = [(fn, 0) for fn in os.listdir(bin_dir)
-                     if os.path.isfile(os.path.join(bin_dir, fn))]
-
-    verified, flagged = build_verified_gate(
-        folder, [(fn, 0) for fn in plan_files + reject_files]
-        + relevant_dupes + relocate_files + bin_files)
-
-    # Rescue verified mods from the reject pile (Nexus-category triple-check).
-    rescued = {}
-    if result.rejects and plus_batch:
-        rescued = rescue_verified_rejects(
-            folder, result.rejects, verified, storage.load_cache(folder))
-        for rfn, (rcat, rsize) in rescued.items():
-            result.rejects = [(f, s) for f, s in result.rejects if f != rfn]
-            result.plan.setdefault(rcat, []).append((rfn, rsize))
-
-    # Game-directory conflicts -> _ON_HOLD (reviewed, not placed normally).
-    held_conflicts = route_hold_conflicts(result, verified, dry_run=dry_run)
 
     # Recognize + cache the installed collection structure (e.g. CyberVision's
     # zw_<order>_<id>_* loadout) so downloads can be compared against the
@@ -1017,129 +1017,9 @@ def run_batch_sort(folder, dry_run=False, to_rejects=True, toplevel_authors=None
         except Exception:
             pass
 
-    # Every planned move is allowed only if the file is verified.
-    for cat, files in list(result.plan.items()):
-        for fn, _ in files:
-            if fn not in verified:
-                flagged.add(fn)
-                continue
-            src = os.path.join(folder, fn)
-            author = extract_mod_author(fn)
-            if author and _author_matches(author, toplevel_authors):
-                auth_dir = os.path.join(folder, author)
-                fs.guarded_makedirs(folder, auth_dir)
-                dst = os.path.join(auth_dir, fn)
-            elif fn in groups:
-                cat_dir = os.path.join(folder, cat)
-                fs.guarded_makedirs(folder, cat_dir)
-                grp_dir = os.path.join(cat_dir, groups[fn])
-                fs.guarded_makedirs(folder, grp_dir)
-                if author:
-                    auth_dir = os.path.join(grp_dir, author)
-                    fs.guarded_makedirs(folder, auth_dir)
-                    dst = os.path.join(auth_dir, fn)
-                else:
-                    dst = os.path.join(grp_dir, fn)
-            else:
-                cat_dir = os.path.join(folder, cat)
-                fs.guarded_makedirs(folder, cat_dir)
-                if author:
-                    auth_dir = os.path.join(cat_dir, author)
-                    fs.guarded_makedirs(folder, auth_dir)
-                    dst = os.path.join(auth_dir, fn)
-                else:
-                    dst = os.path.join(cat_dir, fn)
-            if _move_skip_collision(folder, src, dst, dry_run=dry_run):
-                moved += 1
-
-    # Verified rejects go to _REJECTS; unverified flagged files are NEVER
-    # touched (left in place so nothing is auto-moved or lost). In the
-    # author-only mode there are no rejects (other files stay in place).
-    verified_rejects = [fn for fn, _ in result.rejects if fn in verified]
-    if verified_rejects and to_rejects and plus_batch:
-        bin_dir = os.path.join(folder, REJECT_BIN)
-        fs.guarded_makedirs(folder, bin_dir)
-        for fn in verified_rejects:
-            storage.prepare_one_bin(folder, fn, REJECT_BIN, dry_run)
-            src = os.path.join(folder, fn)
-            dst = os.path.join(bin_dir, fn)
-            if os.path.abspath(src) != os.path.abspath(dst):
-                _move_skip_collision(folder, src, dst, dry_run=dry_run)
-
-    # Duplicates: only verified duplicates may move (listed authors in the
-    # author-only mode).
-    if relevant_dupes:
-        dup_dir = os.path.join(folder, DUPLICATES_BIN)
-        fs.guarded_makedirs(folder, dup_dir)
-        for fn, _ in relevant_dupes:
-            if fn not in verified:
-                flagged.add(fn)
-                continue
-            src = os.path.join(folder, fn)
-            dst = os.path.join(dup_dir, fn)
-            if _move_skip_collision(folder, src, dst, dry_run=dry_run):
-                moved += 1
-
-    # Already-organized files sitting in the wrong place -> relocate them to
-    # where this mode would have put them (verified only).
-    relocated = 0
-    for fn, src, dst, _size in result.relocate:
-        if fn not in verified:
-            flagged.add(fn)
-            continue
-        fs.guarded_makedirs(folder, os.path.dirname(dst))
-        if _move_skip_collision(folder, src, dst, dry_run=dry_run):
-            relocated += 1
-    moved += relocated
-
-    # Repair stranded _REJECTS: a verified Nexus mod whose category now
-    # resolves (cached ref, live Nexus page, or login-gated og:identity) is
-    # pulled OUT of the reject bin and sorted into its folder. The bin may
-    # have been caused by a transient lookup failure on an earlier run.
-    # Only web-verified files move; everything else stays in the bin,
-    # reported. Never deletes.
-    rescued_bin = 0
-    if plus_batch and bin_files:
-        for rfn, (rcat, _rsize) in rescue_verified_rejects(
-                folder, bin_files, verified, storage.load_cache(folder)).items():
-            src = os.path.join(bin_dir, rfn)
-            cat_dir = os.path.join(folder, rcat)
-            fs.guarded_makedirs(folder, cat_dir)
-            author = extract_mod_author(rfn)
-            if author and _author_matches(author, toplevel_authors):
-                auth_dir = os.path.join(cat_dir, author)
-                fs.guarded_makedirs(folder, auth_dir)
-                dst = os.path.join(auth_dir, rfn)
-            else:
-                dst = os.path.join(cat_dir, rfn)
-            if _move_skip_collision(folder, src, dst, dry_run=dry_run):
-                moved += 1
-                rescued_bin += 1
-                print("  rescued from %s: %s -> %s" % (REJECT_BIN, rfn, rcat))
-        if rescued_bin:
-            print("Rescued %d previously-binned verified mod(s) out of %s."
-                  % (rescued_bin, REJECT_BIN))
-
-    # Sweep empty folders left behind by the sort (only truly empty dirs).
-    pruned = prune_empty_dirs(folder, dry_run=dry_run)
-
-    _write_tags_safe(folder)
-
-    return {
-        "moved": moved,
-        "to_rejects": len(verified_rejects) if to_rejects and plus_batch else 0,
-        "rescued": len(rescued),
-        "duplicates": len(result.duplicates),
-        "archives": len(result.kept) + len(result.duplicates),
-        "dry_run": bool(dry_run),
-        "flagged_unverified": sorted(flagged),
-        "relocated": relocated,
-        "frameworks": sorted(set(groups.values())),
-        "pruned": pruned,
-        "held_conflicts": held_conflicts,
-    }
-
-
+    return _execute_plan(folder, result, dry_run, lambda *a: "s",
+                         toplevel_authors, plus_batch, groups,
+                         reject_mode="auto", to_rejects=to_rejects)
 def prune_empty_dirs(folder, dry_run=False):
     """Remove directories in the workspace that contain absolutely nothing.
 

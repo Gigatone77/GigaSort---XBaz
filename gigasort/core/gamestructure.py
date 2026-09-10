@@ -1,8 +1,10 @@
 """Game-structure sort (--gamestructure) and archive extraction.
 
 Compiles ready-to-use Cyberpunk 2077 folder trees by resolving each archive's
-local layout first, then falling back to Nexus info and trusted pages. Never
-guesses blindly: anything it cannot place confidently is left `manual`.
+local layout first, then falling back to the verified reference structure
+(the user's cleaned WTNC-based "drop-ready package" game tree, when present),
+Nexus info and trusted pages. Never guesses blindly: anything it cannot place
+confidently is left `manual`.
 
 Every extraction is guarded (path sanitisation + workspace fence) and any
 overwrite is detected with an optional timestamped backup before commit.
@@ -16,7 +18,7 @@ import zipfile
 
 from gigasort.constants import (
     CP2077_ROOT_DIRS, GS_STRUCTURE_DIR, GS_STAGE_DIR,
-    GS_MANIFEST, GS_BACKUP_DIR,
+    GS_MANIFEST, GS_BACKUP_DIR, DEFAULT_REFERENCE_STRUCTURE,
 )
 from gigasort.utils import fs
 from gigasort.utils.format import human_size
@@ -29,6 +31,10 @@ class ExtractionError(RuntimeError):
 
 class StructureError(RuntimeError):
     """Raised when an archive's layout cannot be placed confidently."""
+
+
+# The reference tree is walked once per run, not once per archive.
+_REFERENCE_INDEX_CACHE = {}
 
 
 def _norm_rel(path):
@@ -60,11 +66,88 @@ def _game_subpaths(entries):
     return subs, loose
 
 
+def _reference_root():
+    """Absolute path of the verified reference structure, or None.
+
+    Env var GS_REFERENCE_GAME_STRUCTURE wins; otherwise the default path
+    (the user's cleaned WTNC-based drop-ready package). Only returned when
+    the folder exists on disk - on any other machine the reference simply
+    isn't available and resolution falls back to the old behaviour.
+    """
+    path = os.environ.get("GS_REFERENCE_GAME_STRUCTURE")
+    if not path:
+        path = DEFAULT_REFERENCE_STRUCTURE
+    if path and os.path.isdir(path):
+        return path
+    return None
+
+
+def _reference_index(root):
+    """Map {game-subdir: set(extensions)} from a verified reference structure.
+
+    The reference is the source of truth for where each file type lives in
+    this user's game tree (e.g. r6/scripts holds .reds, r6/tweaks holds .yaml,
+    bin/x64/plugins holds CET .lua/.dll). Directories with no files are
+    ignored; deeper (more specific) subdirs win on a tie.
+
+    Memoized per (root, mtime): the tree is identical across one run, so it
+    is walked once instead of once per archive.
+    """
+    key = (root, os.path.getmtime(root))
+    cached = _REFERENCE_INDEX_CACHE.get(key)
+    if cached is not None:
+        return cached
+    index = {}
+    for dirpath, _dirnames, filenames in os.walk(root):
+        rel = os.path.normpath(os.path.relpath(dirpath, root))
+        if rel == ".":
+            continue
+        exts = {os.path.splitext(f)[1].lower() for f in filenames}
+        exts.discard("")
+        if exts:
+            index.setdefault(rel, set()).update(exts)
+    _REFERENCE_INDEX_CACHE[key] = index
+    return index
+
+
+def _ext_to_subdir(ext, index):
+    """Best game-subdir for a loose entry's extension per the reference, or
+    None. Shallowest (top-most) matching destination wins: a loose file that
+    ships at the archive root belongs at the top of its own subdir (e.g.
+    scanner.reds -> r6/scripts), not inside a deep subfolder of it."""
+    best = None
+    for sub, exts in sorted(index.items()):
+        if ext in exts and (best is None or sub.count("/") < best.count("/")):
+            best = sub
+    return best
+
+
+def _reference_layout(loose, index):
+    """Map loose/unknown entries onto a verified reference structure.
+
+    Returns a plan dict (method "reference") with subpaths (deduped
+    destination game-subdirs) and a `_moves` map {loose_entry: subdir} so the
+    compile loop can stage each loose file into its subdir before copying; or
+    None if nothing resolves.
+    """
+    moves = {}
+    for e in loose:
+        ext = os.path.splitext(e)[1].lower()
+        sub = _ext_to_subdir(ext, index) if ext else None
+        if sub:
+            moves[e] = sub
+    if moves:
+        return {"method": "reference", "subpaths": sorted(set(moves.values())),
+                "category": None, "_moves": moves}
+    return None
+
+
 def _resolve_layout(folder, path):
     """Determine how an archive maps into the game tree.
 
     Returns dict {method, subpaths, loose, category}. Strategies in order:
-    local (game-shaped) -> nested (one wrapper) -> nexus -> trusted -> manual.
+    local (game-shaped) -> nested (one wrapper) -> reference (verified
+    structure) -> nexus -> trusted -> manual.
     """
     from gigasort.core import compat
     entries = compat.list_entries(path)
@@ -87,18 +170,36 @@ def _resolve_layout(folder, path):
                     "loose": inner_loose, "category": None,
                     "_wrapper": wrapper}
         # wrapper present but inner contents not game-shaped; fall through
-        # to nexus/manual with the full entry list
+        # to reference/nexus/manual with the full entry list
         entries = [wrapper + "/" + e for e in inner_entries] + inner_loose
+        subs, loose = _game_subpaths(entries)
 
-    # nexus category fallback
+    # verified reference-structure fallback for loose/unknown payloads: the
+    # user's own cleaned game tree tells us where each file type belongs
+    ref_root = _reference_root()
+    if loose and ref_root:
+        ref = _reference_layout(loose, _reference_index(ref_root))
+        if ref:
+            return ref
+
+    # offline category fallback (ID cache / offline info archive)
     from gigasort.core.categorize import extract_mod_id
     mid = extract_mod_id(path)
     cat = None
     if mid:
-        from gigasort.utils import net
-        _t, ncat = net.lookup_nexus_category(mid)
-        cat = ncat
-    return {"method": "nexus" if cat else "manual",
+        try:
+            from gigasort.core import storage, signature
+            refs = storage.load_references(folder) or {}
+            ref = refs.get(mid) or {}
+            if ref.get("verified") and isinstance(ref.get("category"), str):
+                cat = ref["category"]
+            else:
+                rec = signature.offline_lookup(folder, mid)
+                if rec and rec.get("verified"):
+                    cat = rec.get("category")
+        except Exception:
+            cat = None
+    return {"method": "offline-category" if cat else "manual",
             "subpaths": {"archive"} if cat else set(),
             "loose": loose, "category": cat}
 
@@ -112,8 +213,10 @@ def _safe_extract(root, archive_path, dest_dir):
     if ext == ".zip":
         with zipfile.ZipFile(archive_path) as zf:
             for info in zf.infolist():
+                if info.is_dir() or info.filename.endswith("/"):
+                    continue
                 name = _norm_rel(info.filename)
-                if not name or name.endswith("/"):
+                if not name:
                     continue
                 target = os.path.join(dest_dir, name)
                 fs.guard_under(root, target)
@@ -197,10 +300,18 @@ def _backup_existing(dest_root, sub, rel):
 
 def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
                       input_fn=input):
-    """The main game-structure mode: resolve -> plan -> stage/install."""
+    """The main game-structure mode: resolve -> plan -> stage/install.
+
+    Dry-run performs ZERO writes: no extraction, no directory creation, no
+    backups, no manifest. It prints the full per-archive plan (what would be
+    extracted from where) so the user can preview the mapping safely.
+    """
     plan, manual = _collect_plan(folder)
     print("=" * 70)
     print("GAME-STRUCTURE SORT")
+    ref_root = _reference_root()
+    if ref_root:
+        print("  reference structure: %s" % ref_root)
     print("=" * 70)
     for method, items in plan.items():
         print("  [%s] %d archive(s)" % (method, len(items)))
@@ -216,6 +327,23 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
         if ans not in ("y", "yes", "confirm"):
             print("Aborted.")
             return
+    else:
+        # Dry-run plan preview: report every archive and its target subdirs,
+        # then stop before ANY writes (no extraction / makedirs / backup).
+        total_plan = sum(len(items) for items in plan.values())
+        if total_plan:
+            print("\nDRY RUN - would place into '%s':" % dest_root)
+            for _method, items in plan.items():
+                for fn, r in items:
+                    subs = sorted(r.get("subpaths") or ())
+                    if subs:
+                        print("  %s -> %s" % (fn, ", ".join(subs)))
+                    else:
+                        print("  %s -> (skip: no placeable content)" % fn)
+        else:
+            print("\nDRY RUN - nothing to compile.")
+        print("\nNo changes made (dry run).")
+        return
 
     os.makedirs(dest_root, exist_ok=True)
 
@@ -244,12 +372,26 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
                 work = os.path.join(stage, "_%s" % compiled)
                 try:
                     _safe_extract(folder, src, work)
+                    # reference-resolved loose files: stage each loose entry
+                    # into its mapped subdir so the copy below picks it up
+                    if r.get("method") == "reference":
+                        for rel, sub in (r.get("_moves") or {}).items():
+                            src_path = os.path.normpath(os.path.join(work, rel))
+                            fs.guard_under(folder, src_path)
+                            sub_dir = os.path.join(work, sub)
+                            fs.guard_under(folder, sub_dir)
+                            if not os.path.isfile(src_path):
+                                continue
+                            os.makedirs(sub_dir, exist_ok=True)
+                            shutil.move(src_path,
+                                        os.path.join(sub_dir, os.path.basename(rel)))
                     subpaths = r.get("subpaths")
                     if not subpaths:
                         print("    skipped (no placeable content): %s" % fn)
                         skipped += 1
                         continue
                     wrapper = r.get("_wrapper")
+                    placed_any = False
                     for sub in sorted(subpaths):
                         if wrapper:
                             src_dir = os.path.join(work, wrapper, sub)
@@ -265,6 +407,11 @@ def run_gamestructure(folder, game_dir=None, dry_run=False, strict=False,
                         dst_dir = os.path.join(dest_root, sub)
                         _copy_dir_guarded(dest_root, src_dir, dst_dir,
                                           dry_run, strict=strict)
+                        placed_any = True
+                    if not placed_any:
+                        print("    skipped (no placeable content): %s" % fn)
+                        skipped += 1
+                        continue
                     compiled += 1
                 except ExtractionError as exc:
                     print("  extraction failed %s: %s" % (fn, exc))
@@ -298,11 +445,12 @@ def _copy_dir_guarded(dest_root, src_dir, dst_dir, dry_run, strict=False):
             src = os.path.join(root2, f)
             rel = os.path.join(rel_root, f) if rel_root != "." else f
             dst = os.path.join(dst_dir, rel)
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
             if os.path.exists(dst):
-                backup = _backup_existing(dest_root,
-                                          os.path.relpath(dst_dir, dest_root),
-                                          rel)
+                backup = None
+                if not dry_run:
+                    backup = _backup_existing(dest_root,
+                                              os.path.relpath(dst_dir, dest_root),
+                                              rel)
                 if backup:
                     print("    backed up -> %s" % os.path.basename(backup))
                 elif strict:
@@ -310,4 +458,5 @@ def _copy_dir_guarded(dest_root, src_dir, dst_dir, dry_run, strict=False):
                     continue
             if dry_run:
                 continue
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
             shutil.copy2(src, dst)

@@ -76,7 +76,7 @@ def execute_agent_request(folder, req_file):
             _write_result(root, {"ok": False, "op": op,
                                  "error": "move needs 'name' and 'category'"})
             return 1
-        # SAFETY: never move anything not web-verified as a CP2077 mod.
+        # SAFETY: never move anything not offline-verified as a CP2077 mod.
         from gigasort.core.sort import build_verified_gate
         verified, _flagged = build_verified_gate(folder, [(name, 0)])
         if name not in verified:

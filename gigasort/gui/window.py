@@ -129,3 +129,5 @@ class MainWindow(Adw.ApplicationWindow):
             page.workspace = self.scan_page.workspace
         self.undo_page.refresh()
         self.status_page.refresh()
+        self.rejects_page.refresh()
+        self.wtnc_page.refresh()

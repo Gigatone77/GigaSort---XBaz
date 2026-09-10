@@ -11,7 +11,6 @@ from gigasort.constants import (
 )
 from gigasort.core import storage, sort
 from gigasort.core.categorize import extract_mod_id, categorize
-from gigasort.utils import net
 from gigasort.utils.format import human_size
 
 
@@ -38,7 +37,7 @@ def run_json_report(folder):
         "tool": "GigaSort",
         "workspace": folder,
         "read_only": True,
-        "online": net.check_connectivity(),
+        "online": False,  # fully offline build
         "totals": {
             "archives": len(result.kept) + len(result.duplicates),
             "kept": len(result.kept),

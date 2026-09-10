@@ -25,7 +25,6 @@ from gigasort.core.categorize import (
 )
 from gigasort.core.sort import resolve_category
 from gigasort.core import storage
-from gigasort.utils import net
 
 
 # Scores at or above this threshold are reported as superseded.
@@ -269,11 +268,12 @@ def _score_pair(old_fn, new_fn, old_title, new_title, old_deps, new_deps,
 
 
 def _enrich_titles(mods, cache, folder):
-    """Fetch Nexus titles for mods not already cached. Returns updated cache.
+    """Load Nexus titles for mods not already cached. Returns updated cache.
 
-    Uses the persistent mod-ID REFERENCE cache first (verified on a previous
-    run — reused even offline); only falls back to a live fetch when ALLOW_NET
-    is True. One fetch per mod id — every file of the same mod page shares it.
+    Fully offline: titles come from the persistent mod-ID REFERENCE cache
+    (verified on a previous run or seeded by the bundled offline info
+    archive). One lookup per mod id — every file of the same mod page shares
+    it.
     """
     cache = cache or {}
     by_id = defaultdict(list)
@@ -288,16 +288,9 @@ def _enrich_titles(mods, cache, folder):
 
     changed = False
     refs = storage.load_references(folder) or {}
-    refs_dirty = False
     for mid, fns in by_id.items():
         ref = refs.get(mid) or {}
         title = ref["title"] if ref.get("verified") and ref.get("title") else None
-        if not title and net.ALLOW_NET:
-            title = net.fetch_nexus_title(mid)
-            if title:
-                refs[mid] = {"verified": True, "title": title,
-                             "category": None}
-                refs_dirty = True
         if not title:
             continue
         for fn in fns:
@@ -305,11 +298,6 @@ def _enrich_titles(mods, cache, folder):
         changed = True
     if changed:
         storage.save_cache(folder, cache)
-    if refs_dirty:
-        try:
-            storage.save_references(folder, refs)
-        except Exception:
-            pass
     return cache
 
 
@@ -358,8 +346,8 @@ def find_superseded(folder, mods, cache=None, progress=None):
             cat, author, fn, size = item
         else:
             fn, size = item
-        cat = categorize(fn)
-        author = extract_mod_author(fn)
+            cat = categorize(fn)
+            author = extract_mod_author(fn)
         if author:
             by_ctx[(cat or "", author)].append((fn, size))
 

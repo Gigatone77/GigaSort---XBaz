@@ -4,9 +4,9 @@ This tab (attached in the main window like the companion modules, but fully
 in-app) lets you act on files GigaSort could not categorize or verify:
 
   - lists the current `_REJECTS` bin plus unrecognized root archives;
-  - "Run search protocol" fires the SAME no-CAPTCHA search question the
-    sorter uses on a new mod, and shows what it finds (verified title,
-    Nexus-category folder, optional GitHub repo);
+  - "Look up offline" consults the offline info archive + ID cache and shows
+    the confirmed identity (verified title, category folder) if a record
+    exists;
   - a category dropdown + Apply persists a manual override AND records the
     discovered identity (verified cache + mod-ID reference cache + web
     override), so the NEXT sort recognizes and routes the file itself.
@@ -28,7 +28,6 @@ from gi.repository import Gtk, Adw, GLib
 from gigasort.constants import KNOWN_FOLDERS, REJECT_BIN
 from gigasort.core import sort, storage
 from gigasort.core.categorize import categorize, extract_mod_id
-from gigasort.utils import net
 from gigasort.utils.format import human_size
 from gigasort.gui.util import esc
 
@@ -87,14 +86,11 @@ class _OverrideRow(Adw.ActionRow):
         if not mod_id:
             self._set_info("No Nexus id in filename - manual override only.")
             return
-        self._set_info("Searching…")
+        self._set_info("Looking up offline…")
         self._search_btn.set_sensitive(False)
 
         def worker():
-            try:
-                res = net.investigate_mod(mod_id)
-            except Exception:
-                res = None
+            res = self.page.offline_lookup(mod_id)
             GLib.idle_add(self._on_search_done, mod_id, res)
 
         threading.Thread(target=worker, daemon=True).start()
@@ -103,13 +99,18 @@ class _OverrideRow(Adw.ActionRow):
         self._search_btn.set_sensitive(True)
         if not res or not res.get("verified"):
             self.found = {}
-            self._set_info("Search protocol found nothing for id %s "
-                           "(offline / rate-limited / dead page)." % mod_id)
+            self._set_info("No offline record proves id %s (leave in "
+                           "_REJECTS or apply a manual override)." % mod_id)
             return
-        self.found = res
-        folder = res.get("folder")
+        self.found = {
+            "verified": True,
+            "mod_id": mod_id,
+            "title": res.get("title"),
+            "folder": res.get("category"),
+            "source": res.get("sources", ["offline-archive"])[0],
+        }
+        folder = res.get("category")
         title = res.get("title") or "Cyberpunk 2077 mod %s" % mod_id
-        github = res.get("github") or ""
         bits = ["verified: %s" % title]
         if folder:
             bits.append("category: %s" % folder)
@@ -118,8 +119,6 @@ class _OverrideRow(Adw.ActionRow):
                 self._combo.set_selected(options.index(folder))
         else:
             bits.append("no category detected - pick one below")
-        if github:
-            bits.append("github: %s" % github)
         self._set_info(" | ".join(bits))
 
     def _on_apply(self, *args):
@@ -170,7 +169,7 @@ class RejectsPage(Adw.NavigationPage):
         header.append(Gtk.Label(hexpand=True))
 
         self._conn_label = Gtk.Label(
-            label="Offline", css_classes=["giga-veri-chip", "dim-label"])
+            label="Offline", css_classes=["giga-veri-chip", "error"])
         self._conn_label.set_ellipsize(3)
         header.append(self._conn_label)
 
@@ -178,22 +177,22 @@ class RejectsPage(Adw.NavigationPage):
         self._refresh_btn.connect("clicked", self._on_refresh)
         header.append(self._refresh_btn)
 
-        self._search_all_btn = Gtk.Button(label="Run search protocol")
+        self._search_all_btn = Gtk.Button(label="Look up all offline")
         self._search_all_btn.add_css_class("suggested-action")
         self._search_all_btn.set_tooltip_text(
-            "Run the sorter's no-CAPTCHA web search on every listed file to "
-            "recognize its Nexus page (verified title / category). Results "
-            "stay visible in each row; Apply persists them.")
+            "Look up every listed file in the offline info archive / ID "
+            "cache (verified title / category). Results stay visible in each "
+            "row; Apply persists them.")
         self._search_all_btn.connect("clicked", self._on_search_all)
         header.append(self._search_all_btn)
         outer.append(header)
 
         hint = Gtk.Label(
-            label="Files GigaSort could not route. 'Search' asks the mod's "
-                  "Nexus page (search protocol). 'Apply' records the chosen "
-                  "category so the NEXT sort recognizes it, and moves the "
-                  "archive there (duplicates go to _DUPLICATES, never "
-                  "deleted).",
+            label="Files GigaSort could not route. 'Search' consults the "
+                  "bundled offline archive for the mod's identity. 'Apply' "
+                  "records the chosen category so the NEXT sort recognizes "
+                  "it, and moves the archive there (duplicates go to "
+                  "_DUPLICATES, never deleted).",
             css_classes=["dim-label"], wrap=True)
         hint.set_xalign(0)
         outer.append(hint)
@@ -209,29 +208,15 @@ class RejectsPage(Adw.NavigationPage):
         self._status_label.set_xalign(0)
         outer.append(self._status_label)
 
-        self._check_net()
         self._on_refresh()
 
-    # -- connectivity (simple Online/Offline) --------------------------------
-    def _check_net(self):
-        self._conn_label.set_text("check…")
-        self._conn_label.set_css_classes(["giga-veri-chip", "dim-label"])
-
-        def worker():
-            try:
-                ok, _ = net.probe_connectivity() if net.ALLOW_NET \
-                    else (False, "disabled")
-            except Exception:
-                ok = False
-            GLib.idle_add(self._show_net, ok)
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def _show_net(self, ok):
-        self._conn_label.set_text("Online" if ok else "Offline")
-        self._conn_label.set_css_classes(
-            ["giga-veri-chip", "success" if ok else "error"])
-        return False
+    def offline_lookup(self, mod_id):
+        """Single confirmed offline record for a mod id (None if unknown)."""
+        try:
+            from gigasort.core import signature
+            return signature.offline_lookup(self.workspace, mod_id)
+        except Exception:
+            return None
 
     # -- listing -------------------------------------------------------------
     def _collect(self):
@@ -278,6 +263,9 @@ class RejectsPage(Adw.NavigationPage):
         for fn, src, size, status in items:
             self._list.append(_OverrideRow(self, fn, src, size, status))
         self._status_label.set_text("%d file(s) need attention." % len(items))
+
+    def refresh(self):
+        self._on_refresh()
 
     def _clear(self):
         child = self._list.get_first_child()

@@ -3,8 +3,8 @@
 SAFETY (HARD NO-DELETE RULE): this module NEVER permanently deletes anything.
 Items selected for "deletion" are instead MOVED into a hidden, restorable
 sub-folder inside the relevant bin, so they can always be recovered by hand.
-Only files that pass the web-verification gate (real Cyberpunk 2077 mods) are
-ever moved; anything unverified is reported and left in place.
+Only files that pass the offline-verification gate (real Cyberpunk 2077 mods)
+are ever moved; anything unverified is reported and left in place.
 """
 
 import os

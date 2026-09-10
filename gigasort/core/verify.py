@@ -1,10 +1,10 @@
-"""Nexus-based verification and dependency checking.
+"""Offline verification and dependency checking.
 
 verify_allowlist() is the safety gate that enforces the "never touch what is
-not web-verified as a Cyberpunk 2077 mod" rule: only files whose Nexus mod ID
-resolves to a real CP2077 page (or that are already held APPROVED in the
-verified cache) may be moved. Everything else is flagged so the caller leaves
-it alone.
+not verified as a Cyberpunk 2077 mod" rule: only files whose Nexus mod ID is
+confirmed by the offline info archive / reference cache (or that are already
+held APPROVED in the verified cache) may be moved. Everything else is flagged
+so the caller leaves it alone.
 """
 
 import os
@@ -13,7 +13,6 @@ from gigasort.constants import (
     APPROVED, MISMATCH, UNVERIFIED, NOMODID, AUTO, NEXUS_CAT_MAP,
     KNOWN_FOLDERS,
 )
-from gigasort.utils import net
 from gigasort.core.categorize import categorize, extract_mod_id, candidate_mod_id
 
 
@@ -45,8 +44,8 @@ def _approve(cache, fn, source):
     """Record an offline-confirmed file in the verified cache.
 
     `source` explains how it was confirmed (e.g. 'offline-structure') so the
-    cache and log remain transparent about why a file was approved without a
-    live Nexus hit.
+    cache and log remain transparent about why a file was approved without an
+    online hit (this build has none).
     """
     cache[fn] = {
         "status": APPROVED,
@@ -76,19 +75,14 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
 
     A filename is `verified` (safe to move) ONLY if:
       - it already carries APPROVED in the local verified cache, OR
-      - its Nexus mod ID is already in the mod-ID REFERENCE cache (a page
-        verified on a previous run), OR
-      - its Nexus mod ID resolves to a real Cyberpunk 2077 page online, OR
+      - its Nexus mod ID is in the mod-ID REFERENCE cache / offline info
+        archive (a page confirmed on a previous run or by a bundled seed),
+        OR
       - (offline) its Nexus mod ID is present AND the archive's internal
         structure is a strong Cyberpunk 2077 signature.
 
     A filename is `flagged` if it is not verified — it must NOT be moved,
     deleted, or otherwise touched by the sort.
-
-    Successful live lookups are written back to the reference cache, keyed by
-    mod ID, so every OTHER file on the same Nexus page (optional builds, old
-    versions, re-downloads) resolves instantly on the next sort without
-    another network call.
     """
     verified, flagged = set(), set()
     cache = cache or {}
@@ -99,32 +93,6 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
             refs = storage.load_references(folder) or {}
         except Exception:
             refs = {}
-    refs_dirty = False
-
-    # Connectivity is decided LAZILY: the FIRST live lookup's real Google
-    # question doubles as the handshake (no synthetic probe). When Google
-    # answers offline, the reason is stated once and live per-file lookups
-    # are skipped for the rest of the run - no grinding on a dead network.
-    # Verified cache, the mod-ID reference cache and offline archive-structure
-    # verification still work; anything left unverifiable is reported and
-    # left in place.
-    online = True
-    offline_reason = None
-    handshake_done = False
-
-    def _handshake(mod_id):
-        nonlocal online, offline_reason, handshake_done
-        if handshake_done or not net.ALLOW_NET:
-            return
-        handshake_done = True
-        _, offline_reason = \
-            net.probe_connectivity(net.mod_question(mod_id))
-        online = offline_reason is None
-        if not online:
-            print("[net] offline - %s: live lookups skipped (verified "
-                  "cache / archive structure only)." % offline_reason)
-
-    failed_ids = set()
 
     from gigasort.core import compat
     for fn, _size in keep:
@@ -160,9 +128,8 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
             except Exception:
                 pass
             # The archive interior cannot prove it offline, but the bare
-            # number is still a candidate id: give it a LIVE lookup too. A
-            # real Nexus page (or login-gated og:identity) is proof the
-            # download is a genuine mod regardless of its archive layout.
+            # number is still a candidate id: the offline info archive may
+            # still confirm it (bundled seed / WTNC list / cached ref).
             mod_id = candidate_mod_id(fn)
         if not mod_id:
             flagged.add(fn)
@@ -172,49 +139,13 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
 
         # Aggressive all-methods check before anything is decided: the mod-ID
         # reference cache first (fastest - verified on a previous run), then
-        # the live Nexus page (title-based verify, then category-based), then
-        # the offline CP2077-archive signature. A file is ONLY flagged as
-        # unverified when every method has been exhausted.
+        # the offline info archive / CP2077-archive signature. A file is ONLY
+        # flagged as unverified when every method has been exhausted.
         title, ncat = None, None
         from_ref = refs.get(mod_id) or {}
         if from_ref.get("verified"):
             title = from_ref.get("title")
             ncat = from_ref.get("category")
-        elif net.ALLOW_NET and online and mod_id not in failed_ids:
-            # The first real question to the search engine is the handshake;
-            # after a single offline verdict the branch is skipped for every
-            # id.
-            _handshake(mod_id)
-            if not online:
-                continue
-            # One linear search question per mod (investigate_mod) that in a
-            # single fetch proves the page (the official nexusmods.com/...
-            # /mods/<id> link), captures the title + category, and notes any
-            # GitHub repo inside that same result context. No second
-            # questions, no fallback lookups, no re-fetch for github.
-            res = net.investigate_mod(mod_id, timeout=5)
-            if res and res.get("verified"):
-                title = res.get("title") or "Cyberpunk 2077 mod %s" % mod_id
-                ncat = res.get("folder")
-                # Cache the verified page by mod ID for future sorts.
-                refs[mod_id] = {"verified": True, "title": title,
-                                "category": ncat}
-                # GitHub enrichment (info-only, never a verification gate):
-                # often carries better / more current info than Nexus. Only
-                # set when the same result context flagged an own-mod repo;
-                # its newest release tag comes from the public read-only
-                # GitHub API.
-                repo = res.get("github")
-                if repo:
-                    refs[mod_id]["github"] = repo
-                    latest = net.github_latest_release(repo)
-                    if latest:
-                        refs[mod_id]["github_latest"] = latest
-                refs_dirty = True
-            else:
-                # One failed live fetch per id, not per file: other files on
-                # the same dead/blocked page must not re-fetch it this run.
-                failed_ids.add(mod_id)
         if title:
             verified.add(fn)
             cache[fn] = {
@@ -224,7 +155,7 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
                 "nexus_cat": ncat,
             }
             # Record whether the archive interior is a CP2077 game layout, so
-            # the verification tags can flag 'Unstructured' (online mod whose
+            # the verification tags can flag 'Unstructured' (verified mod whose
             # zip is NOT a game-path structure -> manual handling needed).
             cache[fn]["struct_ok"] = _struct_ok(folder, fn)
         elif folder and (candidate_mod_id(fn) or mod_id) and compat.is_cp2077_mod_file(
@@ -240,14 +171,6 @@ def build_allowlist(keep, cache=None, progress=None, folder=None):
         if progress:
             progress(fn)
 
-    # Persist the mod-ID references only when the cache changed; keep the file
-    # untouched on pure filename-cache hits so re-sorts don't rewrite state.
-    if refs_dirty and folder:
-        try:
-            from gigasort.core import storage
-            storage.save_references(folder, refs)
-        except Exception:
-            pass
     return verified, flagged
 
 
@@ -256,53 +179,28 @@ def verification_statuses(folder, kept, progress=None):
 
     Returns (statuses, structs) where:
       statuses {filename: status} with:
-        'offline'         - already APPROVED in the local verified cache.
+        'offline'           - already in the verified cache / reference cache.
         'offline-structure' - confirmed offline from the archive's CP2077 layout.
-        'online'          - resolved live against Nexus just now.
-        'unverified'      - neither; never touched by the sort.
+        'offline-archive'   - confirmed by the merged offline info archive.
+        'unverified'        - neither; never touched by the sort.
       structs  {filename: True|False|None} — whether the archive's interior is
         a CP2077 game layout (False -> 'Unstructured', needs manual handling).
 
-    Mirrors build_allowlist() but records *why* each file passed, so the UI can
-    show an offline vs online indicator. Newly confirmed hits are cached for
-    future offline confirmation, exactly as the sort's gate does.
+    Mirrors build_allowlist() but records *why* each file passed, so the UI
+    can show the offline origin. Newly confirmed hits are cached for future
+    offline confirmation, exactly as the sort's gate does.
     """
     from gigasort.core import compat, storage
 
     cache = storage.load_cache(folder)
     refs = storage.load_references(folder) or {}
-    refs_dirty = False
-    already = {
-        fn for fn, e in cache.items()
-        if e and e.get("status") == APPROVED
-    }
-    # Same lazy-handshake connectivity policy as build_allowlist(): the first
-    # real Google question is the handshake; when offline the reason is
-    # stated once and live per-file lookups are skipped.
-    online = True
-    offline_reason = None
-    handshake_done = False
-
-    def _handshake(mod_id):
-        nonlocal online, offline_reason, handshake_done
-        if handshake_done or not net.ALLOW_NET:
-            return
-        handshake_done = True
-        _, offline_reason = \
-            net.probe_connectivity(net.mod_question(mod_id))
-        online = offline_reason is None
-        if not online:
-            print("[net] offline - %s: live lookups skipped (verified "
-                  "cache / archive structure only)." % offline_reason)
-
-    failed_ids = set()
 
     statuses = {}
     structs = {}
     for fn, _size in kept:
         entry = cache.get(fn)
         if entry and entry.get("status") == APPROVED:
-            statuses[fn] = "offline" if fn in already else "online"
+            statuses[fn] = "offline"
             if "struct_ok" in entry:
                 structs[fn] = entry["struct_ok"]
             continue
@@ -316,35 +214,19 @@ def verification_statuses(folder, kept, progress=None):
         title = ncat = None
         from_ref = (refs.get(mod_id) or {}) if mod_id else {}
         if from_ref.get("verified"):
-            # Mod page already confirmed on a previous run: no network needed.
             title = from_ref.get("title")
             ncat = from_ref.get("category")
-        elif mod_id and net.ALLOW_NET and online and mod_id not in failed_ids:
-            # The first real search-engine question is the handshake; after a
-            # single offline verdict the branch is skipped for every id.
-            _handshake(mod_id)
-            if not online:
-                continue
-            res = net.investigate_mod(mod_id, timeout=5)
-            if res and res.get("verified"):
-                title = res.get("title") or "Cyberpunk 2077 mod %s" % mod_id
-                ncat = res.get("folder")
-                refs[mod_id] = {"verified": True, "title": title,
-                                "category": ncat}
-                refs_dirty = True
-            else:
-                failed_ids.add(mod_id)
         if title:
-            statuses[fn] = "offline" if from_ref.get("verified") else "online"
+            statuses[fn] = "offline-archive"
             cache[fn] = {
                 "status": APPROVED,
                 "category": categorize(fn),
                 "nexus_title": title,
                 "nexus_cat": ncat,
             }
-            # Same as build_allowlist(): even a live-verified file's archive
-            # interior is checked, so 'Unstructured' (non-CP2077 layout) can
-            # still be flagged for manual handling.
+            # Same as build_allowlist(): even a reference-confirmed file's
+            # archive interior is checked, so 'Unstructured' (non-CP2077
+            # layout) can still be flagged for manual handling.
             cache[fn]["struct_ok"] = _struct_ok(folder, fn)
             structs[fn] = cache[fn]["struct_ok"]
         elif _struct_confirmed(folder, fn, mod_id=mod_id):
@@ -365,13 +247,11 @@ def verification_statuses(folder, kept, progress=None):
             progress(fn)
     if cache:
         storage.save_cache(folder, cache)
-    if refs_dirty:
-        storage.save_references(folder, refs)
     return statuses, structs
 
 
 def verify_categories(keep, cache, rejects=(), folder=None):
-    """Cross-reference each archive against its Nexus page.
+    """Cross-reference each archive against the offline info sources.
 
     keep: list of (filename, size) to verify. Returns
       dict filename -> (our_cat, nexus_title, nexus_cat, status)
@@ -382,7 +262,6 @@ def verify_categories(keep, cache, rejects=(), folder=None):
     from gigasort.core.categorize import categorize as _cat
 
     refs = {}
-    refs_dirty = False
     if folder:
         from gigasort.core import storage as _st
         try:
@@ -391,17 +270,11 @@ def verify_categories(keep, cache, rejects=(), folder=None):
             refs = {}
 
     def _page(mod_id):
-        """Return (title, ncat) for `mod_id`, from refs first then live."""
-        nonlocal refs_dirty
+        """Return (title, ncat) for `mod_id`, from the offline refs only."""
         ref = refs.get(mod_id)
         if ref and ref.get("verified"):
             return ref.get("title"), ref.get("category")
-        title, ncat = net.lookup_nexus_category(mod_id)
-        if title and mod_id not in refs:
-            refs[mod_id] = {"verified": True, "title": title,
-                            "category": ncat}
-            refs_dirty = True
-        return title, ncat
+        return None, None
 
     verify = {}
     for fn, _size in keep:
@@ -443,24 +316,18 @@ def verify_categories(keep, cache, rejects=(), folder=None):
         if mapped:
             verify[fn] = (mapped, title, ncat, AUTO)
 
-    if folder and refs_dirty:
-        try:
-            from gigasort.core import storage as _st
-            _st.save_references(folder, refs)
-        except Exception:
-            pass
     return verify
 
 
-def check_dependencies(folder, keep, dry_run):
-    """Check each keep-archive's Nexus page for required mods and flag any
-    dependency you don't appear to have. Read-only; nothing is downloaded.
+def check_dependencies(folder, keep):
+    """Check each keep-archive's recorded dependencies and flag any dependency
+    you don't appear to have. Read-only; nothing is downloaded.
 
-    The requirements come from the Nexus page (web reference) exactly as
-    scraped. A dependency is counted as satisfied when its mod id is already
-    in the download library OR it is one of the always-installed CP2077
-    frameworks (CET/RED4ext/TweakXL/ArchiveXL and friends, which live in the
-    game dir rather than the archive shelf).
+    The dependency list comes from the offline reference cache (previous
+    lookups / bundled seeds). A dependency is counted as satisfied when its
+    mod id is already in the download library OR it is one of the
+    always-installed CP2077 frameworks (CET/RED4ext/TweakXL/ArchiveXL and
+    friends, which live in the game dir rather than the archive shelf).
 
     Language/translation packs (RU/FR/DE/PT-BR/JP/... add-ons) are excluded:
     they only add translated text and do not block the base mod. Same for
@@ -519,7 +386,7 @@ def check_dependencies(folder, keep, dry_run):
             continue
         seen.add(mid)
         ref = refs.get(mid) or {}
-        # cached web deps only (live Nexus pages are never fetched)
+        # cached deps only (fully offline build - live pages are never fetched)
         deps = _normalize_deps(ref.get("deps")) if ref.get("deps") else []
         need = []
         for did in deps:
@@ -598,12 +465,9 @@ def fetch_dependencies(folder, fn_list, progress=None):
                 cache[fn]["deps"] = entry_deps
                 changed = True
             continue
-        # Deps are cache-only: live Nexus pages are never fetched (Google-only
-        # policy), so a mod with no recorded requirements simply stays that
-        # way and framework grouping falls back to name matching for it.
-        continue
-        if progress:
-            progress(fn)
+        # Deps are cache-only: the fully-offline build never fetches a live Nexus
+        # page, so a mod with no recorded requirements simply stays that way
+        # and framework grouping falls back to name matching for it.
     if changed:
         storage.save_cache(folder, cache)
     if refs_dirty:

@@ -1,10 +1,10 @@
-"""WTNC Collection page - Welcome to Night City (z9er) compatibility sweep.
+"""WTNC Collection page - Welcome to Night City (z9er / Cyberpunk THING) sweep.
 
-Fetches + caches z9er's curated WTNC/THING modlist (from the open project
-repo that feeds the Nexus collection), scans the whole mod library, and shows
-which archives are part of the curated list vs NOT compatible with WTNC
-(mods with a Nexus id absent from the manifest). The move button pushes the
-non-compatible mods into the _NOT_WTNC bin - collision-safe, never deletes.
+Reads the bundled WTNC/THING modlist (gigasort/data/wtnc_modlist.md, shipped
+with the tool - fully offline), scans the whole mod library, and shows which
+archives are part of the curated list vs NOT compatible with WTNC (mods with
+a Nexus id absent from the manifest). The move button pushes the non-compatible
+mods into the _NOT_WTNC bin - collision-safe, never deletes.
 
 Defaults to preview (dry-run): nothing moves unless the button is pressed.
 """
@@ -58,7 +58,7 @@ class WtncPage(Adw.NavigationPage):
         self._manifest_chip.set_ellipsize(3)
         header.append(self._manifest_chip)
 
-        self._fetch_btn = Gtk.Button(label="Fetch manifest from GitHub")
+        self._fetch_btn = Gtk.Button(label="Reload bundled")
         self._fetch_btn.connect("clicked", self._on_fetch)
         header.append(self._fetch_btn)
         outer.append(header)
@@ -132,7 +132,7 @@ class WtncPage(Adw.NavigationPage):
         if not self.workspace:
             return
         self._set_busy(True)
-        self._status.set_text("Fetching the WTNC modlist from GitHub…")
+        self._status.set_text("Reloading the bundled WTNC modlist…")
 
         def run():
             try:
@@ -190,17 +190,16 @@ class WtncPage(Adw.NavigationPage):
             self._manifest_chip.set_css_classes(
                 ["giga-veri-chip", "error"])
             self._summary.set_text(
-                "Manifest unreachable and no cached copy: %s" % err)
-            self._status.set_text("Try again when online, or Fetch (cached "
-                                  "copy will be reused).")
+                "Bundled Modlist.md missing: %s" % err)
+            self._status.set_text("Reinstall the package - this is a fully "
+                                  "offline build, there is no network fetch.")
             return
 
         self._manifest_chip.set_text(
             "modlist: %d mods%s" % (summary.get("manifest_mod_count", 0),
-                                    " (GitHub)" if summary.get("fetched")
-                                    else " (cached)"))
+                                    " (bundled)"))
         self._manifest_chip.set_css_classes(
-            ["giga-veri-chip", "success" if summary.get("fetched") else "dim-label"])
+            ["giga-veri-chip", "success" if summary.get("bundled") else "dim-label"])
 
         c = summary.get("counts", {})
         extra = summary.get("extra_compat_ids") or []

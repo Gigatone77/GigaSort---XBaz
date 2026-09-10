@@ -9,7 +9,6 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
 from gigasort.core import sort, verify, storage
-from gigasort.utils import net
 from gigasort.utils.format import human_size
 from gigasort.gui.util import esc, show_error
 
@@ -54,7 +53,7 @@ class ScanPage(Adw.NavigationPage):
         controls.append(self._status_label)
 
         self._conn_label = Gtk.Label(
-            label="Offline", css_classes=["giga-veri-chip", "dim-label"])
+            label="Offline", css_classes=["giga-veri-chip", "error"])
         self._conn_label.set_ellipsize(3)
         controls.append(self._conn_label)
 
@@ -104,7 +103,7 @@ class ScanPage(Adw.NavigationPage):
             "ArchiveXL, TweakXL, CET) are ignored - they would only create "
             "huge meaningless folders.\n"
             "Needs 'Author + organize rest' checked to take effect. "
-            "Requires a caches refresh (online).")
+            "Requires a caches refresh.")
         gb_box.append(self._group_frameworks)
         gb_hint = Gtk.Label(label="(requires 'Author + organize rest')")
         gb_hint.set_xalign(0)
@@ -189,30 +188,9 @@ class ScanPage(Adw.NavigationPage):
         self._check_net()
 
     def _check_net(self):
-        """Static connectivity indicator: shows whether live Nexus lookups
-        are actually working right now (not a per-file status). Runs in a
-        background thread so the UI never blocks on the probe."""
-        self._conn_label.set_text("check…")
-        self._conn_label.set_css_classes(["giga-veri-chip", "dim-label"])
-
-        def worker():
-            try:
-                ok, reason = net.probe_connectivity() if net.ALLOW_NET \
-                    else (False, "live lookups disabled")
-            except Exception:
-                ok, reason = False, "probe failed"
-            GLib.idle_add(self._show_net, ok, reason)
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def _show_net(self, ok, reason=None):
-        if not net.ALLOW_NET:
-            text, css = "Offline", ["giga-veri-chip", "error"]
-        else:
-            text, css = ("Online", ["giga-veri-chip", "success"]) \
-                if ok else ("Offline", ["giga-veri-chip", "error"])
-        self._conn_label.set_text(text)
-        self._conn_label.set_css_classes(css)
+        """Static offline indicator (GigaSort is a fully offline build)."""
+        self._conn_label.set_text("Offline")
+        self._conn_label.set_css_classes(["giga-veri-chip", "error"])
         return False
 
     def _scroll(self, child):
@@ -545,6 +523,15 @@ class ScanPage(Adw.NavigationPage):
                 # 's' = skip / keep in place).
                 result = sort.execute_sort(self._result,
                                            input_fn=lambda *a: "s")
+                try:
+                    from gigasort.core import storage as _storage
+                    settings = _storage.load_settings(self._result.folder or "")
+                    if bool(settings.get("extract_on_sort")):
+                        from gigasort.core.extract import run_extract
+                        run_extract(self._result.folder or "",
+                                    input_fn=lambda *a: "s")
+                except Exception:
+                    pass
                 GLib.idle_add(self._on_apply_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_apply_error, e)

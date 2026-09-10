@@ -2,17 +2,20 @@
 
 GigaSort sorts raw Nexus-mod archives (`.zip` / `.rar` / `.7z`) from a download
 folder into numbered content-type category folders, collapses duplicate
-downloads, and **web-verifies each mod against its Nexus page before anything
-is moved**.
+downloads, and **offline-verifies each mod against a bundled CP2077 knowledge
+base before anything is moved**.
 
-This is the modular, redistributable package (v2.0.0). It ships a **GTK4 /
-libadwaita GUI** plus a full headless CLI, and bundles three companion tools —
-GigaSlim, CyberFlashSync and XBaz — each runnable from its own GUI tab.
+This is the modular, redistributable package (v2.2.0), and it is **fully
+offline** — there is no code path that performs network access. Identity and
+category evidence come from shipped data files and per-workspace caches only.
+It ships a **GTK4 / libadwaita GUI** plus a full headless CLI, and bundles
+three companion tools — GigaSlim, CyberFlashSync and XBaz — each runnable
+from its own GUI tab.
 
 > **Safety first (HARD rule):** GigaSort never moves, trashes, deletes, or
-> otherwise touches any file that is not **web-verified** as a real Cyberpunk
-> 2077 mod (a Nexus lookup, or an already-`APPROVED` local cache entry).
-> Unverified files are always left in place and reported.
+> otherwise touches any file that is not **verified** as a real Cyberpunk
+> 2077 mod (a bundled knowledge-base match, or an already-`APPROVED` local
+> cache entry). Unverified files are always left in place and reported.
 
 ---
 
@@ -22,16 +25,18 @@ GigaSlim, CyberFlashSync and XBaz — each runnable from its own GUI tab.
   (Scan & Sort, Undo, Workspace) are unchanged; a **Companion Tools** section
   adds one tab per extra tool (GigaSlim, CyberFlashSync, XBaz), each with a
   dedicated options sidebar + live output pane.
-- **Categorize** — sorts archives into 9 numbered content folders (Eyes &
+- **Categorize** — sorts archives into 14 numbered content folders (Eyes &
   Lashes, Hair, Face & Body, Tattoos & Cyberware, Clothing & Armor, Weapons &
-  Misc Items, Vehicles & Transport, Colors/Profiles/Resources,
-  Cores/Fixes/Utilities).
+  Misc Items, Colors/Profiles/Resources, Cores/Fixes/Utilities, Vehicles &
+  Transport, World Building, Sensitive Content, Audio & Sound, Animations &
+  Photo Mode, Quests & Story).
 - **Deduplicate** — collapses repeated-download `(1)`/`(2)` copies (moved to
   `_DUPLICATES`, never deleted).
-- **Verify (offline-first / web-gated)** — reads each mod's Nexus mod ID from
-  its filename and cross-checks against the Nexus page. A local `APPROVED`
-  cache is honored before any live fetch. **Only verified files are ever
-  touched by the sort.**
+- **Verify (fully offline)** — reads each mod's Nexus mod ID from its
+  filename and cross-checks it against the bundled knowledge base
+  (`data/sig_seeds.json` + the WTNC manifest + any per-workspace verified
+  cache). A local `APPROVED` cache is honored first. **Only verified files
+  are ever touched by the sort.**
 - **Threat gate** — withholds unverified or watchlisted mods before moving them.
 - **Dependency check** — flags mods whose required dependencies aren't among
   your files, with Nexus links.
@@ -55,7 +60,7 @@ GigaSlim, CyberFlashSync and XBaz — each runnable from its own GUI tab.
 - GUI: GTK 4 + libadwaita 1 (system packages, e.g. `gtk4` `libadwaita` on
   Fedora/Bazzite)
 - Optional: `7z` and `unrar` for `.7z` / `.rar` preview and extraction
-- Optional: network for live Nexus verification (works offline via the cache)
+- No network required (fully offline design)
 - Companion tools located at `~/Games/*.py` or the ToolBox bundle
 
 ## Install
@@ -96,7 +101,7 @@ gigasort --locate             map of workspace folders + state files
 gigasort --reveal             open workspace in the file manager
 gigasort --setup              interactive setup (target folder, extract toggle)
 gigasort --preview            report each archive's install shape
-gigasort --verify             check each mod against Nexus, update APPROVED cache
+gigasort --verify             check each mod against the offline archive, update APPROVED cache
 gigasort --gate               threat/reputation gate
 gigasort --check-deps         dependency dashboard (read-only)
 gigasort --modlist FILE       fuzzy-match downloads against an MO2 modlist
@@ -123,12 +128,12 @@ Everything routes through a guard layer:
 
 - **Boundary fence** — only ever touches the single folder you give it; any
   target resolving outside is hard-blocked (paths are `realpath`-resolved).
-- **Web-verification gate (HARD rule, enforced in code)** — `--apply` and the
-  agent `move` op move only files that are `APPROVED` in the verified cache or
-  confirmed against a real CP2077 Nexus page at sort time. Everything else is
-  left in place and reported.
+- **Offline verification gate (HARD rule, enforced in code)** — `--apply` and
+  the agent `move` op move only files that are `APPROVED` in the verified
+  cache or confirmed against the bundled offline knowledge base at sort time.
+  Everything else is left in place and reported.
 - **Deletion modes are VERIFIED-ONLY** — `--trash` and `--delete-rejects`
-  delete only web-verified CP2077 mods; unverified files/directories are never
+  delete only verified CP2077 mods; unverified files/directories are never
   deleted, only reported.
 - **Risk tiers** — *allow* / *warn* / *block*; deletes and overwrites are
   *warn*-tier (double-confirmed, or refused under `--strict`).
@@ -150,7 +155,9 @@ Inside the target folder it manages:
 ```
 _REJECTS / _TRASH / _DUPLICATES / _ON_HOLD   bins (never auto-deleted)
 _GigaSort_settings.json       program config
-_GigaSort_verified.json       web-verification cache (APPROVED set)
+_GigaSort_verified.json       offline-verification cache (APPROVED set)
+_GigaSort_sig_archive.json    per-workspace merged offline info archive
+_GigaSort_references.json     slim ID -> verified-mod cache
 _GigaSort_verification_log.txt
 _GigaSort_manifest.json       move records (for --undo)
 _GigaSort_threats.json        local threat watchlist

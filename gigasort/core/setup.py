@@ -20,11 +20,11 @@ def run_setup(folder):
             target = os.path.abspath(os.path.expanduser(ans))
     settings["target_folder"] = target
 
-    cur = bool(settings.get("extract_on_sort", False))
+    cur = bool(settings.get("extract_on_sort", True))
     if sys.stdin.isatty():
-        ans = input("Extract archives on sort? %s [y/N]: "
+        ans = input("Extract archives on sort? %s [Y/n]: "
                     % ("yes" if cur else "no")).strip().lower()
-        settings["extract_on_sort"] = ans in ("y", "yes")
+        settings["extract_on_sort"] = ans not in ("n", "no")
     else:
         settings["extract_on_sort"] = cur
 

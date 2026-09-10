@@ -38,17 +38,31 @@ GS_MANIFEST = "_GigaSort_gamestruct.json"
 GS_STRUCTURE_DIR = "GAMESTRUCTURE"   # staging output folder
 GS_STAGE_DIR = "_GigaSort_stage"     # temporary extraction scratch
 GS_BACKUP_DIR = "_GigaSort_backup"   # timestamped conflict backups
+
+# Reference game-structure folder used by --gamestructure to map loose /
+# non-game-shaped archives onto a verified, known-good layout (the user's
+# cleaned WTNC-based "drop-ready package" that mirrors the CP2077 game root).
+# Only used when the folder actually exists on disk; otherwise the old
+# nexus/category/manual resolution is used unchanged. Override with the env
+# var GS_REFERENCE_GAME_STRUCTURE to point at any verified structure.
+DEFAULT_REFERENCE_STRUCTURE = os.path.join(
+    HOME, "Games", "Custom Mod Additions Archive - GAME STRUCTURE")
 GS_MOD_INDEX = "_MOD_INFO.json"      # master index of extracted mods
 GS_COLLECTION_CACHE = "_GigaSort_collection.json"  # recognized modlist cache
+
+# Massive offline information archive: per-workspace build that merges the
+# bundled sig_seeds knowledge base, the bundled WTNC Modlist, per-mod meta.ini
+# files and the verified cache so every lookup runs with zero network access.
+SIG_ARCHIVE_FILENAME = "_GigaSort_sig_archive.json"
+# Bundled (shipped) offline knowledge-base filenames in gigasort/data/.
+SIG_SEEDS_BUNDLED = "sig_seeds.json"
+WTNC_BUNDLED_MANIFEST = "wtnc_modlist.md"
 
 # Welcome to Night City (z9er / Cyberpunk THING) collection compatibility sweep.
 # The canonical source is z9er's open project repo (the GitHub behind the Nexus
 # collection slug `iszwwe`): Wabbajack/Modlist.md lists every curated mod with
-# its Nexus id. Cached offline as _GigaSort_wtnc.json; the per-run
+# its Nexus id. Bundled offline at data/wtnc_modlist.md; the per-run
 # classification lives in _GigaSort_wtnc_report.json.
-WTNC_MANIFEST_URL = ("https://raw.githubusercontent.com/z9er/CyberpunkTHING/"
-                     "main/Wabbajack/Modlist.md")
-WTNC_MANIFEST_FILENAME = "_GigaSort_wtnc.json"
 WTNC_REPORT_FILENAME = "_GigaSort_wtnc_report.json"
 # User-editable {mod_id: note} list of extra ids treated as compatible even
 # though they are absent from the parsed Modlist.md (e.g. collection-infra
@@ -274,53 +288,9 @@ NEXUS_CAT_MAP = {
     "gameplay": "08 Cores, Fixes & Utilities",
 }
 
-# Authoritative Nexus category display names (the value behind the
-# `?categoryName=` query the mod page breadcrumb links to) mapped to our
-# destination folders. Preferred over the slug map above: the breadcrumb is
-# the category the MOD AUTHOR set, not a keyword guess.
-NEXUS_CATEGORY_NAMES = {
-    # map both the URL-encoded token (as it appears in the breadcrumb href)
-    # and its human-readable form to be defensive about how pages render.
-    "Animations": "13 Animations & Photo Mode",
-    "Appearance": "03 Face & Body",
-    "Appearance+Menu+Mod+Preset": "03 Face & Body",
-    "Appearance Menu Mod Preset": "03 Face & Body",
-    "Appearance+Change+Unlocker+Preset": "03 Face & Body",
-    "Appearance Change Unlocker Preset": "03 Face & Body",
-    "Armour+and+Clothing": "05 Clothing & Armor",
-    "Armor+and+Clothing": "05 Clothing & Armor",
-    "Armour and Clothing": "05 Clothing & Armor",
-    "Armor and Clothing": "05 Clothing & Armor",
-    "Atelier+Shop": "06 Weapons & Misc Items",
-    "Atelier Shop": "06 Weapons & Misc Items",
-    "Audio": "12 Audio & Sound",
-    "Audio+Replacer": "12 Audio & Sound",
-    "Audio Replacer": "12 Audio & Sound",
-    "AI+Voices": "12 Audio & Sound",
-    "AI Voices": "12 Audio & Sound",
-    "Characters": "03 Face & Body",
-    "Crafting": "08 Cores, Fixes & Utilities",
-    "Gameplay": "08 Cores, Fixes & Utilities",
-    "Locations": "10 World Building (Locations & Props)",
-    "Add-On+Apartment": "10 World Building (Locations & Props)",
-    "Add-On Apartment": "10 World Building (Locations & Props)",
-    "Apartment": "10 World Building (Locations & Props)",
-    "Miscellaneous": "06 Weapons & Misc Items",
-    "Modders+Resources": "07 Colors, Profiles & Resources",
-    "Modders Resources": "07 Colors, Profiles & Resources",
-    "Props+and+Decorations": "10 World Building (Locations & Props)",
-    "Props and Decorations": "10 World Building (Locations & Props)",
-    "Scripts": "08 Cores, Fixes & Utilities",
-    "User+Interface": "08 Cores, Fixes & Utilities",
-    "User Interface": "08 Cores, Fixes & Utilities",
-    "Utilities": "08 Cores, Fixes & Utilities",
-    "Vehicles": "09 Vehicles & Transport",
-    "Visuals+and+Graphics": "07 Colors, Profiles & Resources",
-    "Visuals and Graphics": "07 Colors, Profiles & Resources",
-    "Weapons": "06 Weapons & Misc Items",
-    "World+Model": "10 World Building (Locations & Props)",
-    "World Model": "10 World Building (Locations & Props)",
-}
+# Offline category derivation (filename keywords / web overrides / the offline
+# info archive) fully replaces the former network-only Nexus breadcrumb map,
+# which the fully-offline build no longer needs.
 
 TITLE_MATCHERS = [
     ("bob", "02 Hair"), ("ponytail", "02 Hair"), ("hairstyle", "02 Hair"),
@@ -471,7 +441,7 @@ VRAM_HIRES_WORDS = (
 # CP2077 modding-convention keywords (offline recognition)
 # ---------------------------------------------------------------------------
 # Strong, low-false-positive markers that identify a real Cyberpunk 2077 mod
-# download from its *filename* alone, with no need for a live Nexus lookup.
+# download from its *filename* alone, with no network access at all.
 # These are the consistent naming conventions the CP2077 modding community
 # (CCXL / Virtual Atelier / RED4ext / CET authors) uses. A filename carrying
 # one of these AND a Nexus mod id is treated as a Cyberpunk 2077 mod even when
@@ -479,7 +449,7 @@ VRAM_HIRES_WORDS = (
 #
 # NOTE: keep these genuinely CP2077-specific. Avoid generic words a Witcher 3 /
 # other-game mod could also use, since this list also feeds the offline safety
-# gate (which otherwise requires live web verification). Multi-word phrases are
+# gate (which otherwise requires network access). Multi-word phrases are
 # matched as whole phrases (boundary-tolerant); single words are matched with
 # word boundaries.
 CP2077_STRONG_KEYWORDS = (

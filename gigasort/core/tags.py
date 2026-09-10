@@ -15,7 +15,7 @@ def _collect_processed(folder):
 
     Each record carries the expected verification tags:
       - Verified (always, when processed)
-      - Online / Offline (how it was confirmed: live Nexus vs local cache)
+      - Offline origin (approved cache / offline structure / offline archive)
       - Missing dependency (keep list needs a dep not present/kept)
       - Unstructured (is a CP2077 mod but its archive is NOT a game-path
         layout -> manual handling / re-download needed)
@@ -24,11 +24,31 @@ def _collect_processed(folder):
 
     cache = storage.load_cache(folder)
     manifest = storage.load_manifest(folder)
+    mod_index = os.path.join(folder, GS_MOD_INDEX)
+    index_data = _json_load(mod_index, []) or []
+
+    # All mod ids present in this library: approved/mismatch cache entries,
+    # every file recorded in the move manifest, and every extracted mod.
+    present_ids = set()
+    for fn, entry in (cache or {}).items():
+        if entry.get("status") in ("approved", "mismatch"):
+            mid = extract_mod_id(fn)
+            if mid:
+                present_ids.add(str(mid))
+    for m in manifest:
+        mid = extract_mod_id(os.path.basename(m.get("src", "")))
+        if mid:
+            present_ids.add(str(mid))
+    for rec in index_data or []:
+        mid = rec.get("mod_id") if isinstance(rec, dict) else None
+        if mid:
+            present_ids.add(str(mid))
+
     handled = set()
 
     for fn, entry in (cache or {}).items():
         if entry.get("status") in ("approved", "mismatch"):
-            flags = _verification_flags(folder, fn, entry, manifest)
+            flags = _verification_flags(folder, fn, entry, manifest, present_ids)
             tags.append({
                 "file": fn,
                 "mod_id": extract_mod_id(fn),
@@ -46,7 +66,7 @@ def _collect_processed(folder):
         if base in handled:
             continue
         entry = (cache or {}).get(base) or {}
-        flags = _verification_flags(folder, base, entry, manifest)
+        flags = _verification_flags(folder, base, entry, manifest, present_ids)
         tags.append({
             "file": base,
             "mod_id": extract_mod_id(src),
@@ -56,9 +76,7 @@ def _collect_processed(folder):
         })
         handled.add(base)
 
-    mod_index = os.path.join(folder, GS_MOD_INDEX)
-    data = _json_load(mod_index, []) or []
-    for rec in data or []:
+    for rec in index_data or []:
         if isinstance(rec, dict):
             tags.append({
                 "file": rec.get("file", rec.get("name", "")),
@@ -71,7 +89,7 @@ def _collect_processed(folder):
     return tags
 
 
-def _verification_flags(folder, fn, entry, manifest):
+def _verification_flags(folder, fn, entry, manifest, present_ids):
     """The five requested per-file tags → flat dict (keys only when known)."""
     entry = entry or {}
     flags = {"verified": True}
@@ -80,14 +98,9 @@ def _verification_flags(folder, fn, entry, manifest):
     elif os.path.exists(os.path.join(folder, fn)) or entry.get("struct_ok"):
         flags["offline"] = True
     else:
-        flags["online"] = True
+        flags["moved"] = True
     deps = entry.get("deps") or []
     if deps:
-        present_ids = set()
-        for m in manifest:
-            mid = m.get("mod_id")
-            if mid:
-                present_ids.add(str(mid))
         missing = [d for d in deps if str(d) not in present_ids]
         if missing:
             flags["missing_dependency"] = True

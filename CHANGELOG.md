@@ -2,6 +2,65 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [2.2.0] - 2026-09-10
+
+### Total-rewrite hardening: merged engine, dry-run fix, WTNC variants
+
+- **`net` module deleted** — `utils/net.py` is removed (the permanent offline
+  stub from 2.1.0 had no remaining callers). No network-shaped symbols remain
+  in the codebase.
+- **Overview:** deep audit sweep of `gigasort/core/*` — 657 insertions /
+  797 deletions across 22 files, dead imports and branches removed, all lint
+  `F/E501/B` clean.
+- **`core/sort.py` merged engine** — `execute_sort` + `run_batch_sort`
+  (~230 duplicated lines) collapsed into a shared `_execute_plan()` with
+  `reject_mode="prompt"` (interactive) vs `"auto"` (headless); also known.
+- **`core/gamestructure.py` dry-run data-loss bug fixed** — `--gamestructure
+  --dry-run` previously EXTRACTED archives, created destination folders,
+  moved staged files, made backups and wrote a manifest. It now prints the
+  full placement plan and writes **nothing** (verified: 0 files touched).
+  New memoized reference-index cache; method label `nexus` → `offline-category`.
+- **`core/tags.py` dependency-check bug fixed** — `present_ids` was always
+  empty so every dependency looked missing; now computed from the verified
+  cache, manifest src basenames and the mod index.
+- **`core/superseded.py` context bug fixed** — `find_superseded` mis-reversed
+  the `(category, author, filename, size)` context tuple; fixed.
+- **`core/wtnc.py` CyberTHING variants** — parses `**WTNC**` / `**THING**`
+  blocks in the bundled manifest and tags those mods as variant-specific
+  (e.g. Stealthrunner, Trace Position Overhaul); surfaced in the sweep report
+  and GUI. Report key `fetched` → `bundled` (offline wording).
+- **GUI/CLI polish** — rejects page refresh wired into sort-complete; static
+  Offline chip CSS consistent; WTNC combo wordings offline-accurate;
+  `--verify` banner is now `== OFFLINE VERIFICATION ==`.
+
+## [2.1.0] - 2026-09-10
+
+### Fully offline rewrite
+
+GigaSort no longer performs any network access. There is no online layer left
+in the codebase (the `net` module is a permanent offline stub and no `urllib`/
+`requests` import survives). Identity, verification, category history and the
+Night City compatibility list all come from bundled + per-workspace data:
+
+- **New `gigasort/core/signature.py`** — builds a per-workspace offline info
+  archive `_GigaSort_sig_archive.json` that merges, with zero network access:
+  the bundled knowledge base (`data/sig_seeds.json` — 222 Nexus-confirmed /
+  sorted and framework records + every WTNC curated id), the bundled
+  `data/wtnc_modlist.md`, per-mod `meta.ini` files from prior verified
+  extractions, the approved verified cache, and archive-filename identity
+  tokens. `verified: True` is only awarded on real evidence (bundled seed,
+  extracted meta.ini, or an approved cache entry) — never from a bare
+  filename token.
+- The archive auto-seeds the slim ID cache `_GigaSort_references.json` (921
+  verified records from 5), so `rescue_category`, verification, superseded
+  enrichments and the GUI all work offline.
+- `wtnc.py` reads the bundled `Modlist.md` (no GitHub fetch, no manifest
+  cache, no network).
+- GUI: connectivity chips are a static "Offline" badge; the Rejects page's
+  "Run search protocol" is now a bundle/cache "Look up offline".
+- `gamestructure` category fallback, `report` online flag and CLI network
+  confirmations all removed.
+
 ## [2.0.4] - 2026-09-07
 
 ### Dead code sweep (follow-up)

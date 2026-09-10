@@ -60,8 +60,8 @@ def build_parser():
                         "(restorable, never deletes)")
     g.add_argument("--rescue-rejects", action="store_true",
                    help="Re-verify + re-categorize files already in _REJECTS and "
-                        "move verified ones to their categories (online lookups "
-                        "included; unverified stay put, never deletes)")
+                        "move verified ones to their categories (offline "
+                        "lookups; unverified stay put, never deletes)")
     g.add_argument("--extract", action="store_true",
                    help="Extract archives into <Type>/<Author>/<Name>/")
     g.add_argument("--gamestructure", action="store_true",
@@ -222,8 +222,6 @@ def main(argv=None):
 
     if args.check_superseded:
         from gigasort.core.superseded import run_superseded_report
-        from gigasort.utils import net
-        net.confirm_network("Nexus mod analysis")
         run_superseded_report(folder)
         return 0
 
@@ -248,8 +246,6 @@ def main(argv=None):
                               yes=args.yes, strict=args.strict)
 
     if args.rescue_rejects:
-        from gigasort.utils import net
-        net.confirm_network("rescue-rejects")
         return sort.rescue_rejects(folder, dry_run=args.dry_run,
                                    input_fn=input_fn)
 
@@ -261,6 +257,11 @@ def main(argv=None):
         from gigasort.core.gamestructure import run_gamestructure
         run_gamestructure(folder, game_dir=args.game_dir, dry_run=args.dry_run,
                           strict=args.strict, input_fn=input_fn)
+        return 0
+
+    if args.extract:
+        from gigasort.core.extract import run_extract
+        run_extract(folder, dry_run=args.dry_run, input_fn=input_fn)
         return 0
 
     if args.apply:
@@ -298,6 +299,13 @@ def main(argv=None):
             apply_warnings(folder)
         except Exception:
             pass
+        # Extraction after the sort (extract_on_sort setting).
+        try:
+            if bool(settings.get("extract_on_sort")):
+                from gigasort.core.extract import run_extract
+                run_extract(folder, dry_run=args.dry_run, input_fn=input_fn)
+        except Exception:
+            pass
         return 0
 
     # Scan + verification + threat + deps report (no GUI) when any of the
@@ -329,7 +337,7 @@ def main(argv=None):
     if args.verify:
         v = verify.verify_categories(result.kept, cache, result.rejects,
                                      folder=folder)
-        print("== NEXUS VERIFICATION ==")
+        print("== OFFLINE VERIFICATION ==")
         for fn, (cat, title, _ncat, status) in v.items():
             print("  [%-8s] %-40s -> %s  (%s)" % (status, fn, cat or "?", title or "?"))
         if not args.dry_run:
@@ -337,7 +345,7 @@ def main(argv=None):
         return 0
 
     if args.check_deps:
-        missing = verify.check_dependencies(folder, result.kept, args.dry_run)
+        missing = verify.check_dependencies(folder, result.kept)
         if not missing:
             print("All required dependencies appear present.")
         return 0

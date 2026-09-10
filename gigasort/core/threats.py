@@ -13,8 +13,8 @@ def load_threats(folder):
 
 def _identity_ok(fn, mod_id, cache):
     """Best-effort Nexus identity check (offline-first): is this file a known
-    good mod page? We trust the local approved cache as the identity source;
-    live lookups are done by --verify."""
+    good mod page? We trust the local approved cache, the reference cache and
+    the offline info archive as the identity sources (fully offline build)."""
     entry = (cache or {}).get(fn)
     if entry and entry.get("status") == "approved":
         return True, "approved in local cache"

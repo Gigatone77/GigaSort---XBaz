@@ -6,7 +6,7 @@ import re
 import zipfile
 
 from gigasort.constants import (
-    GAME_ROOT_DIRS, ARCHIVE_INSTALL_EXTS, VRAM_HIRES_WORDS,
+    GAME_ROOT_DIRS, VRAM_HIRES_WORDS,
     CP2077_STRONG_KEYWORDS,
 )
 from gigasort.core.categorize import extract_mod_id, candidate_mod_id, name_tokens
@@ -158,9 +158,6 @@ def preview_archive(path):
         return "game-shaped"
     if len(tops) == 1:
         # single top-level wrapper (nested bundle)
-        if any(os.path.splitext(e)[1].lower() in ARCHIVE_INSTALL_EXTS
-               for e in entries):
-            return "nested"
         return "nested"
     return "other"
 
@@ -191,8 +188,6 @@ CP2077_STRONG_ROOTS = (
 )
 # File extensions (case-insensitive) that only exist in CP2077 mods.
 CP2077_STRONG_EXTS = (".archive", ".reds", ".xl", ".tweak")
-# A single top-level wrapper folder common to many Nexus downloads.
-_CP2077_WRAPPERS = ("archive", "r6", "engine", "red4ext", "mods")
 
 
 def looks_like_cp2077_archive(path):
@@ -215,10 +210,8 @@ def looks_like_cp2077_archive(path):
     # wrapper so the real CP2077 signal directories are seen underneath.
     _GAME_WRAP = ("cyberpunk 2077", "cyberpunk2077", "cp2077", "the witcher")
 
-    tops = set()
     roots_hit = set()
     ext_hit = False
-    wrapper_hits = 0
     for e in entries:
         norm = e.replace("\\", "/").strip("/").lower()
         if not norm:
@@ -229,16 +222,11 @@ def looks_like_cp2077_archive(path):
             if not norm:
                 continue
         parts = norm.split("/")
-        top = parts[0]
-        if top:
-            tops.add(top)
-        if top in CP2077_SIGNAL_TOPS:
+        if parts[0] in CP2077_SIGNAL_TOPS:
             for r in CP2077_STRONG_ROOTS:
                 if norm == r or norm.startswith(r + "/"):
                     roots_hit.add(r)
                     break
-        if norm.startswith(tuple(_CP2077_WRAPPERS + ("assets", "files", "content"))):
-            wrapper_hits += 1
         base = parts[-1]
         if base.endswith(CP2077_STRONG_EXTS):
             ext_hit = True

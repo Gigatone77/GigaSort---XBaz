@@ -5,8 +5,8 @@ source behind the Nexus "Welcome to Night City" / "Cyberpunk THING" collection
 (slug `iszwwe`): Wabbajack/Modlist.md lists every curated mod with its Nexus
 mod id. This module:
 
-  * fetches that manifest (cached as _GigaSort_wtnc.json, so offline runs use
-    the last successful parse),
+  * reads the bundled manifest (gigasort/data/wtnc_modlist.md - shipped with
+    the tool, so the sweep is fully OFFLINE),
   * scans the WHOLE mod library (root + organized folders; bin folders are
     skipped), classifying every archive as in-list / not-in-list / no-id, and
   * moves not-in-list mods into the "Not compatible with WTNC" section
@@ -23,21 +23,19 @@ in place and reported.
 import json
 import os
 import re
-import urllib.request
 from datetime import datetime, timezone
+from pathlib import Path
 
 from gigasort.constants import (
     ARCHIVE_EXTS,
     NOT_WTNC_BIN,
     WTNC_EXTRA_COMPAT_FILENAME,
     WTNC_EXTRA_COMPAT_SEED,
-    WTNC_MANIFEST_FILENAME,
-    WTNC_MANIFEST_URL,
     WTNC_REPORT_FILENAME,
+    WTNC_BUNDLED_MANIFEST,
 )
 from gigasort.core import categorize, storage
 from gigasort.utils import fs
-from gigasort.utils import net
 
 
 # '[...](https://www.nexusmods.com/cyberpunk2077/mods/<id>)' - every curated
@@ -47,6 +45,14 @@ _MOD_ID_LINK_RE = re.compile(
 
 _SECTION_RE = re.compile(r"^#+\s+(.+)$")
 
+# Per-mod variant configuration blocks in the Modlist. The collection ships
+# two variants built on the same curated mod list - "Welcome to Night City"
+# (WTNC) and "Cyberpunk THING" (CyberTHING). A mod that carries one (or both)
+# of these blocks is configured differently per variant; the block marks which
+# variant(s) the described settings apply to. Mods with no block are configured
+# identically in both variants.
+_VARIANT_BLOCK_RE = re.compile(r"^\*\*(WTNC|THING)\*\*\s*$")
+
 # Any workspace sub-folder starting with '_' is a GigaSort bin / state dir
 # (category folders are 'NN Name', author folders plain names) - never part
 # of the mod library proper. Dot-dirs are hidden/home scratch.
@@ -54,105 +60,87 @@ _SKIP_DIR_PREFIXES = ("_", ".")
 
 
 def parse_modlist(text):
-    """Parse Modlist.md into {mod_id: {"title", "section"}}.
+    """Parse Modlist.md into {mod_id: {"title", "section", "variants"}}.
 
     Section `## <name>` headers give each mod a category so the report can
     group matches thematically. Multi-link rows (e.g. the "Apartment Cats"
     pack) yield one entry per linked mod id with that fragment's title.
+
+    `variants` records which variant(s) a mod's settings block belongs to:
+    the collection covers BOTH "Welcome to Night City" and "Cyberpunk THING"
+    on the same curated mod list, and a `**WTNC**` / `**THING**` block under a
+    mod marks variant-specific configuration. Mods with no block carry no
+    `variants` key (identical config in both variants).
     """
     manifest = {}
     section = "Overview"
+    pending_variants = set()
+    # The markers apply to the PREVIOUS mod link: parse one pass, attributing
+    # each `**WTNC**`/`**THING**` block to the last mod seen.
+    current_id = None
     for line in text.splitlines():
         m = _SECTION_RE.match(line)
         if m:
             section = m.group(1).strip()
             continue
-        for title, mod_id in _MOD_ID_LINK_RE.findall(line):
-            manifest.setdefault(mod_id, {
-                "title": title.strip(),
-                "section": section,
-            })
+        links = _MOD_ID_LINK_RE.findall(line)
+        if links:
+            # flush pending variant blocks onto the mod they described
+            if current_id and pending_variants:
+                manifest[current_id]["variants"] = sorted(pending_variants)
+            pending_variants = set()
+            for title, mod_id in links:
+                manifest.setdefault(mod_id, {
+                    "title": title.strip(),
+                    "section": section,
+                })
+                current_id = mod_id
+            continue
+        vm = _VARIANT_BLOCK_RE.match(line.strip())
+        if vm and current_id:
+            pending_variants.add(vm.group(1).lower())
+    if current_id and pending_variants:
+        manifest[current_id]["variants"] = sorted(pending_variants)
     return manifest
 
 
-def _manifest_path(folder):
-    return os.path.join(folder, WTNC_MANIFEST_FILENAME)
-
-
-def _load_manifest_cache(folder):
-    try:
-        with open(_manifest_path(folder), "r") as fh:
-            return json.load(fh)
-    except Exception:
-        return None
-
-
-def _save_manifest_cache(folder, rec):
-    try:
-        with open(_manifest_path(folder), "w") as fh:
-            json.dump(rec, fh, indent=2)
-    except Exception:
-        pass
-
-
-def _cache_age_days(rec):
-    """Age in whole days of a cached manifest record (None if unparseable)."""
-    fetched = (rec or {}).get("fetched_at")
-    if not fetched:
-        return None
-    try:
-        dt = datetime.fromisoformat(fetched)
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-        return max(0.0, (datetime.now(timezone.utc) - dt).total_seconds() / 86400.0)
-    except Exception:
-        return None
+def _bundled_manifest_path():
+    """Absolute path of the bundled Wabbajack/Modlist.md (shipped with the
+    tool, so the sweep is fully offline)."""
+    return os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..", "data", WTNC_BUNDLED_MANIFEST)
 
 
 def fetch_manifest(folder, force=False, max_age_days=7):
     """Return the WTNC manifest record; never raises.
 
-    Cache-first for fast offline runs, but a cached parse older than
-    `max_age_days` is treated as STALE: the parser tries a live GitHub refresh
-    first and only falls back to the cached copy if that fails - so a sweep
-    that may move a thousand files never silently runs on very old data.
-    `force=True` always refreshes. The returned record carries "stale" and
-    "stale_refresh_error" when the live refresh failed and an aged cache is
-    being reused.
+    Fully OFFLINE: the curated Modlist.md ships inside the package
+    (gigasort/data/wtnc_modlist.md), so a compatibility sweep never needs a
+    network round-trip. The record carries "bundled" as its source_event.
+    `force`/`max_age_days` are accepted for API compatibility and ignored.
     """
-    cached = _load_manifest_cache(folder)
-    age = _cache_age_days(cached)
-    stale = bool(cached and (age is None or age > max_age_days))
-    if cached and cached.get("mod_count") and not force and not stale:
-        rec = dict(cached)
-        rec["source_event"] = "cache"
-        return rec
-    last_error = "unreachable"
+    path = _bundled_manifest_path()
     try:
-        req = urllib.request.Request(WTNC_MANIFEST_URL,
-                                     headers={"User-Agent": net.USER_AGENT})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            text = resp.read().decode("utf-8", errors="replace")
+        if not os.path.exists(path):
+            return {"source": "bundled", "error": "bundled Modlist.md not "
+                    "found (%s)" % path, "manifest": {}, "mod_count": 0,
+                    "source_event": "none"}
+        text = Path(path).read_text(encoding="utf-8", errors="replace")
+        mtime = datetime.fromtimestamp(os.path.getmtime(path),
+                                       tz=timezone.utc)
         rec = {
-            "source": WTNC_MANIFEST_URL,
-            "fetched_at": datetime.now(timezone.utc).isoformat(),
-            "fetched": True,
-            "source_event": "github-live",
+            "source": "bundled:%s" % path,
+            "fetched_at": mtime.isoformat(),
+            "bundled": True,
+            "source_event": "bundled",
             "manifest": parse_modlist(text),
         }
         rec["mod_count"] = len(rec["manifest"])
-        _save_manifest_cache(folder, rec)
         return rec
     except Exception as e:
-        last_error = str(e) or last_error
-    if cached:
-        rec = dict(cached)
-        rec["stale"] = stale
-        rec["stale_refresh_error"] = last_error
-        rec["source_event"] = "cache-stale"
-        return rec
-    return {"source": WTNC_MANIFEST_URL, "error": last_error,
-            "manifest": {}, "mod_count": 0, "source_event": "none"}
+        return {"source": "bundled", "error": str(e),
+                "manifest": {}, "mod_count": 0, "source_event": "none"}
 
 
 def library_archives(folder):
@@ -240,6 +228,8 @@ def classify_archives(folder, manifest):
             records[path] = {"filename": fn, "mod_id": mod_id,
                              "title": info["title"],
                              "section": info["section"],
+                             **({"variants": info["variants"]}
+                                if info.get("variants") else {}),
                              "verdict": "in-wtnc",
                              "reason": "on the WTNC/THING curated modlist"}
         elif mod_id in extra:
@@ -299,21 +289,18 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
     input_fn = input_fn or input
     manifest = fetch_manifest(folder)
     print("=" * 72)
-    print("WELCOME TO NIGHT CITY  (z9er / Cyberpunk THING)  -  compatibility sweep")
+    print("WELCOME TO NIGHT CITY + CYBERPUNK THING (CyberTHING variant)")
+    print("  two variants share one curated modlist; WTNC is the baseline and")
+    print("  CyberTHING the alternate tuning.")
     print("=" * 72)
     if manifest.get("error"):
-        print("! Manifest unreachable and no cached copy: %s" % manifest["error"])
-        print("  (run again online, or that's it for now.)")
+        print("! Bundled Modlist.md missing: %s" % manifest["error"])
+        print("  (reinstall the package - this is a fully offline build.)")
         return {"error": manifest["error"]}
-    live = manifest.get("source_event") == "github-live"
-    src = "GitHub (live)" if live else "cached copy"
-    print("Modlist: %d curated mod(s) (%s, fetched %s)"
+    bundled = manifest.get("source_event") == "bundled"
+    src = "bundled Modlist.md (offline)" if bundled else "no manifest"
+    print("Modlist: %d curated mod(s) (%s, shipped %s)"
           % (manifest["mod_count"], src, manifest.get("fetched_at", "never")))
-    if manifest.get("stale"):
-        print("! Live refresh failed (%s) - reusing the %s-day-old cached "
-              "copy; run 'gigasort --check-wtnc' online to refresh."
-              % (manifest.get("stale_refresh_error", "unreachable"),
-                 int(_cache_age_days(manifest) or 0)))
     print("Workspace: %s" % folder)
     print()
 
@@ -336,6 +323,14 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
     if by_v["in-wtnc"]:
         print("== CLASSIFIES AS PART OF THE WTNC COLLECTION ==")
         _print_rel_list(by_v["in-wtnc"], records, folder)
+        var_counts = {}
+        for path in by_v["in-wtnc"]:
+            for v in records[path].get("variants") or ():
+                var_counts[v] = var_counts.get(v, 0) + 1
+        if var_counts:
+            print("  variant-specific config: %s"
+                  % ", ".join("%s=%d" % (v, n)
+                              for v, n in sorted(var_counts.items())))
         print()
 
     print("== NOT COMPATIBLE WITH WTNC -> '%s' ==" % NOT_WTNC_BIN)
@@ -361,7 +356,7 @@ def run_wtnc_sweep(folder, dry_run=True, input_fn=None, confirm=True):
                "swept_at": datetime.now(timezone.utc).isoformat(),
                "manifest_mod_count": manifest["mod_count"],
                "extra_compat_ids": sorted(extra),
-               "fetched": live,
+               "bundled": bundled,
                "dry_run": bool(dry_run),
                "counts": {v: len(by_v[v]) for v in order + ("in-wtnc",)},
                "records": {os.path.relpath(p, folder): r

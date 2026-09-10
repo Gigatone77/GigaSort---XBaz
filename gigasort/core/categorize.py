@@ -46,9 +46,11 @@ def candidate_mod_id(filename):
     archive layout with *some* numeric Nexus id without requiring the classic
     delimiter.
     """
-    return extract_mod_id(filename) or (
-        (CCXL_MODID_RE.search(filename).group(1))
-        if CCXL_MODID_RE.search(filename) else None)
+    idm = extract_mod_id(filename)
+    if idm:
+        return idm
+    cm = CCXL_MODID_RE.search(filename)
+    return cm.group(1) if cm else None
 
 
 def extract_mod_author(filename):
