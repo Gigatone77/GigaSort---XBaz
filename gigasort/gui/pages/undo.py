@@ -1,19 +1,15 @@
 """Undo page — reverse the last sort run from the manifest."""
 
 import threading
+import time
 
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
-from gigasort.core import storage
-from gigasort.core.undo import run_undo
+from gigasort.core.undo import undo_move, list_undone
 from gigasort.gui.util import esc
-
-
-def _auto_confirm(*args):
-    return "confirm"
 
 
 class UndoPage(Adw.NavigationPage):
@@ -54,7 +50,7 @@ class UndoPage(Adw.NavigationPage):
 
     def refresh(self):
         try:
-            moves = storage.load_manifest(self.workspace)
+            moves = list_undone(self.workspace)
         except Exception:
             moves = []
         self._moves = moves
@@ -71,13 +67,18 @@ class UndoPage(Adw.NavigationPage):
             self._status_label.set_text("Nothing to undo - manifest is empty.")
             self._undo_button.set_sensitive(False)
             return
-        self._status_label.set_text("%d move(s) recorded." % len(moves))
-        self._undo_button.set_sensitive(True)
-        for m in moves:
-            self._list.append(Adw.ActionRow(
-                title=esc(m.get("dst") or ""),
-                subtitle="&lt;- %s" % esc(m.get("src") or ""),
-            ))
+        applied = [m for m in moves if m.get("applied")]
+        self._status_label.set_text(
+            "%d sort run(s) recorded (%d applied)." % (len(moves),
+                                                       len(applied)))
+        self._undo_button.set_sensitive(bool(applied))
+        for m in applied:
+            for f in m.get("files", []):
+                self._list.append(Adw.ActionRow(
+                    title=esc(f),
+                    subtitle="sort run %s  (%s)" % (
+                        esc(m.get("id") or ""),
+                        time.strftime("%H:%M", time.localtime(m.get("time", 0))))))
 
     def _on_undo(self, *args):
         self._undo_button.set_sensitive(False)
@@ -85,18 +86,19 @@ class UndoPage(Adw.NavigationPage):
 
         def worker():
             try:
-                run_undo(self.workspace, input_fn=_auto_confirm)
-                GLib.idle_add(self._on_done)
+                undone, skipped = undo_move(self.workspace)
+                GLib.idle_add(self._on_done, undone, skipped)
             except Exception as e:
                 GLib.idle_add(self._on_error, e)
 
         t = threading.Thread(target=worker, daemon=True)
         t.start()
 
-    def _on_done(self):
+    def _on_done(self, undone, skipped):
         self.refresh()
         self._undo_button.set_sensitive(True)
-        self._status_label.set_text("Undo complete.")
+        self._status_label.set_text(
+            "Undo complete: %d moved back, %d skipped." % (undone, skipped))
 
     def _on_error(self, error):
         self._undo_button.set_sensitive(True)

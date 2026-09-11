@@ -25,6 +25,7 @@ class CompanionPage(Adw.NavigationPage):
     TOOL_NAME = "Tool"
     SCRIPT = None            # script filename (e.g. GigaSlim.py)
     SCRIPT_CANDIDATES = []   # absolute candidate paths
+    MODULE = None            # when set, run as `python -m <MODULE>` instead
 
     def __init__(self, workspace=None, **kwargs):
         super().__init__(**kwargs)
@@ -149,14 +150,17 @@ class CompanionPage(Adw.NavigationPage):
         self.run_subprocess(self._build_argv())
 
     def run_subprocess(self, argv):
-        """Run `argv` (after the python script) and stream output. Safe to
-        call from subclasses (e.g. from a per-command option button)."""
+        """Run `argv` (after the python script/module) and stream output.
+        Safe to call from subclasses (e.g. from a per-command option button)."""
         import sys
-        script = self._find_script()
-        if not script:
-            self._append("ERROR: %s not found.\n" % self.SCRIPT)
-            return
-        full = [sys.executable, script] + list(argv)
+        if self.MODULE:
+            full = [sys.executable, "-m", self.MODULE] + list(argv)
+        else:
+            script = self._find_script()
+            if not script:
+                self._append("ERROR: %s not found.\n" % self.SCRIPT)
+                return
+            full = [sys.executable, script] + list(argv)
         self._status_label.set_text("Running...")
         self._run_button.set_sensitive(False)
         self._append("\n$ %s\n" % " ".join(shlex.quote(a) for a in full))

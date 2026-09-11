@@ -8,8 +8,11 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
-from gigasort.core import sort, verify, storage
-from gigasort.utils.format import human_size
+from gigasort.core import storage, verify
+from gigasort.core.scan import scan_workspace
+from gigasort.core.engine import execute_sort
+from gigasort.core.categorize import extract_mod_author
+from gigasort.utils import human_size
 from gigasort.gui.util import esc, show_error
 
 
@@ -71,11 +74,7 @@ class ScanPage(Adw.NavigationPage):
         authors_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self._author_plus_batch = Gtk.CheckButton(
             label="Author + organize rest")
-        self._author_plus_batch.set_tooltip_text(
-            "Check: the author(s) below get their own folder AND the general "
-            "category organization runs in parallel on all other files.\n"
-            "Uncheck (default): only the listed author(s) are sorted to their "
-            "folder - everything else is left in place.")
+        self._author_plus_batch.set_active(True)
         authors_box.append(self._author_plus_batch)
         authors_label = Gtk.Label(label="Author(s) folder:")
         authors_label.set_xalign(0)
@@ -90,20 +89,6 @@ class ScanPage(Adw.NavigationPage):
         gb_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self._group_frameworks = Gtk.CheckButton(
             label="Group by shared framework")
-        self._group_frameworks.set_tooltip_text(
-            "Group mods that require the same NICHE core framework (Virtual "
-            "Atelier, Equipment-EX, AMM, Input Loader, Codeware, ...) into a "
-            "sub-folder named after that framework, INSIDE the mod's category "
-            "and alongside the framework mod itself:\n"
-            "    Category/Virtual Atelier/<Author>/<mod>\n"
-            "A framework folder can therefore exist in several categories; "
-            "every mod - including the core framework zip - always stays "
-            "within its own category.\n"
-            "Universal frameworks that almost every mod has (RED4ext, "
-            "ArchiveXL, TweakXL, CET) are ignored - they would only create "
-            "huge meaningless folders.\n"
-            "Needs 'Author + organize rest' checked to take effect. "
-            "Requires a caches refresh.")
         gb_box.append(self._group_frameworks)
         gb_hint = Gtk.Label(label="(requires 'Author + organize rest')")
         gb_hint.set_xalign(0)
@@ -116,13 +101,6 @@ class ScanPage(Adw.NavigationPage):
             placeholder_text="Path to the installed Cyberpunk 2077 folder "
                              "(enables conflict check); leave empty to disable")
         self._game_dir_entry.set_hexpand(True)
-        self._game_dir_entry.set_tooltip_text(
-            "If set, GigaSort compares each download against the actual "
-            "installed mod files in this game directory. Any archive that "
-            "would OVERWRITE an already-installed file is routed to _ON_HOLD "
-            "with an explanation instead of its category folder, so you can "
-            "review the conflict before it is placed. Leave empty to disable "
-            "the check entirely.")
         game_box.append(self._game_dir_entry)
         game_btn = Gtk.Button(label="Browse...")
         game_btn.connect("clicked", self._on_select_game_dir)
@@ -136,7 +114,7 @@ class ScanPage(Adw.NavigationPage):
                 if saved:
                     self._authors_entry.set_text(", ".join(saved))
                 self._author_plus_batch.set_active(
-                    bool(settings.get("author_plus_batch")))
+                    bool(settings.get("author_plus_batch", True)))
                 self._group_frameworks.set_active(
                     bool(settings.get("group_frameworks")))
                 if settings.get("game_dir"):
@@ -185,14 +163,6 @@ class ScanPage(Adw.NavigationPage):
         self._notebook.append_page(
             self._scroll(self._plan_box), Gtk.Label(label="Planned Moves"))
 
-        self._check_net()
-
-    def _check_net(self):
-        """Static offline indicator (GigaSort is a fully offline build)."""
-        self._conn_label.set_text("Offline")
-        self._conn_label.set_css_classes(["giga-veri-chip", "error"])
-        return False
-
     def _scroll(self, child):
         sc = Gtk.ScrolledWindow()
         sc.set_child(child)
@@ -207,9 +177,6 @@ class ScanPage(Adw.NavigationPage):
             child = nxt
 
     def _populate_hold(self, conflicts=None):
-        """Show mods that would conflict with installed game files. Each row
-        explains WHICH installed file would be overwritten so the user can
-        decide. Fills the 'On Hold' tab."""
         conflicts = conflicts or {}
         self._clear_list(self._hold_list)
         if not conflicts:
@@ -231,9 +198,6 @@ class ScanPage(Adw.NavigationPage):
             self._hold_list.append(row)
 
     def _populate_struct(self, structs=None):
-        """Show the archive-structure check results (True = CP2077 game layout,
-        False = 'Unstructured' -> manual handling, missing = not yet checked).
-        Fills the 'Structure' tab."""
         structs = structs or {}
         self._clear_list(self._struct_list)
         if not structs:
@@ -259,8 +223,6 @@ class ScanPage(Adw.NavigationPage):
             self._struct_list.append(row)
 
     def _populate_placement(self, issues=None):
-        """Final whole-directory sweep: confirm every file sits where the sort
-        expects it (read-only). Fills the 'Final Sweep' tab."""
         self._clear_list(self._placement_list)
         issues = issues or []
         labels = {
@@ -273,12 +235,12 @@ class ScanPage(Adw.NavigationPage):
                 title="All mods are where the sort expects them."))
             return
         for i in issues:
-            detail = i.expected
-            if i.where and i.expected and i.where != i.expected:
-                detail = "%s  ->  %s" % (i.where, i.expected)
+            detail = i.get("expected") or ""
+            if i.get("current") and detail and i["current"] != detail:
+                detail = "%s  ->  %s" % (i["current"], detail)
             row = Adw.ActionRow(
-                title=esc(i.fn),
-                subtitle="%s: %s" % (esc(labels.get(i.kind, i.kind)),
+                title=esc(i.get("file")),
+                subtitle="%s: %s" % (esc(labels.get(i.get("kind"), i.get("kind"))),
                                      esc(detail)))
             self._placement_list.append(row)
 
@@ -313,34 +275,34 @@ class ScanPage(Adw.NavigationPage):
             self._folder_entry.get_text().strip())
         if not self.workspace:
             self.workspace = None
-        self._check_net()
+
+        if not self.workspace or not os.path.isdir(self.workspace):
+            self._scan_button.set_sensitive(True)
+            self._status_label.set_text("Folder not found.")
+            return
 
         authors = self._get_toplevel_authors()
         plus_batch = self._author_plus_batch.get_active()
         if not authors:
-            # No author(s) typed = treat as a full sort of the whole folder:
-            # an empty author box otherwise plans nothing (no Apply prompt).
             plus_batch = True
         group_fw = self._group_frameworks.get_active()
         game_dir = self._game_dir_entry.get_text().strip()
-        if self.workspace:
-            try:
-                settings = storage.load_settings(self.workspace)
-                settings["toplevel_authors"] = authors
-                settings["author_plus_batch"] = plus_batch
-                settings["group_frameworks"] = group_fw
-                settings["game_dir"] = game_dir
-                storage.save_settings(self.workspace, settings)
-            except Exception:
-                pass
+        try:
+            settings = storage.load_settings(self.workspace)
+            settings["toplevel_authors"] = authors
+            settings["author_plus_batch"] = plus_batch
+            settings["group_frameworks"] = group_fw
+            settings["game_dir"] = game_dir
+            storage.save_settings(self.workspace, settings)
+        except Exception:
+            pass
 
         def worker():
             try:
-                result = sort.scan_workspace(self.workspace,
-                                             toplevel_authors=authors,
-                                             author_plus_batch=plus_batch,
-                                             group_frameworks=group_fw,
-                                             game_dir=game_dir)
+                result = scan_workspace(
+                    self.workspace, toplevel_authors=authors,
+                    author_plus_batch=plus_batch, group_frameworks=group_fw,
+                    game_dir=game_dir)
                 GLib.idle_add(self._on_scan_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_scan_error, e)
@@ -385,20 +347,19 @@ class ScanPage(Adw.NavigationPage):
                 Adw.ActionRow(
                     title="No mis-placed already-organized mods found"))
 
-        self._populate_placement()
-
         self._clear_list(self._plan_box)
-        if result.plan:
+        if result.plan_groups:
             if not result.author_plus_batch:
                 self._plan_box.append(Adw.ActionRow(
                     title="Author-only mode: only the listed author(s) "
                           "are sorted; everything else stays in place"))
-            for cat in sorted(result.plan):
-                files = result.plan[cat]
-                grp = Adw.PreferencesGroup(title="%s  (%d)" % (esc(cat), len(files)))
+            for cat in sorted(result.plan_groups):
+                files = result.plan_groups[cat]
+                grp = Adw.PreferencesGroup(
+                    title="%s  (%d)" % (esc(cat), len(files)))
                 for fn, size in files:
                     row = self._row(fn, size)
-                    author = sort.extract_mod_author(fn)
+                    author = extract_mod_author(fn)
                     if author and any(
                             author.lower() == a.strip().lower()
                             for a in result.toplevel_authors):
@@ -433,69 +394,16 @@ class ScanPage(Adw.NavigationPage):
         def worker():
             try:
                 statuses, structs = verify.verification_statuses(
-                    result.folder, result.kept)
-                if (result.group_frameworks and result.author_plus_batch):
-                    verify.fetch_dependencies(result.folder, result.kept)
-                    try:
-                        nested = sort.collect_nested_archives(
-                            result.folder,
-                            toplevel_authors=result.toplevel_authors)
-                        verify.fetch_dependencies(
-                            result.folder,
-                            [(fn, sz) for fn, sz, _ in nested])
-                        cache = storage.load_cache(result.folder)
-                        result.framework_of = sort.resolve_framework_groups(
-                            result.folder, result.kept, cache,
-                            toplevel_authors=result.toplevel_authors)
-                        result.relocate = sort.find_misplaced(
-                            result.folder,
-                            toplevel_authors=result.toplevel_authors,
-                            author_plus_batch=result.author_plus_batch,
-                            group_frameworks=result.group_frameworks,
-                            cache=cache)
-                    except Exception:
-                        pass
-                issues = ()
+                    result.folder, [f for f, _ in result.kept])
+                verify.fetch_dependencies(result.folder, result.kept)
+                issues = []
                 try:
                     from gigasort.core.superseded import check_placement
-                    issues = check_placement(
-                        result.folder,
-                        toplevel_authors=result.toplevel_authors,
-                        author_plus_batch=result.author_plus_batch,
-                        group_frameworks=result.group_frameworks)
+                    issues = check_placement(result.folder)
                 except Exception:
                     pass
-                # Web-rescue the reject pile now that verification is done: a
-                # file whose Nexus category resolves gets sorted into a real
-                # folder instead of staying a reject just because its filename
-                # missed the offline keywords.
-                rescued = 0
-                try:
-                    if result.rejects:
-                        cache = storage.load_cache(result.folder)
-                        verified = {fn for fn, st in statuses.items()
-                                    if st != "unverified"}
-                        outcome = sort.rescue_verified_rejects(
-                            result.folder, result.rejects, verified, cache)
-                        for rfn, (rcat, rsize) in outcome.items():
-                            result.rejects = [(f, s) for f, s
-                                              in result.rejects if f != rfn]
-                            result.plan.setdefault(rcat, []).append((rfn, rsize))
-                        rescued = len(outcome)
-                except Exception:
-                    rescued = 0
-
-                def finish():
-                    self._populate(result)
-                    if rescued:
-                        self._status_label.set_text(
-                            "%s  |  %d reject(s) rescued via Nexus lookup"
-                            % (self._status_label.get_text(), rescued))
-                    return False
-
-                GLib.idle_add(finish)
                 GLib.idle_add(self._populate_struct, structs)
-                GLib.idle_add(self._populate_placement, list(issues))
+                GLib.idle_add(self._populate_placement, issues)
             except Exception:
                 pass
 
@@ -517,21 +425,7 @@ class ScanPage(Adw.NavigationPage):
 
         def worker():
             try:
-                # Never auto-bin rejects in the GUI: an unknown/misclassified
-                # file must stay visible in the workspace for the user instead
-                # of being silently swept to _REJECTS (the Always-Ask prompt's
-                # 's' = skip / keep in place).
-                result = sort.execute_sort(self._result,
-                                           input_fn=lambda *a: "s")
-                try:
-                    from gigasort.core import storage as _storage
-                    settings = _storage.load_settings(self._result.folder or "")
-                    if bool(settings.get("extract_on_sort")):
-                        from gigasort.core.extract import run_extract
-                        run_extract(self._result.folder or "",
-                                    input_fn=lambda *a: "s")
-                except Exception:
-                    pass
+                result = execute_sort(self._result, input_fn=lambda *a: "s")
                 GLib.idle_add(self._on_apply_done, result)
             except Exception as e:
                 GLib.idle_add(self._on_apply_error, e)
@@ -562,11 +456,6 @@ class ScanPage(Adw.NavigationPage):
             self._status_label.set_text(
                 "%s %d empty folder(s) removed." % (
                     self._status_label.get_text(), len(pruned)))
-        try:
-            from gigasort.core import tags
-            tags.write_tags(self.workspace)
-        except Exception:
-            pass
         if self.status_callback:
             self.status_callback()
 

@@ -1,31 +1,75 @@
-"""Whole-run undo (--undo): reverse the last run's moves from the manifest."""
+"""Undo — replay the manifest back to its pre-sort state."""
 
 import os
 
-from gigasort.core import storage
-from gigasort.utils import fs
+from gigasort.core.storage import load_manifest, save_manifest
 
 
+def _reverse_path(folder, relpath):
+    """Return an absolute path inside folder, guarding against escapes."""
+    joined = os.path.normpath(os.path.join(folder, relpath))
+    if not os.path.realpath(joined).startswith(os.path.realpath(folder)):
+        raise ValueError("path escapes workspace: %r" % relpath)
+    return joined
 
-def run_undo(folder, dry_run=False, input_fn=input):
-    """Reverse every move from the manifest in reverse order, then clear it."""
-    moves = storage.load_manifest(folder)
-    if not moves:
-        print("Nothing to undo - manifest is empty.")
-        return
-    print("Undoing %d move(s) in reverse order..." % len(moves))
-    undone = 0
-    for m in reversed(moves):
-        src, dst = m.get("src"), m.get("dst")
-        if not src or not dst:
+
+def undo_move(folder, entry_id=None, dry_only=False):
+    """Undo the last manifest entry (or a specific one).
+
+    Returns (undone, skipped) counts. dry_only=True prints what would move
+    without moving."""
+    manifest = load_manifest(folder)
+    moves = manifest.get("moves", {})
+    if entry_id is None:
+        ids = [k for k, v in moves.items() if v.get("applied")]
+        if not ids:
+            return 0, 0
+        entry_id = sorted(ids, key=lambda k: moves[k].get("time", 0))[-1]
+
+    entry = moves.get(entry_id)
+    if not entry:
+        return 0, 0
+
+    undone = skipped = 0
+    for change in reversed(entry.get("changes", [])):
+        if not change.get("applied") is not False and change.get("verified"):
+            pass
+        to = change.get("to")
+        back_to = change.get("from")
+        if not to or not back_to:
             continue
-        if not os.path.exists(dst):
-            print("  skip (dst missing): %s" % dst)
+        src = _reverse_path(folder, to)
+        dst = _reverse_path(folder, back_to)
+        if not os.path.exists(src):
+            skipped += 1
             continue
-        fs.guarded_makedirs(folder, os.path.dirname(src), input_fn=input_fn)
-        fs.guarded_move(folder, dst, src, dry_run=dry_run, input_fn=input_fn)
-        undone += 1
-    print("Reversed %d move(s)." % undone)
-    if not dry_run:
-        storage.save_manifest(folder, [])
-        print("Undo manifest cleared.")
+        if dry_only:
+            undone += 1
+            continue
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        try:
+            os.replace(src, dst)
+            undone += 1
+        except OSError:
+            skipped += 1
+
+    if not dry_only:
+        entry["applied"] = False
+        save_manifest(folder, manifest)
+    return undone, skipped
+
+
+def list_undone(folder):
+    """Return manifest entries with their file lists (for --undo preview)."""
+    manifest = load_manifest(folder)
+    out = []
+    for eid, entry in sorted(
+            manifest.get("moves", {}).items(),
+            key=lambda kv: kv[1].get("time", 0)):
+        out.append({
+            "id": eid,
+            "time": entry.get("time"),
+            "applied": entry.get("applied"),
+            "files": [c.get("to") for c in entry.get("changes", [])],
+        })
+    return out

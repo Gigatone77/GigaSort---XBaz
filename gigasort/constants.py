@@ -2,15 +2,12 @@
 
 Centralised so every module shares one set of rules, bin names, state-file
 names and Cyberpunk 2077 game-structure references. Anything a user might
-want to tweak lives here (category rules, Nexus game slug, VRAM keywords).
+want to tweak lives here (category rules, VRAM keywords, framework grouping).
 """
 
 import os
 import re
 
-# ---------------------------------------------------------------------------
-# Workspace / generic
-# ---------------------------------------------------------------------------
 HOME = os.path.expanduser("~")
 DEFAULT_WORKSPACE = os.path.join(HOME, "Downloads")
 
@@ -19,7 +16,7 @@ ARCHIVE_EXTS = (".zip", ".rar", ".7z")
 # Bin folders inside the workspace (mutually exclusive where noted).
 REJECT_BIN = "_REJECTS"      # review / uncategorized holder
 TRASH_BIN = "_TRASH"          # marked for deletion (wiped only per-file)
-HOLD_BIN = "_ON_HOLD"         # threat-gated, waiting on the user
+HOLD_BIN = "_ON_HOLD"         # conflict gated, waiting on the user
 DUPLICATES_BIN = "_DUPLICATES"
 NOT_WTNC_BIN = "_NOT_WTNC"    # "Not compatible with WTNC" sweep bin
 
@@ -33,6 +30,15 @@ MANIFEST_FILENAME = "_GigaSort_manifest.json"
 TAGS_FILENAME = "_GigaSort_tags.json"
 THREAT_FILENAME = "_GigaSort_threats.json"
 GS_MANIFEST = "_GigaSort_gamestruct.json"
+SIG_ARCHIVE_FILENAME = "_GigaSort_sig_archive.json"
+GS_MOD_INDEX = "_MOD_INFO.json"      # master index of extracted mods
+GS_COLLECTION_CACHE = "_GigaSort_collection.json"
+WTNC_REPORT_FILENAME = "_GigaSort_wtnc_report.json"
+WTNC_EXTRA_COMPAT_FILENAME = "_GigaSort_wtnc_compat.json"
+
+# Bundled (shipped) offline knowledge-base filenames in gigasort/data/.
+SIG_SEEDS_BUNDLED = "sig_seeds.json"
+WTNC_BUNDLED_MANIFEST = "wtnc_modlist.md"
 
 # Game-structure sort.
 GS_STRUCTURE_DIR = "GAMESTRUCTURE"   # staging output folder
@@ -42,36 +48,11 @@ GS_BACKUP_DIR = "_GigaSort_backup"   # timestamped conflict backups
 # Reference game-structure folder used by --gamestructure to map loose /
 # non-game-shaped archives onto a verified, known-good layout (the user's
 # cleaned WTNC-based "drop-ready package" that mirrors the CP2077 game root).
-# Only used when the folder actually exists on disk; otherwise the old
-# nexus/category/manual resolution is used unchanged. Override with the env
-# var GS_REFERENCE_GAME_STRUCTURE to point at any verified structure.
+# Only used when the folder actually exists on disk; otherwise the offline
+# category/manual resolution is used unchanged. Override with the env var
+# GS_REFERENCE_GAME_STRUCTURE.
 DEFAULT_REFERENCE_STRUCTURE = os.path.join(
     HOME, "Games", "Custom Mod Additions Archive - GAME STRUCTURE")
-GS_MOD_INDEX = "_MOD_INFO.json"      # master index of extracted mods
-GS_COLLECTION_CACHE = "_GigaSort_collection.json"  # recognized modlist cache
-
-# Massive offline information archive: per-workspace build that merges the
-# bundled sig_seeds knowledge base, the bundled WTNC Modlist, per-mod meta.ini
-# files and the verified cache so every lookup runs with zero network access.
-SIG_ARCHIVE_FILENAME = "_GigaSort_sig_archive.json"
-# Bundled (shipped) offline knowledge-base filenames in gigasort/data/.
-SIG_SEEDS_BUNDLED = "sig_seeds.json"
-WTNC_BUNDLED_MANIFEST = "wtnc_modlist.md"
-
-# Welcome to Night City (z9er / Cyberpunk THING) collection compatibility sweep.
-# The canonical source is z9er's open project repo (the GitHub behind the Nexus
-# collection slug `iszwwe`): Wabbajack/Modlist.md lists every curated mod with
-# its Nexus id. Bundled offline at data/wtnc_modlist.md; the per-run
-# classification lives in _GigaSort_wtnc_report.json.
-WTNC_REPORT_FILENAME = "_GigaSort_wtnc_report.json"
-# User-editable {mod_id: note} list of extra ids treated as compatible even
-# though they are absent from the parsed Modlist.md (e.g. collection-infra
-# mods like the WTNC team's own WTNC Config). Auto-seeded on first run.
-WTNC_EXTRA_COMPAT_FILENAME = "_GigaSort_wtnc_compat.json"
-WTNC_EXTRA_COMPAT_SEED = {
-    "10426": "WTNC Config - the WTNC team's own configuration mod (part of "
-             "the collection; not listed in Wabbajack/Modlist.md)",
-}
 
 # Agent bridge.
 BRIDGE_DIR = "_GigaSort_bridge"
@@ -89,6 +70,86 @@ AUTHOR_STOPWORDS = {
     "file", "cdprojectred", "cdpr", "2077",
 }
 
+# Offline "strong" CP2077 keyword list (see CP2077_STRONG_KEYWORDS).
+CP2077_STRONG_KEYWORDS = (
+    "ccxl",
+    "femv", "mascv", "feme v", "male v", "female v",
+    "red4ext", "redscript", "cyber engine tweaks", "cyber_engine_tweaks",
+    "cet",
+    "virtual atelier", "meluminary", "sedth",
+    "cyberware", "cyberdeck", "netrunner", "sandevistan",
+    "monowire", "mantis blade", "gorilla arm", "kerensikov", "cyberpod",
+    "night city", "barghest", "delamain",
+    "caliburn", "quadra",
+)
+
+# ---------------------------------------------------------------------------
+# Verification statuses / threat tiers
+# ---------------------------------------------------------------------------
+APPROVED = "approved"
+MISMATCH = "mismatch"
+UNVERIFIED = "unverified"
+NOMODID = "no-mod-id"
+AUTO = "auto-assigned"
+
+TRUSTED = "trusted"
+ON_HOLD = "on-hold"
+WATCHED = "watched"
+
+RISK_ALLOW = "allow"
+RISK_WARN = "warn"
+RISK_BLOCK = "block"
+
+SUSPICIOUS_KEYWORDS = (
+    "crack", "keygen", "activator", "crypto", "bitcoin", "malware",
+    "trojan", "backdoor", "rat",
+)
+
+# ---------------------------------------------------------------------------
+# Cyberpunk 2077 game structure (used by --preview and --gamestructure)
+# ---------------------------------------------------------------------------
+CP2077_ROOT_DIRS = ("archive", "bin", "engine", "mods", "r6", "red4ext", "tools")
+GAME_ROOT_DIRS = CP2077_ROOT_DIRS
+
+# File extensions that signal "place under archive/pc/mod".
+ARCHIVE_INSTALL_EXTS = (".archive", ".dep", ".toc")
+
+# Authors whose mods get their own top-level folder instead of being nested
+# under the category.  Folder name = author name exactly as detected.
+TOPLEVEL_AUTHORS = ("ScorpionTank",)
+
+# Core CP2077 frameworks keyed by their Nexus mod id. Used by the framework
+# grouping: mods that list one of these in their Nexus Requirements get
+# grouped together in a top-level folder named after the framework, together
+# with the framework mod itself.
+#
+# NOTE: only the NICHE frameworks form group folders. The universal deps that
+# almost every CP2077 mod requires (see MAJOR_FRAMEWORKS below) would only
+# create huge meaningless folders, so they are always ignored for grouping.
+KNOWN_FRAMEWORKS = {
+    "107": "CET",
+    "2380": "RED4ext",
+    "4197": "TweakXL",
+    "4198": "ArchiveXL",
+    "3518": "Native Settings UI",
+    "790": "AMM",
+    "4262": "Equipment-EX",
+    "2987": "Virtual Atelier",
+    "2750": "Input Loader",
+    "5280": "Codeware",
+}
+
+# Universal/always-present dependency mods - required by a large share of the
+# modding scene. Grouping by these would dump most downloads into one folder,
+# so they are NEVER used to form framework groups.
+MAJOR_FRAMEWORKS = {"107", "2380", "4197", "4198"}
+
+# Keywords that flag likely high-res / oversized texture packs (VRAM guard).
+VRAM_HIRES_WORDS = (
+    "4k", "ultra", "hires", "high.res", "8k", "texture pack", "16k",
+    "2k", "hd reworked", "hdr", "overhaul gfx",
+)
+
 # ---------------------------------------------------------------------------
 # Categorization rules
 # ---------------------------------------------------------------------------
@@ -104,10 +165,6 @@ RULES = [
         r"black line", r"white line", r"blackline", r"whiteline",
         r"natural - b", r"glow - b",
     ]),
-    # 18+ content: strong, unambiguous markers (outweigh the clothing words
-    # below - a "Lingerie AND nude after shower" add-on is sensitive content,
-    # not apparel). "Sensitive" because not every 18+-tagged mod is sexual in
-    # nature - body-enhanced/romance packs land the same way.
     ("11 Sensitive Content (18+)", [
         r"nud", r"\bsex\b", r"sex anim", r"stripper", r"romanc",
         r"\bnsfw\b", r"\bescort", r"pleasures", r"joyride", r"enhanced body",
@@ -142,15 +199,10 @@ RULES = [
         r"side swept", r"sideswept", r"curls?", r"wavy", r"strands?",
         r"hime", r"pixie", r"comb ?over", r"top ?bun", r"messy",
         r"mullethawk", r"rivia", r"motoko",
-        r"\bpak\b",
-        r"length pak",
+        r"\bpak\b", r"length pak",
         r"hair pack", r"hairpack", r"hairstyles 2", r"hair collection",
         r"hair ?up", r"hairup", r"bottom ?bun", r"low ?pony",
-        r"dusty_",
-        r"19928",
-        r"20175",
-        r"npc.*hair",
-        r"ccxl - [a-z]",
+        r"dusty_", r"19928", r"20175", r"npc.*hair", r"ccxl - [a-z]",
     ]),
     ("06 Weapons & Misc Items", [
         r"\bweapon", r"tron ?disk", r"yokai", r"netrunner", r"accessor",
@@ -170,7 +222,7 @@ RULES = [
     ]),
     ("09 Vehicles & Transport", [
         r"\bvehicle", r"\bvehicles?", r"\bcar(s|s mod)?\b", r"\bmoto\b",
-        r"\bmotorbike", r"\bmotorcycle", r"\bmotorcycle\b", r"\bbike\b",
+        r"\bmotorbike", r"\bmotorcycle", r"\bbike\b",
         r"\bquadra\b", r"\bcaliburn\b", r"\bnazare\b", r"\barch\b",
         r"\bmizutani\b", r"\btyger claw\b", r"hoverbike", r"vehical",
         r"car mod", r"delemain", r"\btaxi\b", r"\btruck\b", r"combat veh",
@@ -187,18 +239,12 @@ RULES = [
         r"\bloft\b", r"\bpenthouse\b", r"\bstorefront(s)?\b",
         r"\benvironment", r"\bramps?\b", r"construction",
     ]),
-    # Official Nexus 'Audio' category: sound configs, music/radio reworks,
-    # voice/ambience packs. Kept after weapons so "silencer sound" style
-    # weapon mods still route to 06, not here.
     ("12 Audio & Sound", [
         r"\baudio\b", r"\bsound\b", r"\bsfx\b", r"sound ?fx",
         r"\bmusic\b", r"radio", r"\bvoice", r"\bnarrator", r"\bambient\b",
         r"soundtrack", r"\bsongs?\b", r"\bdj\b", r"\blofi\b", r"\bbgm\b",
         r"sound ?replac", r"radio ?station", r"\bnoise\b",
     ]),
-    # Official Nexus 'Animations' category + Photo Mode tag: poses, AI /
-    # locomotion, third-person, camera. Word-bounded anim so it never matches
-    # inside unrelated words.
     ("13 Animations & Photo Mode", [
         r"\bposes?\b", r"pose ?pack", r"photomode", r"photo ?mode",
         r"photo-mode", r"photo ?pack", r"\banimations?\b", r"\banim\b",
@@ -206,8 +252,6 @@ RULES = [
         r"\bcamera\b", r"idle ?anim", r"walking animation",
         r"combat anim", r"character ?pose", r"framewalk", r"gait\b",
     ]),
-    # Nexus tag 'Quests' (Braindance / gigs / missions / dialogues). 'romanc'
-    # stays gated by the Adult rule above - these are story content.
     ("14 Quests & Story", [
         r"\bquests?\b", r"\bmissions?\b", r"\bdialogue\b", r"\bdialog\b",
         r"\bbraindance\b", r"\bconversation", r"\bheist\b", r"\bgig\b",
@@ -234,17 +278,13 @@ RULES = [
         r"video ?mod", r"quick ?load", r"no ?videos?", r"cutscene",
         r"\bconfig\b", r"\b\.ini\b", r"\bwtnc\b", r"settings",
     ]),
-    # Low-priority tribute markers: a character-name reference ("V jackie
-    # tribute", "warrior nun") routes to 04 Tattoos & Cyberware ONLY when no
-    # more specific item/category keyword has already matched earlier in the
-    # list. Kept last so "Jackie Jacket Archive XL" -> Clothing, not Tattoos.
     ("04 Tattoos & Cyberware", [
         r"jackie", r"warrior nun",
     ]),
 ]
 
 # Nexus category id -> content-type folder (light mapping from the official
-# Nexus category tree, used to sanity-check the keyword guess).
+# Nexus category tree, used to sanity-check a cached category guess).
 NEXUS_CAT_MAP = {
     "body": "03 Face & Body",
     "clothing": "05 Clothing & Armor",
@@ -287,10 +327,6 @@ NEXUS_CAT_MAP = {
     "qol": "08 Cores, Fixes & Utilities",
     "gameplay": "08 Cores, Fixes & Utilities",
 }
-
-# Offline category derivation (filename keywords / web overrides / the offline
-# info archive) fully replaces the former network-only Nexus breadcrumb map,
-# which the fully-offline build no longer needs.
 
 TITLE_MATCHERS = [
     ("bob", "02 Hair"), ("ponytail", "02 Hair"), ("hairstyle", "02 Hair"),
@@ -342,12 +378,7 @@ TITLE_MATCHERS = [
     ("gig", "14 Quests & Story"), ("story", "14 Quests & Story"),
 ]
 
-# ---------------------------------------------------------------------------
-# Verification statuses / threat tiers
-# ---------------------------------------------------------------------------
 # The folder names GigaSort itself creates (the "NN Name" style folders).
-# Used to validate cached/live 'nexus_cat' values: the value must be one of
-# these REAL folders, never a slug or a made-up guess.
 KNOWN_FOLDERS = frozenset({
     "01 Eyes & Lashes",
     "02 Hair",
@@ -365,113 +396,12 @@ KNOWN_FOLDERS = frozenset({
     "14 Quests & Story",
 })
 
-APPROVED = "approved"
-MISMATCH = "mismatch"
-UNVERIFIED = "unverified"
-NOMODID = "no-mod-id"
-AUTO = "auto-assigned"
-
-TRUSTED = "trusted"
-ON_HOLD = "on-hold"
-WATCHED = "watched"
-
-RISK_ALLOW = "allow"
-RISK_WARN = "warn"
-RISK_BLOCK = "block"
-
-SUSPICIOUS_KEYWORDS = (
-    "crack", "keygen", "activator", "crypto", "bitcoin", "malware",
-    "trojan", "backdoor", "rat",
-)
-
-# ---------------------------------------------------------------------------
-# Cyberpunk 2077 game structure (used by --preview and --gamestructure)
-# ---------------------------------------------------------------------------
-CP2077_ROOT_DIRS = (
-    "archive", "bin", "engine", "mods", "r6", "red4ext", "tools",
-)
-GAME_ROOT_DIRS = CP2077_ROOT_DIRS
-
-# File extensions that signal "place under archive/pc/mod".
-ARCHIVE_INSTALL_EXTS = (".archive", ".dep", ".toc")
-
-# Authors whose mods get their own top-level folder instead of being nested
-# under the category.  Folder name = author name exactly as detected.
-TOPLEVEL_AUTHORS = (
-    "ScorpionTank",
-)
-
-# Core CP2077 frameworks keyed by their Nexus mod id. Used by the framework
-# grouping: mods that list one of these in their Nexus Requirements get
-# grouped together in a top-level folder named after the framework, together
-# with the framework mod itself. Ids that never appear simply produce no
-# group. Shared dependencies not in this map are still grouped dynamically
-# ("Framework (Nexus mod <id>)", where <id> is the dependency's Nexus mod id)
-# when two or more downloads require the same one.
-#
-# NOTE: only the NICHE frameworks form group folders. The universal deps that
-# almost every CP2077 mod requires (see MAJOR_FRAMEWORKS below) would only
-# create huge meaningless folders, so they are always ignored for grouping.
-KNOWN_FRAMEWORKS = {
-    "107": "CET",
-    "2380": "RED4ext",
-    "4197": "TweakXL",
-    "4198": "ArchiveXL",
-    "3518": "Native Settings UI",
-    "790": "AMM",
-    "4262": "Equipment-EX",
-    "2987": "Virtual Atelier",
-    "2750": "Input Loader",
-    "5280": "Codeware",
+# User-editable {mod_id: note} list of WTNC extra-compatible ids. Auto-seeded
+# on first run.
+WTNC_EXTRA_COMPAT_SEED = {
+    "10426": "WTNC Config - the WTNC team's own configuration mod (part of "
+             "the collection; not listed in Wabbajack/Modlist.md)",
 }
-
-# Universal/always-present dependency mods - required by a large share of the
-# modding scene. Grouping by these would dump most downloads into one folder,
-# so they are NEVER used to form framework groups (only niche ids are).
-# Adjust this set freely: add a framework here to stop grouping by it.
-MAJOR_FRAMEWORKS = {"107", "2380", "4197", "4198"}
-
-# Keywords that flag likely high-res / oversized texture packs (VRAM guard).
-VRAM_HIRES_WORDS = (
-    "4k", "ultra", "hires", "high.res", "8k", "texture pack", "16k",
-    "2k", "hd reworked", "hdr", "overhaul gfx",
-)
-
-# ---------------------------------------------------------------------------
-# CP2077 modding-convention keywords (offline recognition)
-# ---------------------------------------------------------------------------
-# Strong, low-false-positive markers that identify a real Cyberpunk 2077 mod
-# download from its *filename* alone, with no network access at all.
-# These are the consistent naming conventions the CP2077 modding community
-# (CCXL / Virtual Atelier / RED4ext / CET authors) uses. A filename carrying
-# one of these AND a Nexus mod id is treated as a Cyberpunk 2077 mod even when
-# the machine is offline and the archive interior can't be inspected.
-#
-# NOTE: keep these genuinely CP2077-specific. Avoid generic words a Witcher 3 /
-# other-game mod could also use, since this list also feeds the offline safety
-# gate (which otherwise requires network access). Multi-word phrases are
-# matched as whole phrases (boundary-tolerant); single words are matched with
-# word boundaries.
-CP2077_STRONG_KEYWORDS = (
-    # Hair / appearance framework (the dominant CP2077 custom-content scene).
-    "ccxl",
-    # CP2077 protagonist body references (female/male V).
-    "femv", "mascv", "feme v", "male v", "female v",
-    # REDengine 4 software / loaders (Cyberpunk-only).
-    "red4ext", "redscript", "cyber engine tweaks", "cyber_engine_tweaks",
-    # 'cet' = Cyber Engine Tweaks, the CP2077-only script loader; matched as a
-    # whole word and gated to filenames that also carry a Nexus mod id.
-    "cet",
-    # Established CP2077 mod authors / store frameworks.
-    "virtual atelier", "meluminary", "sedth",
-    # CP2077 augmentation / body-kit vocabulary.
-    "cyberware", "cyberdeck", "netrunner", "sandevistan",
-    "monowire", "mantis blade", "gorilla arm", "kerensikov", "cyberpod",
-    # In-game factions / structures specific to Night City.
-    "night city", "barghest", "delamain",
-    # Iconic CP2077 vehicles that appear in downloaded archive names.
-    "caliburn", "quadra",
-)
 
 
 def default_workspace():

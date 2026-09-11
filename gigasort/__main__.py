@@ -1,399 +1,266 @@
-"""GigaSort CLI — Cyberpunk 2077 mod-archive organizer."""
+"""GigaSort v3 — command-line interface.
+
+Fully offline. Guarded by the same hard rule as every other entry point:
+no file is ever moved/trashed/deleted unless it has passed the offline
+verification gate (see gigasort.core.verify).
+"""
 
 import argparse
+import json
 import os
-import subprocess
 import sys
 
-from gigasort import __version__
-from gigasort.constants import default_workspace, TOPLEVEL_AUTHORS
+from gigasort import __version__, APP_NAME
+from gigasort.constants import DEFAULT_WORKSPACE
+from gigasort.core import (
+    verify, engine, report, setup, wtnc,
+    superseded, collection, gamestructure, extract, agent,
+    gigaslim, cyberflash,
+)
+from gigasort.core.scan import scan_workspace
 
 
-def _expand_folders(value):
-    """Comma-separated --folder a,b -> list of absolute workspace roots."""
-    if not value:
-        return None
-    return [os.path.abspath(os.path.expanduser(r.strip()))
-            for r in value.split(",") if r.strip()]
+def _expand_folders(args):
+    """Resolve --folder/-w/--workspace (comma-separated extra contexts)."""
+    primary = args.workspace or args.folder or DEFAULT_WORKSPACE
+    extra = []
+    if args.folder and "," in args.folder:
+        parts = [p.strip() for p in args.folder.split(",") if p.strip()]
+        primary = parts[0]
+        extra = parts[1:]
+    return os.path.abspath(primary), extra
 
 
 def build_parser():
     p = argparse.ArgumentParser(
         prog="gigasort",
-        description="Cyberpunk 2077 mod-archive organizer",
-    )
+        description="%s — Cyberpunk 2077 mod-archive organizer (offline)" % APP_NAME)
     p.add_argument("-V", "--version", action="version",
                    version="%(prog)s " + __version__)
-    p.add_argument("-w", "--workspace", "--folder", dest="workspace", default=None,
-                   help="Mod workspace folder; comma-separated to sort several folders")
+    p.add_argument("-w", "--workspace", default=None,
+                   help="workspace folder (default ~/Downloads)")
+    p.add_argument("--folder", default=None,
+                   help="alias of --workspace; comma-separated adds context "
+                        "folders (first = primary)")
 
     g = p.add_mutually_exclusive_group()
-    g.add_argument("--apply", action="store_true",
-                   help="Non-interactive batch sort (verify-gated)")
-    g.add_argument("--undo", action="store_true",
-                   help="Reverse the last sort from the manifest")
+    g.add_argument("--apply", action="store_true", help="run the sort for real")
+    g.add_argument("--undo", action="store_true", help="revert the last sort")
     g.add_argument("--json", action="store_true",
-                   help="Emit a read-only JSON report")
+                   help="print a machine-readable run report")
     g.add_argument("--locate", action="store_true",
-                   help="Show the workspace map (dirs + state files)")
+                   help="print where each verified file goes")
     g.add_argument("--preview", action="store_true",
-                   help="Show archive layout / install shape (flat/game-shaped)")
+                   help="dry-run plan (nothing moves)")
     g.add_argument("--verify", action="store_true",
-                   help="Run Nexus verification of candidate mods")
+                   help="verify only (no moves)")
     g.add_argument("--gate", action="store_true",
-                   help="Run the threat/reputation gate")
-    g.add_argument("--check-deps", action="store_true",
-                   help="Check for missing required dependencies")
-    g.add_argument("--modlist", metavar="PATH",
-                   help="Fuzzy-match downloads against an MO2 modlist")
-    g.add_argument("--need-redownload", metavar="PATH",
-                   help="Cross-reference downloads against a NEED_REDOWNLOAD list")
-    g.add_argument("--vram", metavar="GB", type=float,
-                   help="Report install footprint vs a VRAM budget (GB)")
-    g.add_argument("--clean-dupes", action="store_true",
-                   help="Categorize and move duplicate archives to _DUPLICATES")
+                   help="show which files pass the safety gate")
+    g.add_argument("--setup", action="store_true",
+                   help="one-time workspace initialization")
+    g.add_argument("--agent", action="store_true",
+                   help="serve a single agent op from a JSON payload file")
     g.add_argument("--trash", action="store_true",
-                   help="Manage the _TRASH bin (move selected to ~deleted; "
-                        "never deletes)")
+                   help="move rejects/reject-bin files to the restorable "
+                        "~deleted bin")
     g.add_argument("--delete-rejects", action="store_true",
-                   help="Move verified _REJECTS items to ~deleted "
-                        "(restorable, never deletes)")
-    g.add_argument("--rescue-rejects", action="store_true",
-                   help="Re-verify + re-categorize files already in _REJECTS and "
-                        "move verified ones to their categories (offline "
-                        "lookups; unverified stay put, never deletes)")
-    g.add_argument("--extract", action="store_true",
-                   help="Extract archives into <Type>/<Author>/<Name>/")
+                   help="relocate _REJECTS entries into the restorable "
+                        "~deleted sub-bin (never deletes)")
+    g.add_argument("--superseded", action="store_true",
+                   help="check for possibly-superseded downloads (read-only)")
+    g.add_argument("--collection", action="store_true",
+                   help="cache ordered collection downloads (zw_)")
     g.add_argument("--gamestructure", action="store_true",
-                   help="Compile archives into a game-ready folder tree")
-    g.add_argument("--agent", metavar="REQUEST",
-                   help="Process an agent bridge request.json")
-    g.add_argument("--cyberflash", "--cyberflash-sync", dest="cyberflash",
-                   action="store_true", help="Run CyberFlashSync USB backup")
+                   help="stage extracted mods into a game-shaped tree")
+    g.add_argument("--extract", action="store_true",
+                   help="extract archives into per-mod folders")
     g.add_argument("--gigaslim", action="store_true",
-                   help="Slim a CP2077 install (moves bloat, never deletes)")
-    g.add_argument("--check-superseded", action="store_true",
-                   help="Detect same-author mods where an older release is "
-                        "likely redundant (read-only, never deletes)")
-    g.add_argument("--prune", action="store_true",
-                    help="Remove empty folders in the workspace (nothing with "
-                         "content is ever touched)")
-    g.add_argument("--check-wtnc", action="store_true",
-                   help="Sweep the library against the Welcome to Night City "
-                        "(z9er) collection: list mods NOT on the curated "
-                        "modlist and move them to _NOT_WTNC. Add --dry-run "
-                        "to preview the move (never deletes).")
+                   help="run the packaged GigaSlim module (analyze default game)")
+    g.add_argument("--cyberflash", action="store_true",
+                   help="run the packaged CyberFlashSync module")
+    g.add_argument("--cyberflash-sync", action="store_true",
+                   help="alias of --cyberflash")
+    g.add_argument("--wtnc", action="store_true",
+                   help="run the WTNC collection compatibility report")
 
     p.add_argument("--dry-run", action="store_true",
-                   help="Show what would happen without moving files")
+                   help="print the plan without moving anything")
     p.add_argument("--strict", action="store_true",
-                   help="Refuse all WARN-tier (destructive/overwrite) actions")
-    p.add_argument("--yes", action="store_true",
-                   help="Approve confirmations non-interactively")
+                   help="treat unverified as an error (exit 2)")
+    p.add_argument("--yes", "-y", action="store_true",
+                   help="assume yes for confirmations")
+    p.add_argument("--one-bin", action="store_true",
+                   help="send rejects into a single trash bin")
+    p.add_argument("--only-categories", default=None,
+                   help="comma-separated category folders to restrict moves to")
     p.add_argument("--game-dir", default=None,
-                   help="Target game directory: for --gamestructure, and with "
-                        "--apply/-s it enables game-directory conflict detection "
-                        "(mods that would overwrite installed files go to "
-                        "_ON_HOLD). Falls back to the saved setting if omitted.")
-    p.add_argument("--with-game", action="store_true",
-                   help="Include the full game-dir zip in --cyberflash")
-    p.add_argument("--videos", action="store_true",
-                   help="(gigaslim) include videos in the move")
-    p.add_argument("--keep", action="store_true",
-                   help="Keep rejects in place instead of moving them")
-    p.add_argument("--reveal", action="store_true",
-                   help="Reveal the workspace folder in the file manager")
-    p.add_argument("--setup", action="store_true",
-                   help="Run interactive workspace setup")
+                   help="CP2077 game install root (conflict / structure checks)")
+    p.add_argument("--context", action="append", default=[],
+                   help="additional context folder (repeatable)")
     return p
 
 
-def _require_dir(folder):
-    folder = os.path.abspath(os.path.expanduser(folder))
-    if not os.path.isdir(folder):
-        sys.exit("Not a directory (and cannot touch it): %s" % folder)
-    return folder
-
-
-def _yes_input(*a):
-    return "confirm"
+def _print_gate(folder, files):
+    gate = verify.build_verified_gate(folder, files)
+    for f in sorted(files):
+        print("%-6s %s" % ("PASS" if f in gate else "FAIL", f))
+    return not (len(files) and not gate)
 
 
 def main(argv=None):
-    p = build_parser()
-    args = p.parse_args(argv)
+    args = build_parser().parse_args(argv)
+    primary, _context = _expand_folders(args)
 
-    # Multi-folder: dispatch each root through its own subprocess (like the
-    # published tool) so state/manifest never cross workspaces.
-    roots = _expand_folders(args.workspace)
-    if roots and len(roots) > 1:
-        rc = 0
-        for idx, root in enumerate(roots, start=1):
-            print("[GigaSort] workspace %d/%d : %s" % (idx, len(roots), root))
-            a = [sys.executable, "-m", "gigasort"]
-            skip = False
-            for _i, x in enumerate(sys.argv[1:]):
-                if skip:
-                    skip = False
-                    continue
-                if x in ("--folder", "--workspace", "-w"):
-                    skip = True
-                    continue
-                if x.startswith("--folder=") or x.startswith("--workspace="):
-                    continue
-                a.append(x)
-            a += ["--folder", root]
-            r = subprocess.run(a)
-            if r.returncode:
-                rc = r.returncode
-        return rc
-
-    folder = _require_dir(args.workspace or default_workspace())
-    input_fn = _yes_input if args.yes else input
-
-    from gigasort.core import storage
-    from gigasort.core import sort
-
-    if args.json:
-        from gigasort.core.report import run_json_report
-        run_json_report(folder)
-        return 0
-
-    if args.locate:
-        from gigasort.core.report import run_locate
-        run_locate(folder)
-        return 0
-
-    if args.reveal:
-        try:
-            import gi
-            gi.require_version("Gtk", "4.0")
-            gi.require_version("Adw", "1")
-            from gi.repository import Gio
-            Gio.AppInfo.launch_default_for_uri(
-                "file://" + folder, None)
-            print("Revealed: %s" % folder)
-        except Exception as e:
-            print("reveal failed: %s" % e)
-        return 0
-
+    # --setup short-circuit (no scan needed)
     if args.setup:
-        from gigasort.core.setup import run_setup
-        run_setup(folder)
+        w, built, seeded = setup.setup_workspace(primary,
+                                                 game_dir=args.game_dir)
+        print("workspace ready: %s" % w)
+        print("offline archive built: %s  refs seeded: %d" % (built, seeded))
         return 0
 
-    if args.undo:
-        from gigasort.core.undo import run_undo
-        run_undo(folder, dry_run=args.dry_run,
-                 input_fn=input_fn if not args.yes else _yes_input)
+    # --worker: process a single agent request delivered via a JSON file
+    if os.environ.get("GS_AGENT_PAYLOAD"):
+        payload_path = os.environ.get("GS_AGENT_PAYLOAD")
+        payload = {}
+        if os.path.exists(payload_path):
+            with open(payload_path, encoding="utf-8") as fh:
+                payload = json.load(fh)
+        result = agent.handle(primary, payload.get("op", "info"),
+                              payload.get("payload"),
+                              payload.get("origin", "cli"))
+        print(json.dumps(result, indent=2))
         return 0
 
-    if args.preview:
-        from gigasort.core import compat
-        result = sort.scan_workspace(folder)
-        files = [f for f, _ in result.kept] + [f for f, _ in result.duplicates] \
-            + [f for f, _ in result.rejects]
-        print("== ARCHIVE LAYOUT / INSTALL SHAPE ==")
-        for fn in files:
-            layout = compat.preview_archive(os.path.join(folder, fn))
-            print("  %-14s %s" % (layout, fn))
-        return 0
-
-    if args.cyberflash:
-        from gigasort.core.cyberflash import run_cyberflash
-        return run_cyberflash(folder, dry_run=args.dry_run,
-                              with_game=args.with_game)
+    # Y/N confirmation for real mutations
+    if not args.yes and (args.apply or args.trash or args.delete_rejects):
+        sys.stdout.write("GigaSort: move verified mods into organized folders? "
+                         "[y/N] ")
+        choice = sys.stdin.readline().strip().lower() if sys.stdin.isatty() \
+            else "n"
+        if choice not in ("y", "yes"):
+            print("aborted.")
+            return 1
 
     if args.gigaslim:
-        from gigasort.core.gigaslim import run_gigaslim
-        return run_gigaslim(folder, dry_run=args.dry_run, videos=args.videos)
+        rc, out = gigaslim.run()
+        sys.stdout.write(out)
+        return rc
+    if args.cyberflash or args.cyberflash_sync:
+        rc, out = cyberflash.run()
+        sys.stdout.write(out)
+        return rc
 
-    if args.prune:
-        removed = sort.prune_empty_dirs(folder, dry_run=args.dry_run)
-        verb = "Would remove" if args.dry_run else "Removed"
-        if removed:
-            print("%s %d empty folder(s):" % (verb, len(removed)))
-            for rel in sorted(removed):
-                print("  • %s" % rel)
-        else:
-            print("No empty folders found%s."
-                  % (" (dry run)" if args.dry_run else ""))
+    if args.wtnc:
+        rep = wtnc.run_wtnc_report(primary)
+        print("WTNC report: manifest %d, extra compat %d, archives %d" % (
+            rep["manifest_total"], rep["extra_compat_total"],
+            len(rep["archives"])))
+        for a in rep["archives"]:
+            print("  %-5s %s" % (a["kind"], a["file"]))
         return 0
 
-    if args.check_superseded:
-        from gigasort.core.superseded import run_superseded_report
-        run_superseded_report(folder)
+    if args.collection:
+        state = collection.cache_collection_state(primary)
+        print(json.dumps(state, indent=2))
         return 0
 
-    if args.check_wtnc:
-        from gigasort.core.wtnc import run_wtnc_sweep
-        interactive = sys.stdin.isatty() and not args.yes
-        return run_wtnc_sweep(
-            folder,
-            dry_run=args.dry_run,
-            input_fn=_yes_input if args.yes else input,
-            confirm=interactive and not args.dry_run,
-        )
-
-    if args.trash:
-        from gigasort.core.trash import manage_trash
-        return manage_trash(folder, dry_run=args.dry_run,
-                            non_interactive=not sys.stdin.isatty() or args.yes)
-
-    if args.delete_rejects:
-        from gigasort.core.trash import delete_rejects
-        return delete_rejects(folder, dry_run=args.dry_run,
-                              yes=args.yes, strict=args.strict)
-
-    if args.rescue_rejects:
-        return sort.rescue_rejects(folder, dry_run=args.dry_run,
-                                   input_fn=input_fn)
-
-    if args.agent:
-        from gigasort.core.agent import execute_agent_request
-        return execute_agent_request(folder, args.agent)
+    if args.superseded:
+        pairs = superseded.find_superseded(primary)
+        if not pairs:
+            print("no superseded candidates.")
+        for pair in pairs:
+            print("%5.2f  %-40s <- %s  (%s)" % (
+                pair["score"], pair["newer"], pair["older"], pair["reason"]))
+        issues = superseded.check_placement(primary)
+        for i_ in issues:
+            print("[%s] %s  want %s  got %s" % (
+                i_["kind"], i_["file"], i_["expected"], i_["current"]))
+        return 0
 
     if args.gamestructure:
-        from gigasort.core.gamestructure import run_gamestructure
-        run_gamestructure(folder, game_dir=args.game_dir, dry_run=args.dry_run,
-                          strict=args.strict, input_fn=input_fn)
+        root, outcomes = gamestructure.stage_entries(
+            primary, dry_run=args.dry_run,
+            reference=os.environ.get("GS_REFERENCE_GAME_STRUCTURE"))
+        print("structure tree: %s" % root)
+        for k, v in sorted(outcomes.items()):
+            print("  %-40s %s" % (k, v))
         return 0
 
     if args.extract:
-        from gigasort.core.extract import run_extract
-        run_extract(folder, dry_run=args.dry_run, input_fn=input_fn)
+        ok, failed = extract.extract_workspace(primary)
+        print("extracted: %d, failed: %d" % (len(ok), len(failed)))
+        for name in failed:
+            print("  FAILED  %s" % name)
         return 0
 
-    if args.apply:
-        settings = storage.load_settings(folder)
-        authors = settings.get("toplevel_authors") or list(TOPLEVEL_AUTHORS)
-        plus_batch = bool(settings.get("author_plus_batch"))
-        group_fw = bool(settings.get("group_frameworks"))
-        game_dir = args.game_dir or settings.get("game_dir") or ""
-        summary = sort.run_batch_sort(folder, dry_run=args.dry_run,
-                                      to_rejects=not args.keep,
-                                      toplevel_authors=authors,
-                                      author_plus_batch=plus_batch,
-                                      group_frameworks=group_fw,
-                                      game_dir=game_dir)
-        print("Done: %d moved, %d dupes, %d rejects%s." % (
-            summary["moved"], summary["duplicates"],
-            summary["to_rejects"],
-            " (dry run)" if summary["dry_run"] else "",
-        ))
-        if summary.get("relocated"):
-            print("Relocated %d already-organized file(s) to where they "
-                  "belong." % summary["relocated"])
-        if summary.get("pruned"):
-            print("Emptied/removed %d empty folder(s) left behind by the sort."
-                  % len(summary["pruned"]))
-        if args.keep:
-            print("--keep set: rejects left in place.")
-        if summary.get("flagged_unverified"):
-            print("Unverified (left untouched):")
-            for fn in summary["flagged_unverified"]:
-                print("  • %s" % fn)
-        # Post-sort analysis: superseded mods + placement check (read-only).
-        try:
-            from gigasort.core.superseded import apply_warnings
-            apply_warnings(folder)
-        except Exception:
-            pass
-        # Extraction after the sort (extract_on_sort setting).
-        try:
-            if bool(settings.get("extract_on_sort")):
-                from gigasort.core.extract import run_extract
-                run_extract(folder, dry_run=args.dry_run, input_fn=input_fn)
-        except Exception:
-            pass
-        return 0
-
-    # Scan + verification + threat + deps report (no GUI) when any of the
-    # analysis flags are present.
-    result = sort.scan_workspace(folder)
-    cache = storage.load_cache(folder)
-
-    from gigasort.core import verify, threats, compat
-
-    if args.modlist or args.need_redownload or args.vram is not None:
-        if args.modlist:
-            compat.check_modlist(folder, args.modlist,
-                                 [f for f, _ in result.kept])
-        if args.need_redownload:
-            compat.check_need_redownload(folder, args.need_redownload,
-                                         [f for f, _ in result.kept])
-        if args.vram is not None:
-            compat.vram_guard(folder, args.vram,
-                              result.kept + result.duplicates)
-        return 0
-
-    if args.gate:
-        gated = threats.run_threat_gate(folder, result.kept, cache)
-        print("== THREAT / REPUTATION GATE ==")
-        for fn, (verdict, reason) in gated.items():
-            print("  [%s] %-40s %s" % (verdict, fn, reason))
-        return 0
+    # trace: everything else requires a scan
+    result = scan_workspace(primary)
 
     if args.verify:
-        v = verify.verify_categories(result.kept, cache, result.rejects,
-                                     folder=folder)
-        print("== OFFLINE VERIFICATION ==")
-        for fn, (cat, title, _ncat, status) in v.items():
-            print("  [%-8s] %-40s -> %s  (%s)" % (status, fn, cat or "?", title or "?"))
-        if not args.dry_run:
-            storage.save_cache(folder, _merge_verify(cache, v))
+        res = verify.verify_allowlist(primary)
+        passed = [p for p, r in res.items() if r.status in ("approved",
+                                                            "mismatch")]
+        print("verified %d/%d" % (len(passed), len(res)))
+        for p_, r in sorted(res.items()):
+            print("  %-12s %-8s %s" % (r.status, r.source or "-",
+                                       os.path.basename(p_)))
+        return 0 if len(passed) > 0 else 1
+
+    if args.gate:
+        files = sorted(n for n in os.listdir(primary)
+                       if n.lower().endswith((".zip", ".rar", ".7z")))
+        return 0 if _print_gate(primary, files) else 1
+
+    if args.locate:
+        for base, dest in result.plan.items():
+            print("%-80s -> %s" % (base, dest or "(keep)"))
         return 0
 
-    if args.check_deps:
-        missing = verify.check_dependencies(folder, result.kept)
-        if not missing:
-            print("All required dependencies appear present.")
+    if args.undo:
+        from gigasort.core.undo import undo_move, list_undone
+        entries = list_undone(primary)
+        if not entries:
+            print("nothing to undo.")
+            return 0
+        undone, skipped = undo_move(primary, dry_only=args.dry_run)
+        print("undone %d, skipped %d" % (undone, skipped))
         return 0
 
-    if args.clean_dupes:
-        n = _move_dupes(folder, result, args.dry_run)
-        print("Moved %d duplicate archive(s) to _DUPLICATES." % n)
+    # report the plan (shared by default / --preview / --dry-run / --json)
+    dry = args.dry_run or args.preview or not args.apply
+    rep = report.build_report(result, dry_run=dry)
+
+    if args.json or not dry:
+        pass  # counts below are real once applied
+
+    if dry:
+        if args.json:
+            print(json.dumps(rep, indent=2))
+        else:
+            print(report.format_summary(rep))
         return 0
 
-    # No flags -> launch the GUI. The GUI never hard-defaults to ~/Downloads:
-    # if no workspace was given, it opens with an empty folder field for the
-    # user to fill in (headless modes above keep the default_workspace()).
-    from gigasort.gui.app import run_app
-    return run_app(workspace=args.workspace)
-
-
-def _merge_verify(cache, verify_map):
-    """Fold a --verify result map into the persistent verified cache."""
-    cache = dict(cache or {})
-    for fn, (cat, title, ncat, status) in verify_map.items():
-        cache[fn] = {
-            "status": status, "category": cat,
-            "nexus_title": title, "nexus_cat": ncat,
-        }
-    return cache
-
-
-def _move_dupes(folder, result, dry_run):
-    from gigasort.constants import DUPLICATES_BIN
-    from gigasort.core import storage
-    import shutil
-
-    dup_dir = os.path.join(folder, DUPLICATES_BIN)
-    if dry_run:
-        return len(result.duplicates)
-    os.makedirs(dup_dir, exist_ok=True)
-    n = 0
-    for fn, _ in result.duplicates:
-        src = os.path.join(folder, fn)
-        dst = os.path.join(dup_dir, fn)
-        if os.path.abspath(src) != os.path.abspath(dst):
-            try:
-                shutil.move(src, dst)
-                storage.record_move(folder, src, dst)
-                n += 1
-            except Exception:
-                pass
-    return n
+    moved, dup, rej, holds = 0, 0, 0, 0
+    res = engine.execute_sort(
+        primary, result, dry_run=False, one_bin=args.one_bin,
+        only_categories=([c.strip() for c in args.only_categories.split(",")]
+                         if args.only_categories else None),
+        game_dir=args.game_dir)
+    moved, dup = res.get("moved", 0), res.get("duplicates", 0)
+    rej, holds = res.get("rejects_moved", 0), res.get("holds", 0)
+    rep["counts"].update({"moved_now": moved, "duplicates_now": dup,
+                          "rejects_now": rej, "holds_now": holds})
+    flagged = res.get("flagged_unverified", [])
+    if flagged:
+        print("%d UNVERIFIED file(s) left in place (never moved):"
+              % len(flagged))
+        for n in flagged:
+            print("  \u2022 %s" % n)
+    print(report.format_summary(rep))
+    if args.json:
+        print(json.dumps(rep, indent=2))
+    return 0
 
 
 if __name__ == "__main__":

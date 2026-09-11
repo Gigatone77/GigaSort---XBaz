@@ -12,6 +12,7 @@ from gigasort.constants import (
     GS_STRUCTURE_DIR, SETTINGS_FILENAME, CACHE_FILENAME,
     MANIFEST_FILENAME, TAGS_FILENAME, LOG_FILENAME, THREAT_FILENAME,
 )
+from gigasort.core.storage import state_dir
 from gigasort.gui.util import esc
 
 
@@ -77,6 +78,7 @@ class StatusPage(Adw.NavigationPage):
             self._dirs_group.add(row)
             self._dir_rows.append(row)
 
+        state_home = state_dir(self.workspace)
         files = [
             (SETTINGS_FILENAME, "settings"),
             (CACHE_FILENAME, "verified cache"),
@@ -85,8 +87,12 @@ class StatusPage(Adw.NavigationPage):
             (TAGS_FILENAME, "processed-mods tags"),
             (THREAT_FILENAME, "threat watchlist"),
         ]
+        home_row = Adw.ActionRow(title="central state dir",
+                                 subtitle=esc(state_home))
+        self._files_group.add(home_row)
+        self._file_rows.append(home_row)
         for fname, why in files:
-            p = os.path.join(self.workspace, fname)
+            p = os.path.join(state_home, fname)
             state = "[present]" if os.path.isfile(p) else "[absent]"
             row = Adw.ActionRow(title=esc(fname),
                                 subtitle="%s  %s" % (esc(why), state))

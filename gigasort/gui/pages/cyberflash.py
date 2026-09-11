@@ -1,6 +1,8 @@
-"""CyberFlashSync companion tab — options sidebar + live output."""
+"""CyberFlashSync companion tab — options sidebar + live output.
 
-import os
+Runs the packaged `gigasort.core.cyberflash` module (python -m) instead of
+an external script from ~/Games or the ToolBox.
+"""
 
 from gigasort.gui.pages.companion import CompanionPage
 
@@ -9,11 +11,7 @@ class CyberFlashSyncPage(CompanionPage):
     __gtype_name__ = "GigaSortCyberFlashSyncPage"
 
     TOOL_NAME = "CyberFlashSync"
-    SCRIPT = "CyberFlashSync.py"
-    SCRIPT_CANDIDATES = [
-        os.path.expanduser("~/Games/CyberFlashSync.py"),
-        "/run/media/Gigatone/ToolBox/ToolBox/Cyberpunk-Tools/GigaSort-core-tools/CyberFlashSync.py",
-    ]
+    MODULE = "gigasort.core.cyberflash"
 
     def _build_sidebar(self):
         self._run_button.set_visible(False)
@@ -23,6 +21,9 @@ class CyberFlashSyncPage(CompanionPage):
             "Include live game dir", "~90 GB, OFF by default")
         self._dry = self._add_toggle("Dry run", "preview, change nothing")
         self._json = self._add_toggle("JSON summary", "machine-readable")
+        self._subtitle.set_text(
+            "Built-in module (python -m gigasort.core.cyberflash). Home -> "
+            "flash drive; never deletes anything on this PC.")
 
         self._add_button("Backup", "suggested-action").connect(
             "clicked", lambda *a: self._run_cmd())

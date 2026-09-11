@@ -26,9 +26,10 @@ gi.require_version("Adw", "1")
 from gi.repository import Gtk, Adw, GLib
 
 from gigasort.constants import KNOWN_FOLDERS, REJECT_BIN
-from gigasort.core import sort, storage
+from gigasort.core import storage
+from gigasort.core.engine import _move_skip_collision
 from gigasort.core.categorize import categorize, extract_mod_id
-from gigasort.utils.format import human_size
+from gigasort.utils import human_size
 from gigasort.gui.util import esc
 
 ARCHIVE_EXT = (".zip", ".rar", ".7z", ".7zip")
@@ -334,7 +335,7 @@ class RejectsPage(Adw.NavigationPage):
         # Move the archive into its category folder (collision-safe).
         dst = os.path.join(self.workspace, folder, fn)
         try:
-            sort._move_skip_collision(self.workspace, src, dst)
+            _move_skip_collision(src, dst, self.workspace, fn)
         except Exception as e:
             return "Recognition saved, but move failed: %s" % e
         return None

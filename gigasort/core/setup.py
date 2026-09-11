@@ -1,33 +1,54 @@
-"""Interactive workspace setup (--setup). Persists settings in
-_GigaSort_settings.json: target folder + extract-on-sort toggle."""
+"""Setup — one-time workspace preparation + defaults."""
 
 import os
-import sys
 
-from gigasort.constants import SETTINGS_FILENAME
-from gigasort.core import storage
+from gigasort.constants import (
+    DEFAULT_WORKSPACE, REJECT_BIN, TRASH_BIN, DUPLICATES_BIN, HOLD_BIN,
+)
+from gigasort.core import signature, storage
+from gigasort.core.signature import seed_id_cache
 
 
-def run_setup(folder):
+def ensure_dirs(folder):
+    """Create the workspace skeleton (bins + staging) if missing."""
+    for name in (REJECT_BIN, TRASH_BIN, DUPLICATES_BIN, HOLD_BIN):
+        os.makedirs(os.path.join(folder, name), exist_ok=True)
+
+
+def setup_workspace(folder=None, game_dir=None, force=False):
+    """Init a workspace: dirs, settings file, offline sig archive, seed refs.
+
+    Returns the workspace path used."""
+    folder = folder or DEFAULT_WORKSPACE
+    folder = os.path.abspath(folder)
+    ensure_dirs(folder)
+
     settings = storage.load_settings(folder)
+    if game_dir or force:
+        settings["game_dir"] = game_dir or settings.get("game_dir") or ""
+        storage.save_settings(folder, settings)
 
-    print("== GigaSort setup  (workspace: %s) ==" % folder)
+    built = signature.ensure_archive(folder, force=force)
+    seeded = 0
+    if built:
+        seeded = seed_id_cache(folder)
+    return folder, built, seeded
 
-    target = settings.get("target_folder") or folder
-    if sys.stdin.isatty():
-        ans = input("Target mod folder [%s]: " % target).strip()
-        if ans:
-            target = os.path.abspath(os.path.expanduser(ans))
-    settings["target_folder"] = target
 
-    cur = bool(settings.get("extract_on_sort", True))
-    if sys.stdin.isatty():
-        ans = input("Extract archives on sort? %s [Y/n]: "
-                    % ("yes" if cur else "no")).strip().lower()
-        settings["extract_on_sort"] = ans not in ("n", "no")
-    else:
-        settings["extract_on_sort"] = cur
-
-    storage.save_settings(folder, settings)
-    print("Saved %s" % os.path.join(folder, SETTINGS_FILENAME))
-    return 0
+def find_game_dir(hint=None):
+    """Locate the CP2077 game install (Heroic prefix hints), else None."""
+    if hint and os.path.isdir(hint):
+        return hint
+    candidates = [
+        os.path.expanduser("~/Games/Heroic/Prefixes"),
+        os.path.expanduser("~/Games/Cyberpunk 2077"),
+    ]
+    for base in candidates:
+        if not os.path.isdir(base):
+            continue
+        for root, _dirs, _files in os.walk(base):
+            if os.path.basename(root) == "Cyberpunk 2077" or \
+                    (os.path.isdir(os.path.join(root, "bin"))
+                     and os.path.isdir(os.path.join(root, "archive"))):
+                return root
+    return None

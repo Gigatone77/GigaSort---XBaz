@@ -1,4 +1,8 @@
-"""GigaSlim companion tab — options sidebar + live output."""
+"""GigaSlim companion tab — options sidebar + live output.
+
+Runs the packaged `gigasort.core.gigaslim` module (python -m) instead of
+an external script from ~/Games or the ToolBox.
+"""
 
 import os
 
@@ -9,11 +13,7 @@ class GigaSlimPage(CompanionPage):
     __gtype_name__ = "GigaSortGigaSlimPage"
 
     TOOL_NAME = "GigaSlim"
-    SCRIPT = "GigaSlim.py"
-    SCRIPT_CANDIDATES = [
-        os.path.expanduser("~/Games/GigaSlim.py"),
-        "/run/media/Gigatone/ToolBox/ToolBox/Cyberpunk-Tools/GigaSort-core-tools/GigaSlim.py",
-    ]
+    MODULE = "gigasort.core.gigaslim"
 
     def _build_sidebar(self):
         self._game = self._add_entry(
@@ -27,6 +27,9 @@ class GigaSlimPage(CompanionPage):
             "Include regenerable r6/cache", "final.redscripts.modded/.ts")
         self._dry = self._add_toggle("Dry run", "preview, don't move")
         self._yes = self._add_toggle("Skip confirmation", "--yes")
+        self._subtitle.set_text(
+            "Built-in module (python -m gigasort.core.gigaslim). Moves "
+            "slimable files to a backup store; never hard-deletes.")
 
         self._add_button("Analyze", "suggested-action").connect(
             "clicked", lambda *a: self._run_cmd("analyze"))

@@ -1,88 +1,72 @@
-"""Read-only reports: --json machine output, and --locate workspace map."""
+"""Reports — the machine-readable + human summaries of a sort run."""
 
 import json
 import os
-
-from gigasort.constants import (
-    GS_STRUCTURE_DIR, GS_STAGE_DIR, GS_BACKUP_DIR, BRIDGE_DIR,
-    REJECT_BIN, TRASH_BIN, HOLD_BIN, DUPLICATES_BIN,
-    SETTINGS_FILENAME, CACHE_FILENAME, MANIFEST_FILENAME, TAGS_FILENAME,
-    LOG_FILENAME, THREAT_FILENAME,
-)
-from gigasort.core import storage, sort
-from gigasort.core.categorize import extract_mod_id, categorize
-from gigasort.utils.format import human_size
+import time
 
 
-def run_json_report(folder):
-    """Scan the workspace (offline, cache-only) and emit a JSON report."""
-    result = sort.scan_workspace(folder)
-    cache = storage.load_cache(folder)
 
-    cat_names = sorted(result.plan)
-    files = []
-    for fn, size in result.kept:
-        entry = (cache or {}).get(fn) or {}
-        files.append({
-            "name": fn,
-            "size_bytes": size,
-            "size_human": human_size(size),
-            "mod_id": extract_mod_id(fn),
-            "category": categorize(fn),
-            "verified": entry.get("status") in ("approved",) if entry else False,
-            "verified_title": entry.get("nexus_title"),
-        })
-
-    report = {
-        "tool": "GigaSort",
+def build_report(result, dry_run=True, counts=None):
+    """Assemble a dict summarizing a ScanResult."""
+    folder = result.folder
+    counts = counts or (0, 0, 0, 0)
+    moved, duplicates, rejects, holds = counts
+    return {
         "workspace": folder,
-        "read_only": True,
-        "online": False,  # fully offline build
-        "totals": {
-            "archives": len(result.kept) + len(result.duplicates),
+        "dry_run": dry_run,
+        "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "counts": {
             "kept": len(result.kept),
             "duplicates": len(result.duplicates),
             "rejects": len(result.rejects),
-            "categories": len(cat_names),
-            "total_bytes": result.total_bytes,
-            "total_human": human_size(result.total_bytes),
+            "moved_now": moved,
+            "duplicates_now": duplicates,
+            "rejects_now": rejects,
+            "holds_now": holds,
         },
-        "duplicates": [{"name": fn, "size_human": human_size(s)}
-                       for fn, s in result.duplicates],
-        "rejects": [fn for fn, _ in result.rejects],
-        "categories": {c: [fn for fn, _ in result.plan[c]] for c in cat_names},
-        "files": files,
+        "kept": sorted(f for f, _ in result.kept),
+        "duplicates": sorted(f for f, _ in result.duplicates),
+        "rejects": sorted(f for f, _ in result.rejects),
+        "plan": {k: v for k, v in result.plan.items()},
+        "toplevel_authors": sorted(result.toplevel_authors),
+        "toplevel_files": sorted(dict(result.plan_groups)),
+        "framework_groups": result.framework_of,
+        "relocate": [(a, b, c) for (a, b, c, _s) in result.relocate],
+        "misplaced": result.relocate,
+        "hold_conflicts": {k: len(v) for k, v in result.hold_conflicts.items()},
+        "unverified_never_moved": sorted(
+            n for n in result.plan
+            if n not in result.gate),
     }
-    print(json.dumps(report, indent=2))
 
 
-def run_locate(folder):
-    """Print a map of everything GigaSort manages in the workspace."""
-    dirs = [
-        ("category folders", "(01 Eyes & Lashes ...)"),
-        (REJECT_BIN, "review / uncategorized"),
-        (TRASH_BIN, "marked for deletion"),
-        (HOLD_BIN, "threat-gated, waiting"),
-        (DUPLICATES_BIN, "collapsed repeat downloads"),
-        (GS_STRUCTURE_DIR, "game-structure staging output"),
-        (GS_STAGE_DIR, "temporary extraction scratch"),
-        (GS_BACKUP_DIR, "timestamped conflict backups"),
-        (BRIDGE_DIR, "agent communication channel"),
+def write_json_report(folder, report, filename=None):
+    filename = filename or "_GigaSort_report.json"
+    path = os.path.join(folder, filename)
+    try:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(report, fh, indent=2)
+    except OSError:
+        pass
+    return path
+
+
+def format_summary(report):
+    """Human-readable block printed after a run."""
+    c = report["counts"]
+    lines = [
+        "GigaSort report — %s" % report["workspace"],
+        "dry run : %s" % ("yes (nothing moved)" if report["dry_run"] else "no"),
     ]
-    print("GigaSort workspace: %s" % folder)
-    for name, why in dirs:
-        p = os.path.join(folder, name)
-        print("  %-20s %s  (%s)" % (name, p, why))
-    files = [
-        (SETTINGS_FILENAME, "settings"),
-        (CACHE_FILENAME, "verified cache"),
-        (LOG_FILENAME, "verification log"),
-        (MANIFEST_FILENAME, "undo manifest"),
-        (TAGS_FILENAME, "processed-mods tags"),
-        (THREAT_FILENAME, "threat watchlist"),
+    lines += [
+        "kept        : %d" % c["kept"],
+        "duplicates  : %d (%d moved)" % (c["duplicates"], c["duplicates_now"]),
+        "rejects     : %d (%d moved)" % (c["rejects"], c["rejects_now"]),
+        "moved now   : %d" % c["moved_now"],
+        "on hold     : %d" % c["holds_now"],
     ]
-    print("  state files:")
-    for fname, _why in files:
-        p = os.path.join(folder, fname)
-        exists = "present" if os.path.exists(p) else "absent"
-        print("    %-32s %s  [%s]" % (fname, p, exists))
+    if report.get("misplaced"):
+        lines.append("misplaced (review with --locate):")
+        for fn, src, dst, _sz in report["misplaced"][:20]:
+            lines.append("  %-40s %s -> %s" % (fn, src, dst))
+    return "\n".join(lines) + "\n"

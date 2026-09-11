@@ -59,11 +59,7 @@ class XBazPage(CompanionPage):
     __gtype_name__ = "GigaSortXBazPage"
 
     TOOL_NAME = "XBaz"
-    SCRIPT = "XBaz.py"
-    SCRIPT_CANDIDATES = [
-        os.path.expanduser("~/Games/XBaz.py"),
-        "/run/media/Gigatone/ToolBox/ToolBox/Cyberpunk-Tools/GigaSort-core-tools/XBaz.py",
-    ]
+    MODULE = "gigasort.core.xbaz"
 
     def _build_sidebar(self):
         note = Gtk.Label(

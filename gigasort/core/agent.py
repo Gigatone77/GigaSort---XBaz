@@ -1,113 +1,83 @@
-"""Agent bridge (--agent): a read-only-by-design communication channel with a
-LOCAL opencode agent. Remote/cloud agents and third-party MCP servers are
-refused.
+"""Agent bridge — minimal JSON-RPC over the workspace for external agents."""
 
-The bridge (workspace/_GigaSort_bridge/) is the ONLY exchange surface. The
-agent writes request.json; GigaSort validates every op against the safety
-guards and writes result.json. Supported ops: info, batch-sort, move, tags.
-"""
-
-import json
 import os
 
-from gigasort.constants import BRIDGE_DIR
-from gigasort.core import storage, sort, tags as tags_mod
-from gigasort.core.categorize import clean_name
-from gigasort.utils import fs
+from gigasort.core import storage, tags as tags_mod
+from gigasort.core.verify import build_verified_gate
+
+OPS = ("info", "batch-sort", "move", "tags")
 
 
-def bridge_root(folder):
-    return os.path.join(folder, BRIDGE_DIR)
+def _bridge(folder):
+    d = os.path.join(storage.state_dir(folder), "bridge")
+    os.makedirs(d, exist_ok=True)
+    return d
 
 
-def _allowed_origins():
-    return ("opencode", "local", "")
+def handle(folder, op, payload=None, origin=""):
+    """Handle one agent op. Returns a JSON-serializable result dict.
 
-
-def execute_agent_request(folder, req_file):
-    """Read request.json, validate origin, execute the op, write result.json.
-    Returns a process exit code."""
-    root = bridge_root(folder)
-    os.makedirs(root, exist_ok=True)
-    try:
-        with open(req_file, "r", encoding="utf-8") as fh:
-            req = json.load(fh)
-        if not isinstance(req, dict):
-            raise ValueError("request must be a JSON object")
-    except (OSError, ValueError) as e:
-        _write_result(root, {"ok": False, "op": "?", "error": "bad request: %s" % e})
-        return 1
-
-    origin = (req.get("origin") or "").strip().lower()
-    if origin not in _allowed_origins():
-        msg = "Refused: only local agents / opencode may pair with GigaSort"
-        _write_result(root, {"ok": False, "op": req.get("op"), "error": msg})
-        return 1
-
-    op = req.get("op")
-    dry = bool(req.get("dry_run", False))
+    origins: "opencode" | "local" | "" (agent.py) — retained in the log."""
+    payload = payload or {}
+    if op not in OPS:
+        return {"error": "unknown op %r" % op}
 
     if op == "info":
-        result = sort.scan_workspace(folder)
-        _write_result(root, {
-            "ok": True, "op": op, "totals": {
-                "archives": len(result.kept) + len(result.duplicates),
-                "kept": len(result.kept),
-                "duplicates": len(result.duplicates),
-                "rejects": len(result.rejects),
-            },
-            "rejects": [fn for fn, _ in result.rejects],
-        })
-        return 0
+        settings = storage.load_settings(folder)
+        return {
+            "workspace": os.path.abspath(folder),
+            "game_dir": settings.get("game_dir") or "",
+            "state_dir": storage.state_dir(folder),
+            "state_files": sorted(
+                n for n in os.listdir(storage.state_dir(folder))
+                if n.startswith("_GigaSort")
+            ),
+            "origin": origin,
+        }
 
     if op == "batch-sort":
-        try:
-            summary = sort.run_batch_sort(folder, dry_run=dry)
-            _write_result(root, {"ok": True, "op": op, "dry_run": dry, **summary})
-            return 0
-        except Exception as e:
-            _write_result(root, {"ok": False, "op": op, "error": str(e)})
-            return 1
+        from gigasort.core.engine import run_batch_sort
+        dry_run = bool(payload.get("dry_run", True))
+        results, _ = run_batch_sort(folder, dry_run=dry_run,
+                                    move=not dry_run)
+        summary = [{"workspace": r.folder,
+                    "kept": len(r.kept), "rejects": len(r.rejects),
+                    "duplicates": len(r.duplicates)}
+                   for r in results]
+        return {"dry_run": dry_run, "results": summary, "origin": origin}
 
     if op == "move":
-        name = req.get("name")
-        category = req.get("category")
-        if not name or not category:
-            _write_result(root, {"ok": False, "op": op,
-                                 "error": "move needs 'name' and 'category'"})
-            return 1
-        # SAFETY: never move anything not offline-verified as a CP2077 mod.
-        from gigasort.core.sort import build_verified_gate
-        verified, _flagged = build_verified_gate(folder, [(name, 0)])
-        if name not in verified:
-            _write_result(root, {"ok": False, "op": op,
-                                 "error": "refusing to move unverified file "
-                                          "(not confirmed as a Cyberpunk 2077 mod)"})
-            return 1
-        src = os.path.join(folder, clean_name(name))
-        dst = os.path.join(folder, category, clean_name(name))
+        target = payload.get("path")
+        dest = payload.get("dest")
+        if not target or not dest:
+            return {"error": "move requires path and dest"}
+        src = os.path.abspath(os.path.join(folder, target))
+        dst = os.path.abspath(os.path.join(folder, dest))
+        if not os.path.realpath(src).startswith(os.path.realpath(folder)) or \
+                not os.path.realpath(dst).startswith(os.path.realpath(folder)):
+            return {"error": "move outside workspace"}
+        if os.path.basename(src) not in build_verified_gate(folder, [target]):
+            return {"error": "unverified file — refused"}
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
         try:
-            fs.guarded_move(folder, src, dst, dry_run=dry)
-            storage.record_move(folder, src, dst, dry)
-            _write_result(root, {"ok": True, "op": op, "dry_run": dry,
-                                 "src": src, "dst": dst})
-            return 0
-        except Exception as e:
-            _write_result(root, {"ok": False, "op": op, "error": str(e)})
-            return 1
+            os.replace(src, dst)
+        except OSError as exc:
+            return {"error": str(exc)}
+        return {"moved": True, "to": dest, "origin": origin}
 
     if op == "tags":
-        count = tags_mod.write_tags(folder)
-        _write_result(root, {"ok": True, "op": op, "count": count})
-        return 0
+        name = payload.get("file")
+        action = payload.get("action", "add")
+        value = payload.get("tags") or []
+        if not name:
+            return {"error": "tags requires file"}
+        if action == "add":
+            tags_mod.tag_file(folder, name, *value)
+        elif action == "remove":
+            tags_mod.untag_file(folder, name, *value)
+        else:
+            return {"error": "unknown action %r" % action}
+        return {"file": name, "tags": tags_mod.file_tags(folder, name),
+                "origin": origin}
 
-    _write_result(root, {"ok": False, "op": op, "error": "unknown op"})
-    return 1
-
-
-def _write_result(root, data):
-    path = os.path.join(root, "result.json")
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as fh:
-        json.dump(data, fh, indent=2)
-    os.replace(tmp, path)
+    return {"error": "unreachable"}
