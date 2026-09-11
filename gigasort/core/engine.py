@@ -93,8 +93,9 @@ def _backup_dest(folder, base, into):
     return os.path.join(d, base)
 
 
-def execute_sort(folder, result, dry_run=False, trashed=None, game_dir=None,
-                 one_bin=False, only_categories=None, log=None, input_fn=None):
+def execute_sort(folder, result=None, dry_run=False, trashed=None,
+                 game_dir=None, one_bin=False, only_categories=None, log=None,
+                 input_fn=None):
     """Execute a ScanResult plan. Moves only gate-verified files.
 
     Returns a dict: {"moved", "duplicates", "rejects_moved", "holds",
