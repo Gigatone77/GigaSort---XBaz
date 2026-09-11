@@ -55,11 +55,6 @@ class ScanPage(Adw.NavigationPage):
         self._status_label.set_ellipsize(3)
         controls.append(self._status_label)
 
-        self._conn_label = Gtk.Label(
-            label="Offline", css_classes=["giga-veri-chip", "error"])
-        self._conn_label.set_ellipsize(3)
-        controls.append(self._conn_label)
-
         folder_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         folder_label = Gtk.Label(label="Folder:")
         folder_label.set_xalign(0)

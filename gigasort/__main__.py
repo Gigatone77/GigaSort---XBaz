@@ -44,6 +44,8 @@ def build_parser():
                         "folders (first = primary)")
 
     g = p.add_mutually_exclusive_group()
+    g.add_argument("--gui", action="store_true",
+                   help="launch the GTK4 desktop GUI (default when no flags)")
     g.add_argument("--apply", action="store_true", help="run the sort for real")
     g.add_argument("--undo", action="store_true", help="revert the last sort")
     g.add_argument("--json", action="store_true",
@@ -108,8 +110,17 @@ def _print_gate(folder, files):
 
 
 def main(argv=None):
+    # Detect whether any CLI flags were actually passed.
+    raw = argv if argv is not None else sys.argv[1:]
+    explicit_flags = any(a.startswith("-") for a in raw)
+
     args = build_parser().parse_args(argv)
     primary, _context = _expand_folders(args)
+
+    # Launch the GUI when no flags were given (interactive terminal) or --gui.
+    if args.gui or (not explicit_flags and sys.stdin.isatty()):
+        from gigasort.gui.app import run_app
+        return run_app(workspace=primary)
 
     # --setup short-circuit (no scan needed)
     if args.setup:

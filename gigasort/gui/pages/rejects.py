@@ -169,11 +169,6 @@ class RejectsPage(Adw.NavigationPage):
         header.append(title)
         header.append(Gtk.Label(hexpand=True))
 
-        self._conn_label = Gtk.Label(
-            label="Offline", css_classes=["giga-veri-chip", "error"])
-        self._conn_label.set_ellipsize(3)
-        header.append(self._conn_label)
-
         self._refresh_btn = Gtk.Button(label="Refresh")
         self._refresh_btn.connect("clicked", self._on_refresh)
         header.append(self._refresh_btn)

@@ -2,6 +2,37 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [3.0.1] - 2026-09-11
+
+### GUI launch fix + fully-offline cosmetics
+
+- **`gigasort` now opens the GUI by default.** Running the command with no
+  flags in an interactive terminal launches the GTK4 window instead of the
+  CLI dry-run report; `gigasort --gui` forces it explicitly. Piped/non-tty
+  invocations and all CLI flags (`--apply`, `--undo`, ...) behave exactly as
+  before.
+- **Network indicator removed.** The static top-corner "Offline" chip is gone
+  from the Scan and Rejects & Overrides pages - this is a fully offline
+  program, so no connectivity badge is shown anywhere.
+
+## [3.0.0] - 2026-09-11
+
+### Central state dir + companion tools as package modules
+
+- **State centralized** to `~/.local/share/GigaSort/state/<folder>-<hash>`
+  with one-time lossless migration; watched folders stay free of
+  `_GigaSort_*` clutter (`GS_STATE_DIR` env override; scratch/stage live
+  under the state dir).
+- **Legacy `_GigaSort_*` files migrated** out of Mod Library / Downloads.
+- **GigaSlim / CyberFlashSync / XBaz rewritten as real package modules**
+  (`gigasort.core.gigaslim` / `cyberflash` / `xbaz`) with `main()`/`run()`
+  entry points; GUI companion tabs launch them via
+  `python -m gigasort.core.<tool>`; slim/cyberflash CLI flags rewired.
+- **CyberFlashSync** tools item now copies repo files + the gigasort package
+  to the drive; gigasort workspace/state backed up from the central state dir.
+- Companion-page base supports MODULE launching (`python -m`) next to the old
+  external-script path.
+
 ## [2.2.0] - 2026-09-10
 
 ### Total-rewrite hardening: merged engine, dry-run fix, WTNC variants
