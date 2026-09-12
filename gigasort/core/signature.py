@@ -9,6 +9,7 @@ all merged into the per-workspace archive at _GigaSort_sig_archive.json:
 3.  Per-workspace _GigaSort_verified.json (approved cache, merged in)
 """
 
+import hashlib
 import json
 import os
 import re
@@ -78,16 +79,37 @@ def load_approved(folder):
 # Offline archive build/lookup
 # ---------------------------------------------------------------------------
 
+def _seed_fingerprint():
+    """Fingerprint of the bundled knowledge sources. When the shipped
+    sig_seeds change (new expansion, corrected categories), every existing
+    workspace archive must be rebuilt so routing uses the new KB."""
+    seeds = load_bundled_seeds()
+    mods = seeds.get("mods") if isinstance(seeds, dict) else {}
+    seed_bytes = json.dumps(mods, sort_keys=True, default=str)
+    return hashlib.sha256(seed_bytes.encode("utf-8")).hexdigest()[:16]
+
+
+def _archive_fingerprint(data):
+    return data.get("_seed_fp") if isinstance(data, dict) else None
+
+
 def ensure_archive(folder, force=False):
-    """Build the offline sig archive if it does not exist yet (or force).
+    """Build the offline sig archive if it does not exist yet (or force, or
+    when the bundled seed fingerprint changed).
 
     Returns True when an archive is present and loadable afterwards."""
     path = state_path(folder, SIG_ARCHIVE_FILENAME)
     if not force and os.path.exists(path):
-        return json_load(path) is not None
+        data = json_load(path)
+        if data is not None and isinstance(data, dict):
+            if _archive_fingerprint(data) == _seed_fingerprint():
+                return True
+        # stale (or legacy pre-fingerprint) archive: fall through to rebuild
     data = build_offline_archive(folder)
     if not data:
         return False
+    data = dict(data)
+    data["_seed_fp"] = _seed_fingerprint()
     try:
         with open(path, "w", encoding="utf-8") as fh:
             json.dump(data, fh, indent=2)
@@ -161,6 +183,8 @@ def seed_id_cache(folder):
     added = 0
     dirty = False
     for mid, rec in (sig or {}).items():
+        if mid == "_seed_fp" or not str(mid).isdigit():
+            continue
         if mid in refs:
             continue
         refs[mid] = {"verified": True,
