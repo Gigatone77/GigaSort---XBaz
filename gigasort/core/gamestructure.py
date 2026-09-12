@@ -1,16 +1,17 @@
 """Game-structure sort — reorganize extracted/loose files into a CP2077
 game-shaped tree (GAMESTRUCTURE) so they can be dropped on the game root.
 
-Uses a verified reference structure (~/Games/Custom Mod Additions Archive -
-GAME STRUCTURE) to map every loose file to its game subdirectory, falling
-back to the offline category keyword resolution. Always read/stage only —
-never writes into the real game install."""
+Uses a reference structure (only when explicitly passed via argument or
+GD_REFERENCE_GAME_STRUCTURE / GS_REFERENCE_GAME_STRUCTURE env-var) to map
+every loose file to its game subdirectory, falling back to the offline
+category keyword resolution. Always read/stage only — never writes into the
+real game install."""
 
 import os
 import shutil
 
 from gigasort.constants import (
-    GS_STRUCTURE_DIR, DEFAULT_REFERENCE_STRUCTURE,
+    GS_STRUCTURE_DIR,
 )
 from gigasort.core.storage import scratch_dir
 
@@ -48,11 +49,11 @@ class StructureError(Exception):
 def stage_entries(workspace, only=None, dry_run=False, reference=None):
     """Build the GAMESTRUCTURE tree for every staged archive.
 
-    reference: override path to the reference game structure. When unset and
-    the default reference folder exists, it is used to map loose files.
+    reference: override path to the reference game structure. Only used when
+    explicitly given (arg or GS_REFERENCE_GAME_STRUCTURE env); no hardcoded
+    folder is ever scanned.
     Returns (tree_root, staging_outcomes)."""
-    reference = reference or os.environ.get("GS_REFERENCE_GAME_STRUCTURE") \
-        or DEFAULT_REFERENCE_STRUCTURE
+    reference = reference or os.environ.get("GS_REFERENCE_GAME_STRUCTURE")
     reference_exists = reference and os.path.isdir(reference)
     idx = _ref_index(reference) if reference_exists else {}
 
@@ -115,9 +116,8 @@ def _map_ext_to_game_rel(ext, idx):
 
 def plan_structure(workspace, reference=None):
     """Read-only preview: what _place_folder would do (no writes)."""
-    reference = reference or os.environ.get("GS_REFERENCE_GAME_STRUCTURE") \
-        or DEFAULT_REFERENCE_STRUCTURE
-    idx = _ref_index(reference) if os.path.isdir(reference) else {}
+    reference = reference or os.environ.get("GS_REFERENCE_GAME_STRUCTURE")
+    idx = _ref_index(reference) if reference and os.path.isdir(reference) else {}
     stage = scratch_dir(workspace)
     plan = []
     if not os.path.isdir(stage):

@@ -45,14 +45,10 @@ GS_STRUCTURE_DIR = "GAMESTRUCTURE"   # staging output folder
 GS_STAGE_DIR = "_GigaSort_stage"     # temporary extraction scratch
 GS_BACKUP_DIR = "_GigaSort_backup"   # timestamped conflict backups
 
-# Reference game-structure folder used by --gamestructure to map loose /
-# non-game-shaped archives onto a verified, known-good layout (the user's
-# cleaned WTNC-based "drop-ready package" that mirrors the CP2077 game root).
-# Only used when the folder actually exists on disk; otherwise the offline
-# category/manual resolution is used unchanged. Override with the env var
-# GS_REFERENCE_GAME_STRUCTURE.
-DEFAULT_REFERENCE_STRUCTURE = os.path.join(
-    HOME, "Games", "Custom Mod Additions Archive - GAME STRUCTURE")
+# Reference game-structure folder for --gamestructure loose-file mapping is
+# NO LONGER hardcoded: only used when the user passes --reference or sets the
+# env var GS_REFERENCE_GAME_STRUCTURE. The old default path was removed so
+# GigaSort never scans a specific folder on its own.
 
 # Agent bridge.
 BRIDGE_DIR = "_GigaSort_bridge"

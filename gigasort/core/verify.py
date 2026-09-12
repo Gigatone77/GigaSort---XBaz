@@ -17,12 +17,11 @@ from gigasort.constants import (
     UNVERIFIED, APPROVED, MISMATCH, NOMODID, LOG_FILENAME,
 )
 from gigasort.core.categorize import (
-    extract_mod_id, clean_name,
+    extract_mod_id, candidate_mod_id, clean_name,
 )
 
 # --- archive filename id regexes (kept here so both CLI + verify use one) ---
 _ID_RE = re.compile(r"-(\d{3,6})-", re.IGNORECASE)
-_CCXL_RE = re.compile(r"(?<![a-z0-9-])(\d{3,6})(?![a-z0-9-])", re.IGNORECASE)
 
 
 class VerificationResult:
@@ -43,14 +42,18 @@ class VerificationResult:
 
 
 def _id_tokens(path):
-    """Ordered list of plausible mod-id candidates for a file."""
+    """Ordered list of plausible mod-id candidates for a file.
+
+    Classic '-<id>-' token first; the CCXL/collection bare-number form is a
+    fallback via categorize.candidate_mod_id (which ignores year/version
+    tokens so 'Yeezy 700 30905 1.0' resolves to 30905, not the shoe size)."""
     base = os.path.basename(path)
     classic = _ID_RE.search(base)
     if classic:
         return [classic.group(1)]
-    loose = _CCXL_RE.search(base)
+    loose = candidate_mod_id(base)
     if loose:
-        return [loose.group(1)]
+        return [loose]
     return []
 
 

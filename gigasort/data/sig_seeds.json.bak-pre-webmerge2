@@ -1,0 +1,3873 @@
+{
+ "schema": 1,
+ "built": "2026-09-11",
+ "mods": {
+  "26078": {
+   "title": "Showroom - Photo Studio (Visual - Photomode space)",
+   "category": "13 Animations & Photo Mode",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25790": {
+   "title": "Orion Eyes - CCXL - 240 Options",
+   "category": "01 Eyes & Lashes",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23060": {
+   "title": "Buzzsaw VFX Fix",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15497": {
+   "title": "Psycho Killer Reward - Restored",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21816": {
+   "title": "Militech Experimental Particle Beam Rifle",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "file 'Custom Sound 11' routes to 12 via keyword"
+  },
+  "18775": {
+   "title": "Zenith ZAP Stun Gun",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "file 'Custom Sound 1' routes to 12 via keyword"
+  },
+  "8597": {
+   "title": "Mod remover - hard reset Cyberpunk - with full backup",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "manavortex utility; Linux disable-all-mods script"
+  },
+  "19242": {
+   "title": "Dark Future realistic carry capacity",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19084": {
+   "title": "Drive-by Rifles and Heavy Weapons - Use Various Guns from Vehicle",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "Xaliber13"
+  },
+  "17955": {
+   "title": "Drivable Sawed-Off Shotguns (Palica and Testera)",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19067": {
+   "title": "Drive-by Shotguns - Use Shotguns in Vehicle",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "Xaliber13"
+  },
+  "16841": {
+   "title": "Gunsensical",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "3 files: Trigger Modes, Vanilla Boss Damage, Melee Patch"
+  },
+  "19823": {
+   "title": "RSh-12",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "file 'Missing Slots Fix' routes to 08 via keyword"
+  },
+  "20419": {
+   "title": "Need More Smoke FX",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24253": {
+   "title": "Photomode Tweaks",
+   "category": "13 Animations & Photo Mode",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "nutboy / brocreate, TweakXL"
+  },
+  "14662": {
+   "title": "Modular Kyubi Revamp",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "Seijax, 7 files; file named 'Precision Rifle'"
+  },
+  "18337": {
+   "title": "SmartFrames - Art Collector",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "evafan84; gallery art for SmartFrames"
+  },
+  "18505": {
+   "title": "SmartFrame - Tarot cards",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "jeffcooper37; all 26 cards"
+  },
+  "23386": {
+   "title": "Viktor Vektor's Garage Add-on (Vik will fix your car)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "Dedra; requires mod 20793; file 'Sound replacer (More Immersive)' routes to 12 via keyword"
+  },
+  "19410": {
+   "title": "Airdrop Cyberware Capacity Shards",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "VegaCPMods; TweakXL + Phantom Liberty"
+  },
+  "29467": {
+   "title": "SmartFrame Image Pack - NSFW.",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "adult-gated page (og:meta present, login wall); files are Judy/Panam image packs"
+  },
+  "107": {
+   "title": "Cyber Engine Tweaks",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "2380": {
+   "title": "RED4ext",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "4197": {
+   "title": "TweakXL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "4198": {
+   "title": "ArchiveXL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "790": {
+   "title": "Appearance Menu Mod",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "7780": {
+   "title": "Codeware",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "1511": {
+   "title": "redscript",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "3518": {
+   "title": "Native Settings UI",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "4262": {
+   "title": "Equipment-EX",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "2987": {
+   "title": "Virtual Atelier",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "2750": {
+   "title": "Input Loader",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "12001": {
+   "title": "Audioware",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "13077": {
+   "title": "Trigger Mode Control",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "21422": {
+   "title": "Native Interactions Framework",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "20793": {
+   "title": "Viktor Vektors Garage (Fully Enterable)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "18839": {
+   "title": "Photomode-EX",
+   "category": "13 Animations & Photo Mode",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "18435": {
+   "title": "Smart Frames Expand",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "11575": {
+   "title": "Toggle Mods (Linux and Steam Deck)",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-requirements"
+  },
+  "10355": {
+   "title": "Better Access Point Hacking Netrunner Rewards",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "10533": {
+   "title": "Body Shield",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "10556": {
+   "title": "Buttslinger Quickmelee",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "7198": {
+   "title": "Keep Drawing The Line",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "4470": {
+   "title": "No uncrouching when melee attacking from stealth",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "14255": {
+   "title": "Overclock Overheat",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "14037": {
+   "title": "Renaissance Punk - Perk Scaling",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "7197": {
+   "title": "Ricochet Redux",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "11100": {
+   "title": "Second Heart Fix",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "8103": {
+   "title": "Set Bonuses",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "4070": {
+   "title": "Silent Silencers and Throwing Knives",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "11438": {
+   "title": "Sonic Shock Prevents Trace",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "9360": {
+   "title": "Stealth Finishers",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "9939": {
+   "title": "Stealth Remote Control Cars and Turrets",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "7616": {
+   "title": "Stealthrunner",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "6319": {
+   "title": "Stock Market and News System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "12445": {
+   "title": "Trace Position Overhaul",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "11474": {
+   "title": "Weapon Handling Control",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Gameplay Mechanics"
+  },
+  "3661": {
+   "title": "Challenging Breach Minigame",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Enemies and Difficulty"
+  },
+  "2886": {
+   "title": "Convo Skill Check Scaling",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Enemies and Difficulty"
+  },
+  "1712": {
+   "title": "Damage Scaling",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Enemies and Difficulty"
+  },
+  "13066": {
+   "title": "Artistic",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "7831": {
+   "title": "Deceptious",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Utility"
+  },
+  "7833": {
+   "title": "Californication",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "8413": {
+   "title": "Encore",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "7832": {
+   "title": "Hot Fuzz",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "7834": {
+   "title": "One More Light",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "8162": {
+   "title": "TV Anywhere",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quests"
+  },
+  "11097": {
+   "title": "Aurore Romanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "9573": {
+   "title": "Flaming Crotch Man Romanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "13779": {
+   "title": "Here's Johnny",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "6794": {
+   "title": "Immersive Vik",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "8753": {
+   "title": "I Really Want To Stay At Your House - Judy",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "8806": {
+   "title": "I Really Want To Stay At Your House - Kerry",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "8775": {
+   "title": "I Really Want To Stay At Your House - Panam",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "8826": {
+   "title": "I Really Want To Stay At Your House - River",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "4508": {
+   "title": "Judy Romanced Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "4990": {
+   "title": "Kerry Interactions Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "4626": {
+   "title": "Panam Romanced Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "6198": {
+   "title": "Pet Your Cat",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "9191": {
+   "title": "Rita Wheeler Romanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "4870": {
+   "title": "River Romanced Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "11590": {
+   "title": "Romance Hangouts Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "10731": {
+   "title": "The Passenger",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: NPC Interactions"
+  },
+  "6837": {
+   "title": "Ap",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "6329": {
+   "title": "art",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "10325": {
+   "title": "me",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "6493": {
+   "title": "nt",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "6379": {
+   "title": "Ca",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "6276": {
+   "title": "ts",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "10615": {
+   "title": "Dance Off",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "12322": {
+   "title": "DLC Liberation Protocol",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "7026": {
+   "title": "E3 Smart Windows",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "8038": {
+   "title": "Idle Anywhere",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "7322": {
+   "title": "Immersive Food Vendors",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "10393": {
+   "title": "Food Vendors",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "7064": {
+   "title": "Immersive Rippers",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "10255": {
+   "title": "Immersive Rippers - Dogtown",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: World Interactions"
+  },
+  "13466": {
+   "title": "Kabuki Gun Range Enhanced",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "9938": {
+   "title": "Lean Anywhere",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "5519": {
+   "title": "Night City Interactions",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "8099": {
+   "title": "Interactive Judy's Apartment Devices",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "7299": {
+   "title": "Sit Anywhere",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: World Interactions"
+  },
+  "6823": {
+   "title": "Authentic Shift",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "4034": {
+   "title": "Car Modification Shop",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "14405": {
+   "title": "Delamain No. 22",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "3225": {
+   "title": "Extra Vehicle Controls",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "2169": {
+   "title": "No Camera Auto Centering",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "4658": {
+   "title": "Vehicle Summon Tweaks",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "4454": {
+   "title": "Virtual Car Dealer",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "10038": {
+   "title": "Browser Extension",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Utility"
+  },
+  "4625": {
+   "title": "Vehicle Packs - Basic,",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "4539": {
+   "title": "Corpo,",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "4509": {
+   "title": "Gangs",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Vehicles and Driving"
+  },
+  "9213": {
+   "title": "Borg Malorian Restored",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "9707": {
+   "title": "Comrade's Hammer Restored",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "13462": {
+   "title": "Cronos",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "10541": {
+   "title": "DR-10 Wormhole Smart Revolver",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11600": {
+   "title": "DR-10 Wormhole Smart Revolver Rebalance 1.0",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "13101": {
+   "title": "Firestorm",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11790": {
+   "title": "High Doom",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "14146": {
+   "title": "Kanetsugu Short Scope Enhancement",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "9666": {
+   "title": "Malorian Arms 3516 Slide Fix",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11979": {
+   "title": "MaxTac Silencer",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11800": {
+   "title": "Midas Collection",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "10252": {
+   "title": "Midnight Arms MA70 BSG Smart LMG",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "12199": {
+   "title": "Net Hound-Ram",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "13005": {
+   "title": "Overcompensator",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "13461": {
+   "title": "Plan C",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11663": {
+   "title": "PS-11A Plasma Gun",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "10830": {
+   "title": "Rostovic Koplje Smart Precision Rifle",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "14004": {
+   "title": "Slaught-O-Matic Platinum",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "14125": {
+   "title": "Slaught-O-Matic QoL",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "12948": {
+   "title": "Slice and Dice",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "11539": {
+   "title": "Tzijimura",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Weapons"
+  },
+  "14044": {
+   "title": "Actual Chrome Compression",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "14203": {
+   "title": "Berserk Unchained",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "14236": {
+   "title": "Extra Berserks",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "12325": {
+   "title": "Extra Hands",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "14183": {
+   "title": "Gorilla Grapple",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "11820": {
+   "title": "Heat Converter",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "12591": {
+   "title": "Jarngreipr",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "14223": {
+   "title": "Jenkins Tendons Cyberware Can Recharge While Airborne",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "8326": {
+   "title": "Kiroshi Optics Night Vision Mod",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "12664": {
+   "title": "Megingjord",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "3419": {
+   "title": "Nano Drone",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Cyberware"
+  },
+  "2557": {
+   "title": "Always First Equip",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "13657": {
+   "title": "Clean Computer Wallpaper",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "535": {
+   "title": "Crouch vignette effect remover",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "12673": {
+   "title": "Diverse Death Screens",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "13014": {
+   "title": "Enable Advert Animations",
+   "category": "13 Animations & Photo Mode",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "9496": {
+   "title": "Enable Finisher Ragdolls",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "4378": {
+   "title": "Enhanced Craft",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "6945": {
+   "title": "Equipment-EX",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "10712": {
+   "title": "Focus Vignette Removal",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "13090": {
+   "title": "QoL - Higher TV Quality",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "5115": {
+   "title": "Immersive Timeskip",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "8387": {
+   "title": "No Paper Bags From Vending Machines",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "4213": {
+   "title": "Playable Arcade Machines",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "3858": {
+   "title": "Ragdoll Physics Overhaul",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "906": {
+   "title": "Spicy Clean Hacking Screen",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Aesthetics"
+  },
+  "3196": {
+   "title": "Weather Probability Rebalance",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Aesthetics"
+  },
+  "10285": {
+   "title": "Cleaner Main Menu and Pause Menu",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "11261": {
+   "title": "Crafting Recipe Owned and Iconic Labels",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "3400": {
+   "title": "Filter Saves by Lifepath and Type",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "8340": {
+   "title": "Find-EX",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "2592": {
+   "title": "Limited HUD",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "4725": {
+   "title": "Mark To Sell",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: UI"
+  },
+  "1727": {
+   "title": "Muted Markers",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "4521": {
+   "title": "Named Saves",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: UI"
+  },
+  "7238": {
+   "title": "Quickhack Hotkeys",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "4941": {
+   "title": "Real Vendor Names",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "3136": {
+   "title": "Simple XP Multiplier",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "5298": {
+   "title": "Stash Filters",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: UI"
+  },
+  "3850": {
+   "title": "Appearance Change Unlocker",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "12378": {
+   "title": "Arcade Anywhere",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "2805": {
+   "title": "Clear Skill Checks",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "12520": {
+   "title": "Computer Anywhere",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "3096": {
+   "title": "Custom Quickslots",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "12787": {
+   "title": "Deadeye Sound Remover",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "9724": {
+   "title": "Faster Checkpoints",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "5112": {
+   "title": "Faster Iguana Hatch",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "5431": {
+   "title": "Faster Vehicle Knockback Animation",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "9377": {
+   "title": "Quick Message Exit CET",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "2820": {
+   "title": "Hide Read Shards",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "7360": {
+   "title": "Immersion patch - No crowd panic from stealth activity",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "7353": {
+   "title": "Immersion patch - No crowd panic from using devices",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "6550": {
+   "title": "Instant Wardrobe",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "11882": {
+   "title": "Metro Pocket Guide",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "7043": {
+   "title": "More Climbable Objects",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "12500": {
+   "title": "No More Out-Leveling Vendor Items",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "5434": {
+   "title": "Only Smartweapon Crosshairs",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "11682": {
+   "title": "Quickhack Loadouts",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "11425": {
+   "title": "Quickhacks Sort by Slot",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "5113": {
+   "title": "Relic Effect Periods",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "14320": {
+   "title": "Retrothrusters QoL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "10575": {
+   "title": "Sensible Time Bomb",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "2687": {
+   "title": "Smarter Scrapper",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "14264": {
+   "title": "Stash and Backpack Search",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "14149": {
+   "title": "TV Mute Control",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "6328": {
+   "title": "Untrack Quest Ultimate",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Quality of Life"
+  },
+  "3543": {
+   "title": "Zoomable Scopes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Quality of Life"
+  },
+  "11429": {
+   "title": "Allow Unbound Actions (Keybinds)",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14130": {
+   "title": "Base Fists and Arm Cyberware Attack Speed Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "9706": {
+   "title": "Better Armor Tooltip",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "9799": {
+   "title": "Disable W-S Keys To Select Dialogue Options",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "9448": {
+   "title": "Don't Hide Stamina Bar on Holster",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "9921": {
+   "title": "Fix Adrenaline Decay",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "8663": {
+   "title": "QoL - Fix for holotext shadows with RT or PT",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "13756": {
+   "title": "News Audio Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "13421": {
+   "title": "Murdoc13",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "7413": {
+   "title": "sq021_randy_pc_scene CET - The Hunt quest missing audio restore",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "11757": {
+   "title": "Radio Port Vehicle Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14163": {
+   "title": "Recon Grenade Bounce Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "12850": {
+   "title": "Repeating Synaptic Accelerator Bug Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14053": {
+   "title": "Bug Fix - Full-Auto Tech Weapons Bolt Duration",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14165": {
+   "title": "Small TV Channels Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14042": {
+   "title": "Stanley's Morning Audio Fix",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "4316": {
+   "title": "Status Bar Bug Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "13973": {
+   "title": "TV Adverts Fixes",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "14014": {
+   "title": "TV Audio Fixes",
+   "category": null,
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Bug Fixes"
+  },
+  "4575": {
+   "title": "Input Loader",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Utility"
+  },
+  "4885": {
+   "title": "Mod Settings",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "wtnc-curated",
+   "note": "WTNC section: Utility"
+  },
+  "5387": {
+   "title": "Accurate Speedometer",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "5075": {
+   "title": "Adaptive Sliders",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31545": {
+   "title": "Adidas Terrex Trailrider Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30492": {
+   "title": "Adidas Yeezy Slides",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27367": {
+   "title": "ADIDAS Racer TR21 Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27366": {
+   "title": "ADIDAS Sense 4 Shoes - FemV",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16099": {
+   "title": "Toyota Trueno GT APEX (AE86) Initial D Edition",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17892": {
+   "title": "Air Kerenzikov",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "20393": {
+   "title": "Alternative Berserk",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16450": {
+   "title": "Ambient Sound Mixer - Mute Ads",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19169": {
+   "title": "Arasaka Estate Mansion",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33543": {
+   "title": "Actually Iconic Weapons - Arclight",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33646": {
+   "title": "Gatling Gun - Arclight",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33645": {
+   "title": "Chimera Laser - Arclight Helios",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26623": {
+   "title": "Aster M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28279": {
+   "title": "Atelier Price Fixer",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19960": {
+   "title": "Atlantis Club Expanded",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14814": {
+   "title": "Atone - Reset Your Street Cred",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33442": {
+   "title": "AudioXL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33310": {
+   "title": "AURA Spectrum V-1 Sneakers",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18037": {
+   "title": "AutoFixer Customs",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23157": {
+   "title": "Auto Drive Enhanced",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24118": {
+   "title": "Azalea M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32603": {
+   "title": "Balenciga Triple S Sneakers",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31800": {
+   "title": "Balenciga X-Pander Sneakers",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31777": {
+   "title": "Balmain Unicorn Sneakers",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24785": {
+   "title": "Baronz Chair",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33001": {
+   "title": "NC Behavioral Health Initiative",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31044": {
+   "title": "Belimai's Atelier",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "20267": {
+   "title": "Better Quality Sort V2",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33513": {
+   "title": "Militech BLACKOUT Ultimate Cyberdeck",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23109": {
+   "title": "Blackwall Side Effects",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27625": {
+   "title": "Blue Moon Character Pack",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23941": {
+   "title": "Bluebell M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "20373": {
+   "title": "Bolt Shots Penetrate Cover",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17209": {
+   "title": "True Grip - Slope Traction and Handbrake Handling Fix",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16982": {
+   "title": "Bozo's Nose - Clown Nose Accessory",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9423": {
+   "title": "Immersive Breathing",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30769": {
+   "title": "Nike Air Jordan Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30331": {
+   "title": "Calendar",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15308": {
+   "title": "Optical Camo Realism and Utility",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28443": {
+   "title": "0-Engine Enhanced Mods",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25430": {
+   "title": "Casino Reforged - Phase 1 - Access areas and fixes",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33371": {
+   "title": "North Oak Casino Complete",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "10741": {
+   "title": "Driver Combat Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32632": {
+   "title": "Chopper - New Custom Weapon",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "20354": {
+   "title": "Cinema in Grand Imperial Mall",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33608": {
+   "title": "Cinematic SmartFrames",
+   "category": "13 Animations & Photo Mode",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30102": {
+   "title": "Classic Crocs - Both Vs",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23186": {
+   "title": "Clover M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32133": {
+   "title": "Combat Cab Taxi System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33316": {
+   "title": "Common Screw Fix",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24853": {
+   "title": "Compact Abilities",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14652": {
+   "title": "Cop Killer",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33641": {
+   "title": "Lada Priora SE",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16048": {
+   "title": "Corpo Rooftop Bar",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "4510": {
+   "title": "Corrupt NCPD",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16092": {
+   "title": "Fading Crosshairs",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "8306": {
+   "title": "Cyber Drift 2.0",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19699": {
+   "title": "Cyber Grip",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28043": {
+   "title": "Cyber Eye Patch",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15251": {
+   "title": "Cyberphonk FM",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23647": {
+   "title": "Dahlia M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33332": {
+   "title": "DamageForge",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23278": {
+   "title": "Recoil for Driver Combat mode",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18318": {
+   "title": "Deceptious Bug Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24887": {
+   "title": "Dedka Car Dealership",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28390": {
+   "title": "DigitalVixen Core",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "29203": {
+   "title": "Gunsensical plus Sabbath equals love",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19095": {
+   "title": "Limited Slip Differential",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16046": {
+   "title": "Downtown Yacht",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33128": {
+   "title": "Drawbridge Fragile Outfit - Archive XL",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19729": {
+   "title": "Drive-In Theater (Working Movie Screen)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "12841": {
+   "title": "Dynamic Downforce",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13986": {
+   "title": "Dynamic Gravity Modifier 2.0",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15449": {
+   "title": "Dynamic Wanted Stars",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16071": {
+   "title": "Dynamic Cherry Blossoms",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16414": {
+   "title": "Dynamic Graffiti",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16158": {
+   "title": "Dynamic NPC Items",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33499": {
+   "title": "Dynamic NPC Wardrobe - Judy",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26610": {
+   "title": "Easier Controller Sprint",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16420": {
+   "title": "Eddies Notification Fix",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33561": {
+   "title": "Interactive Edgerunners Mansion",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24124": {
+   "title": "Exagryph Iconic Smart LMG",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32335": {
+   "title": "Examine Anything",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19889": {
+   "title": "Pachinko Button - Gambling System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33204": {
+   "title": "EXODUS Arasaka Training - ARENA MOD",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "8175": {
+   "title": "Night City Talk Radio",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "5013": {
+   "title": "Extended and Improved Headlights",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15889": {
+   "title": "Extra Iconics",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25873": {
+   "title": "Factions Evolved (Claim Mod Traffic)",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23250": {
+   "title": "Fast Travel Time",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19189": {
+   "title": "Fighting Gangs Allowed - Reasonable Police",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24400": {
+   "title": "Flatlined Exit",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21200": {
+   "title": "For Mr. Wick",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26783": {
+   "title": "FZR 3000 Street Racer",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18396": {
+   "title": "Gallery Custom Filters",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15450": {
+   "title": "Playable Roulette - Gambling System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19575": {
+   "title": "Playable Blackjack - Gambling System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18690": {
+   "title": "Gen Teleport Command",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24477": {
+   "title": "Generous V (Donate More)",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30988": {
+   "title": "Blowout Jobs - GigCore",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "12695": {
+   "title": "Mjolnir",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9168": {
+   "title": "Go Like Hell - Driving Overhaul",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19377": {
+   "title": "Gold Machetes for Valentinos",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19412": {
+   "title": "Gone Away - Better Partner Suspended Behaviour",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28398": {
+   "title": "Grave Filler",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33606": {
+   "title": "Gwent (Triple Triad Card Game) - Quest",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24555": {
+   "title": "H10 Apartment Number",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30290": {
+   "title": "Healing",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26803": {
+   "title": "Hidden Gems Enemies",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21656": {
+   "title": "Hold to Overclock while scanning",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25792": {
+   "title": "Immersion Patch - Holdin' On",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23308": {
+   "title": "Holly M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22868": {
+   "title": "Hydrangea M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24295": {
+   "title": "Immersive Delamain",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "5044": {
+   "title": "Immersive Sunglasses",
+   "category": "01 Eyes & Lashes",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "8016": {
+   "title": "Semi-automatic Transmission",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14232": {
+   "title": "Immersive Sunglasses - Extended for Equipment-EX",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13038": {
+   "title": "Immersive Sunglasses Extended",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13821": {
+   "title": "Improved Aldecaldos Camp",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17488": {
+   "title": "Improved NCPD Map Filters",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30508": {
+   "title": "Injuries",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23739": {
+   "title": "Input QoL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16270": {
+   "title": "Intelligence based scanner time dilation",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19632": {
+   "title": "Inventory Adjustments Hub",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "4776": {
+   "title": "Inventory Zoom",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28980": {
+   "title": "It Wasn't Me",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25019": {
+   "title": "Item Records Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13690": {
+   "title": "Judy Flirts on Dates",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17486": {
+   "title": "Judy Identity Privacy",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30189": {
+   "title": "Killing Nights - Dynamic Mission",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22987": {
+   "title": "Killing Moon - Lifepath Dialog Restored",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19976": {
+   "title": "Konpeki Plaza Unlocked",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "11312": {
+   "title": "Mitsubishi Starion ESI-R",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19749": {
+   "title": "Toyota MR2 Supercharged",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26045": {
+   "title": "Law Enforcement Overhaul Reset",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "10135": {
+   "title": "Law Enforcement Overhaul",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16129": {
+   "title": "Less Samurai",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31518": {
+   "title": "Let's Go Bowling - NCA or GigCore Addon (Beta)",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16386": {
+   "title": "Loot Icons Extension",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27433": {
+   "title": "Lightweight Crowd Duplicate Randomizer",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22523": {
+   "title": "Lily M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33337": {
+   "title": "LHUD Dark Future bars",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28860": {
+   "title": "Lina Malinas Mansion",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14730": {
+   "title": "Looting QoL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33297": {
+   "title": "Lore Accurate Squad Comms",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15270": {
+   "title": "Lucifer's Corvette",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30371": {
+   "title": "Custom Main Menu Music",
+   "category": "12 Audio & Sound",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32801": {
+   "title": "Malorian Arms Dioscuri - Iconic Smart Sniper Rifle",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13207": {
+   "title": "Converse - both Vs",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13388": {
+   "title": "Devil Sword Vergil - ArchiveXL",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21325": {
+   "title": "Tactical Belt",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26222": {
+   "title": "Map Search",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31852": {
+   "title": "MapTags - GigCore Mod Tool",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26666": {
+   "title": "Marigold M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18208": {
+   "title": "Masamune and Nowaki Revamp",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33431": {
+   "title": "MaxTac Enhanced",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33639": {
+   "title": "Mecha Higgs Poncho-Cloak",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33480": {
+   "title": "Meigetsu",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28509": {
+   "title": "Midnight Acquisition",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13396": {
+   "title": "Ferrari Testarossa",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31105": {
+   "title": "Loreful Modded Traffic",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "10395": {
+   "title": "NIGHT CITY ALIVE",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15138": {
+   "title": "NCI Addon - Badlands and Pacifica",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21018": {
+   "title": "NCI Addon - City Center",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14806": {
+   "title": "NCI Addon - Heywood",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19005": {
+   "title": "NCI Addon - Santo Domingo",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14804": {
+   "title": "NCI Addon - Watson",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14805": {
+   "title": "NCI Addon - Westbrook",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22838": {
+   "title": "NCPD Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32694": {
+   "title": "Negative Balance - Full Story Gig",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19798": {
+   "title": "Neuralware - Chipware Expansion",
+   "category": "04 Tattoos & Cyberware",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33342": {
+   "title": "REDLINE RAMPAGE",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25965": {
+   "title": "Night City Fleet Expansion",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "29008": {
+   "title": "Night City Remembers",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30991": {
+   "title": "Blowout Jobs - NightCity Taxi Service",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25552": {
+   "title": "Night City Traffic Overhaul",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31200": {
+   "title": "Blowout Jobs - TraumaTeam 911 Rescue",
+   "category": "14 Quests & Story",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33618": {
+   "title": "Nike Air Foamposite One Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30910": {
+   "title": "Nike Air Mag 'Back to the Future' Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31310": {
+   "title": "Nike Sacai LD Waffle Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27350": {
+   "title": "NIKE Air Max Akatsuki Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27352": {
+   "title": "NIKE Air Zoom Pegasus 36 Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "11421": {
+   "title": "No Crash Reporter",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "533": {
+   "title": "No Intro Videos",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24359": {
+   "title": "No Spillover out of combat",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15585": {
+   "title": "No More Duplicate NPCs",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33541": {
+   "title": "No Street Cred from Kills",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14454": {
+   "title": "Nulled Angle Correction",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25767": {
+   "title": "OIIA Spinning cat - Brainrot Advert",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32585": {
+   "title": "Refreshing Swim",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22014": {
+   "title": "Galena GT Widebody",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21069": {
+   "title": "The Wobbler - Monowheel",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28185": {
+   "title": "Edgerunner Emperor",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25411": {
+   "title": "Jefferson Thrax Limo",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23289": {
+   "title": "Militech Legatus SPD-10",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23578": {
+   "title": "The Tumbler",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "29032": {
+   "title": "Panam's Warmonster",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28631": {
+   "title": "Penny Racers",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25947": {
+   "title": "Supron Widebody",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26431": {
+   "title": "Tanishi 6x6 Ratrod",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24180": {
+   "title": "Trophy Tanishi",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27469": {
+   "title": "Yaiba Fullmaru Nomad Monster",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22413": {
+   "title": "Orchid M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27790": {
+   "title": "OVERTURE 999999 DAMAGE EDITION",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26567": {
+   "title": "Panzerstecher - armour piercing dagger",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15014": {
+   "title": "Pariah",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15708": {
+   "title": "Parking Spots Enhanced",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23875": {
+   "title": "Immersion Patch - Path of Glory",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23415": {
+   "title": "Pay-To-Go",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24745": {
+   "title": "Peony M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9936": {
+   "title": "Persistent Bullet Holes",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9432": {
+   "title": "Persistent Throwable Weapons",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21964": {
+   "title": "Poppy M F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9777": {
+   "title": "Shorter Jackets - Pozer and Rocker",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17442": {
+   "title": "Pre-2.0 NCPD Scanner Map Icons",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "10021": {
+   "title": "Preem Scopes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33409": {
+   "title": "Projectile Launcher System Perk Tree",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19517": {
+   "title": "Pyromania Unchained",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18290": {
+   "title": "Quickhack Fixes",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21077": {
+   "title": "Radial Breach",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16965": {
+   "title": "React To Horn",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31789": {
+   "title": "Readable Shards",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33005": {
+   "title": "Real Roses Flower Field",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32313": {
+   "title": "RedConsole",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14139": {
+   "title": "RedData",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "13378": {
+   "title": "RedFileSystem",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32312": {
+   "title": "RedFunctions",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31919": {
+   "title": "RedIMGRetriever",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31920": {
+   "title": "RedLogger",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31941": {
+   "title": "RedNotepad",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21067": {
+   "title": "Reduced Ragdoll Force",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32370": {
+   "title": "RedWindows",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31897": {
+   "title": "Reebok Pump Omni Zone 2 Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "15963": {
+   "title": "Reflex is Cool",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32206": {
+   "title": "CCC Insurance",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24243": {
+   "title": "Reinforcements - Gang Vs Gang",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21532": {
+   "title": "Reinforcements System",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "29473": {
+   "title": "Reinforcements System Delayed",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21729": {
+   "title": "Rent a Motel",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "9240": {
+   "title": "Reset Attributes always available",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14800": {
+   "title": "Responsive NPCs",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22694": {
+   "title": "Responsive V",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31589": {
+   "title": "Rick Owens Geobasket Sneakers",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23874": {
+   "title": "ROAMING BUS",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14617": {
+   "title": "Roller Coaster Enhanced",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26611": {
+   "title": "Running Man - New Sprinting Perks",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33498": {
+   "title": "Stylishpunk - Rhythm Combat mod",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22228": {
+   "title": "Say Something Damn It",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31052": {
+   "title": "SECURITY - Your Security Manager",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30482": {
+   "title": "Sell From Wardrobe",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23031": {
+   "title": "Semimaru Quest Restart Bug Fix",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22884": {
+   "title": "Shouldered Headphones",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27868": {
+   "title": "Sir John Bananastiff - SFW",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "18706": {
+   "title": "Slope Traction Factor",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33381": {
+   "title": "SmartFrames - Alexis Bruchon",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33422": {
+   "title": "SmartFrames - Alfonso Azpiri",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33109": {
+   "title": "SmartFrames - Edward Hopper Art",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33000": {
+   "title": "SmartFrames - Frank Frazetta Art",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33510": {
+   "title": "SmartFrames - Guy Billout",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33177": {
+   "title": "SmartFrames - Hiroshi Nagai",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33220": {
+   "title": "SmartFrames - Jamie Hewlett",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33108": {
+   "title": "SmartFrames - Juan Gimenez Art",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33470": {
+   "title": "SmartFrames - Julie Bell",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33232": {
+   "title": "SmartFrames - Katsuhiro Otomo",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33594": {
+   "title": "SmartFrames - Luis Royo",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33274": {
+   "title": "SmartFrames - Mike Mignola",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33072": {
+   "title": "SmartFrames - Moebius Art",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33651": {
+   "title": "SmartFrames - Serge Pelle",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33025": {
+   "title": "SmartFrames - Squiddy Art",
+   "category": "07 Colors, Profiles & Resources",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33426": {
+   "title": "SmartFrame Slideshow",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33460": {
+   "title": "Smoke Screen",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17630": {
+   "title": "Sort Ripperdoc Inventory",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14339": {
+   "title": "SPC Open",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "16311": {
+   "title": "Stand After Sliding",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "25315": {
+   "title": "Stash and Vendors QoL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "3994": {
+   "title": "StatTrack Malorian Arms",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33370": {
+   "title": "Street Games - Fight Club",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33368": {
+   "title": "Street Games - Playable Basketball",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33369": {
+   "title": "Street Games - Playable Poker",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33361": {
+   "title": "Street Games - Playable Pool and Billiards",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33253": {
+   "title": "Street Pace",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28989": {
+   "title": "Street Sense",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30510": {
+   "title": "Vixens Patches",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26332": {
+   "title": "Surface Type Expanded",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28721": {
+   "title": "Switchable Extra Quickslots",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "14094": {
+   "title": "SynthDose - More Drugs",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "12427": {
+   "title": "Tesla Cybertruck",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33459": {
+   "title": "Tether",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "29274": {
+   "title": "The Thin Blue Line",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28397": {
+   "title": "Thread Locker",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "23841": {
+   "title": "Threadscape",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "17674": {
+   "title": "Throttled Activity Log",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30558": {
+   "title": "True First Person Camera 2.0",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28627": {
+   "title": "True Night Vision",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28639": {
+   "title": "True Sunglasses",
+   "category": "01 Eyes & Lashes",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "22029": {
+   "title": "Tulip F CCXL MCH Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "20280": {
+   "title": "Underground Casino (Working Roulette)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "7989": {
+   "title": "Unlock Fov",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27357": {
+   "title": "V49 Footwear Atelier",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "26188": {
+   "title": "Vendor Search",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "19679": {
+   "title": "VendorsXL",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "24599": {
+   "title": "V's Faceplate (H10)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33527": {
+   "title": "V Focus - Inventory and Wardrobe Preview Controls",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "28744": {
+   "title": "Vehicle manufacturer fix",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "27152": {
+   "title": "Honda CRX Mugen (1984)",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33489": {
+   "title": "Toyota Celica Supra A60",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "5646": {
+   "title": "Wannabe Edgerunner",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "5145": {
+   "title": "Wardrobe Anywhere",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33481": {
+   "title": "Wellsprings Industrial",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "7367": {
+   "title": "Wilson's Range",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "21453": {
+   "title": "Wolf Cut M F CCXL Hair",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "32126": {
+   "title": "Blackwall Takedown - New Quickhack",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "33041": {
+   "title": "Gravitas - New Custom Cyberware",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31872": {
+   "title": "Gravitational Pull - New Quickhack",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31125": {
+   "title": "Zeusico Quickhacks",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31484": {
+   "title": "Thunderclap - New Custom Quickhack",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31818": {
+   "title": "Widow's Web - New Quickhack",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "31150": {
+   "title": "Zeusico's Atelier",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": null
+  },
+  "30905": {
+   "title": "Adidas Yeezy 700 V3 shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "library file id"
+  },
+  "32267": {
+   "title": "Adidas Yeezy Boost 350 V2",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "library file id"
+  },
+  "700": {
+   "title": "C.H.L.O.E.",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "library file id"
+  },
+  "350": {
+   "title": "Adidas Yeezy Boost 350 v2 Shoes",
+   "category": "05 Clothing & Armor",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "library file id"
+  },
+  "26771": {
+   "title": "Custom Perk Framework",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "8106": {
+   "title": "Hollywood Props Pack (AMM)",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "17497": {
+   "title": "More Alternate Clothes for Judy Enhanced Body and Vanilla Body",
+   "category": "11 Sensitive Content (18+)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "32013": {
+   "title": "Object Manipulation Framework",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "24949": {
+   "title": "Phone Extension",
+   "category": "08 Cores, Fixes & Utilities",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "10983": {
+   "title": "Proximas Prop Paradise",
+   "category": "10 World Building (Locations & Props)",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "30455": {
+   "title": "Raenefs Hair Collection 1 CCXL MCH M F",
+   "category": "02 Hair",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "13894": {
+   "title": "Roaming Motorcycles (REDMOD)",
+   "category": "09 Vehicles & Transport",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "reject rescue"
+  },
+  "18245": {
+   "title": "Apex Legends Optics",
+   "category": "06 Weapons & Misc Items",
+   "verified": true,
+   "source": "nexus-web-confirmed",
+   "note": "Nexus category Weapons. OPTICS KEYWORD TRAP: weapon scopes (Apex 2xHolo/4xACOG/HCOG/DigitalThreat), NOT an eye mod; keyword 'optics' misroutes to 01 Eyes."
+  }
+ }
+}

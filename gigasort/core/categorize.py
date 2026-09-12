@@ -34,21 +34,32 @@ def extract_mod_id(filename):
 
 
 CCXL_MODID_RE = re.compile(r"(?<![a-z0-9-])(\d{3,6})(?![a-z0-9-])", re.IGNORECASE)
+# A bare-number Nexus id in CCXL/collection downloads. Those filenames put the
+# mod id right before the version token, e.g. "Adidas Yeezy 700 30905 1.0
+# 2026-..". Shoe-size words (700, 350) and years (2026) are NOT the id: it is
+# the LAST standalone 4-6 digit token that is not a 19xx/20xx year.
+_BARE_ID_RE = re.compile(r"(?<![\w-])(\d{4,6})(?![\w.-])", re.IGNORECASE)
+_YEAR_RE = re.compile(r"^20\d{2}$|^19\d{2}$")
 
 
 def candidate_mod_id(filename):
-    """Loose Nexus mod-id candidate: a 4-6 digit number embedded in the name.
+    """Loose Nexus mod-id candidate for a downloaded filename.
 
     Newer Nexus / CCXL-collection downloads write the mod id as a bare number
     (e.g. 'CCXL - AMELIE REDUX 31403 1 <date>-<hash>.zip') rather than the
-    classic '-31403-5-...' form. This returns the first such token, used only
-    as a candidate so the offline structural gate can pair a strong CP2077
-    archive layout with *some* numeric Nexus id without requiring the classic
-    delimiter.
+    classic '-31403-5-...' form. This returns the id using the classic token
+    when present, otherwise the last standalone 4-6 digit number that is not a
+    year (collection filenames append '<id> <version> <date>' in that order,
+    so the final non-year token before the version block is the mod id).
     """
     idm = extract_mod_id(filename)
     if idm:
         return idm
+    matches = [m.group(1) for m in _BARE_ID_RE.finditer(filename)]
+    for tok in reversed(matches):
+        if _YEAR_RE.match(tok):
+            continue
+        return tok
     cm = CCXL_MODID_RE.search(filename)
     return cm.group(1) if cm else None
 

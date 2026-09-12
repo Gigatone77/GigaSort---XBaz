@@ -25,6 +25,11 @@ from gigasort.utils import json_load
 # ---------------------------------------------------------------------------
 
 _WTNC_MOD_RE = re.compile(r"^M\s+(\d+)\s+(.+)$", re.IGNORECASE)
+# wtnc_modlist.md is shipped as markdown: "[Name](https://www.nexusmods.com/
+# cyberpunk2077/mods/10355) by [Author](...)". Parse the link form.
+_WTNC_LINK_RE = re.compile(
+    r"\[([^\]]+)\]\(\s*https?://(?:www\.)?nexusmods\.com/cyberpunk2077/mods/(\d+)\s*\)",
+    re.IGNORECASE)
 
 
 def load_bundled_seeds():
@@ -47,9 +52,14 @@ def load_bundled_wtnc():
     try:
         with open(path, "r", encoding="utf-8", errors="replace") as fh:
             for line in fh:
-                m = _WTNC_MOD_RE.match(line.strip())
+                line = line.strip()
+                m = _WTNC_MOD_RE.match(line)
                 if m:
                     out[m.group(1)] = m.group(2).strip()
+                    continue
+                lm = _WTNC_LINK_RE.search(line)
+                if lm:
+                    out[lm.group(2)] = lm.group(1).strip()
     except OSError:
         pass
     return out
@@ -119,6 +129,18 @@ def build_offline_archive(folder):
             "category": rec.get("category") or data[mid].get("category"),
         })
         data[mid]["source"] = "approved"
+
+    # Merge the per-workspace reference cache (mod-id records accumulated
+    # from earlier web-verified lookups) so their titles/categories feed the
+    # offline archive too. Refs entries never override a seed's category.
+    refs = json_load(state_path(folder, REFERENCE_FILENAME)) or {}
+    for mid, rec in refs.items():
+        if not isinstance(rec, dict):
+            continue
+        entry = data.setdefault(mid, {"title": "", "category": None})
+        entry["title"] = entry["title"] or rec.get("title", "")
+        entry["category"] = entry.get("category") or rec.get("category")
+        entry.setdefault("source", "refs")
 
     return data
 

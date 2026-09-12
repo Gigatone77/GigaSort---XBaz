@@ -5,18 +5,26 @@ each archive against the offline knowledge base, and produces a plan of
 destination folders per top-level item. Execution lives in engine.py.
 """
 
-import os
 import dataclasses
+import os
 
 from gigasort.constants import (
-    REJECT_BIN, TRASH_BIN, HOLD_BIN, DUPLICATES_BIN,
-    KNOWN_FOLDERS, TOPLEVEL_AUTHORS, KNOWN_FRAMEWORKS, MAJOR_FRAMEWORKS,
+    APPROVED,
+    DUPLICATES_BIN,
+    HOLD_BIN,
+    KNOWN_FOLDERS,
+    KNOWN_FRAMEWORKS,
+    MAJOR_FRAMEWORKS,
+    REJECT_BIN,
+    TOPLEVEL_AUTHORS,
+    TRASH_BIN,
 )
-from gigasort.core import verify
-from gigasort.core import signature
 from gigasort.core import conflict as conflict_mod
+from gigasort.core import signature, verify
 from gigasort.core.categorize import (
-    clean_name, categorize, extract_mod_id, extract_mod_author,
+    clean_name,
+    extract_mod_author,
+    extract_mod_id,
 )
 
 
@@ -70,6 +78,43 @@ def _size(path):
 
 def _web_override(name, overrides):
     return overrides.get(clean_name(name)) or overrides.get(name)
+
+
+def _verified_category(folder, name):
+    """Category from the offline knowledge base for a VERIFIED file.
+
+    The offline sig archive (built from web-confirmed sig_seeds + WTNC + refs)
+    is authoritative; its id -> category record wins over any keyword guess.
+    Approve-cache categories are only a fallback (they may be stale keyword
+    guesses), so we look the id up in the archive first."""
+    from gigasort.core import signature, verify
+    ids = verify._id_tokens(os.path.basename(name))
+    for mid in ids:
+        rec = signature.offline_lookup(folder, mid)
+        if rec and rec.get("category"):
+            return rec.get("category")
+    res = verify.verify_file(folder, os.path.join(folder, name))
+    return res.category if res.status == APPROVED else None
+
+
+def resolve_category(folder, name, overrides=None):
+    """Route a file to its category folder BY MOD ID ONLY.
+
+    Order: web override > offline-KB category (web-confirmed id). There is
+    NO filename-keyword fallback — a file whose id carries no known category
+    returns None (it is reported as unverified, never keyword-guessed).
+    Returns a folder name or None (never raises)."""
+    if overrides:
+        ov = _web_override(name, overrides)
+        if ov:
+            return str(ov)
+    try:
+        cat = _verified_category(folder, name)
+        if cat:
+            return cat
+    except Exception:  # noqa: BLE001 - routing must never crash a scan
+        pass
+    return None
 
 
 def _find_existing_clean(folder, clean, organized):
@@ -170,7 +215,7 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=None,
             result.total_bytes += size
             continue
 
-        cat = categorize(clean)
+        cat = resolve_category(folder, name, overrides)
         author_ok = author and author in toplevel_authors
 
         if not author_plus_batch and not author_ok:
@@ -242,17 +287,12 @@ def rescue_verified_rejects(folder, rejects, verified_ids, cache=None):
     Returns {fn: (category, size)} for files that got a folder. Read-only
     planning — the caller applies the plan."""
     from gigasort.core import storage
-    from gigasort.core.categorize import categorize, clean_name
     overrides = storage.load_web_overrides(folder)
     cache = cache or storage.load_references(folder)
     out = {}
     for fn in [(f if isinstance(f, str) else f[0]) for f in rejects]:
         size = _size(os.path.join(folder, fn))
-        ov = overrides.get(fn)
-        if ov:
-            out[fn] = (str(ov), size)
-            continue
-        cat = categorize(clean_name(fn))
+        cat = resolve_category(folder, fn, overrides)
         if cat:
             out[fn] = (cat, size)
     return out
@@ -299,10 +339,8 @@ def find_misplaced(folder, items=None, **kwargs):
         for name in files:
             if not _is_archive(name):
                 continue
-            clean = clean_name(name)
-            ov = overrides.get(name)
-            cat = categorize(clean)
-            want = ov or cat
+            cat = resolve_category(folder, name, overrides)
+            want = cat
             if not want:
                 continue
             if first == want:
@@ -310,12 +348,7 @@ def find_misplaced(folder, items=None, **kwargs):
             if want in rel.replace(os.sep, "/").split("/"):
                 continue  # inside the expected category path
             src = os.path.join(root, name)
-            if ov:
-                dst = os.path.join(folder, ov, name)
-            elif cat:
-                dst = os.path.join(folder, cat, name)
-            else:
-                dst = src
+            dst = os.path.join(folder, want, name)
             out.append((name, src, dst, _size(src)))
     return out
 
