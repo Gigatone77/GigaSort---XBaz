@@ -133,14 +133,21 @@ def build_offline_archive(folder):
     # Merge the per-workspace reference cache (mod-id records accumulated
     # from earlier web-verified lookups) so their titles/categories feed the
     # offline archive too. Refs entries never override a seed's category.
+    # ID-ONLY RULE: a refs record only contributes a CATEGORY when it carries
+    # web-verification evidence (a real title record is assumed verified; a
+    # bare "verified" flag also qualifies). Legacy keyword-guess refs entries
+    # (no title, no verified flag) feed deps/titles only, never a category --
+    # otherwise an unverified guess can route a file, defeating the offline KB.
     refs = json_load(state_path(folder, REFERENCE_FILENAME)) or {}
     for mid, rec in refs.items():
         if not isinstance(rec, dict):
             continue
         entry = data.setdefault(mid, {"title": "", "category": None})
         entry["title"] = entry["title"] or rec.get("title", "")
-        entry["category"] = entry.get("category") or rec.get("category")
-        entry.setdefault("source", "refs")
+        verified = bool(rec.get("verified") or rec.get("title"))
+        if verified:
+            entry["category"] = entry.get("category") or rec.get("category")
+            entry.setdefault("source", "refs")
 
     return data
 

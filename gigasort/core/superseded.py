@@ -118,8 +118,10 @@ def check_placement(folder):
     of {file, expected, current, kind} dicts (misplaced | root | split-page)."""
     from gigasort.core.scan import find_misplaced
     issues = []
-    for f, want, cur in find_misplaced(folder):
-        issues.append({"file": f, "expected": want, "current": cur,
+    for name, src, dst, _size in find_misplaced(folder):
+        want = os.path.basename(os.path.dirname(dst))
+        cur = os.path.basename(os.path.dirname(src))
+        issues.append({"file": name, "expected": want, "current": cur,
                        "kind": "misplaced"})
 
     mods = extract_mods(folder)
