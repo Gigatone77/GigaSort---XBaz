@@ -16,6 +16,7 @@ from gigasort.gui.pages.gigaslim import GigaSlimPage
 from gigasort.gui.pages.cyberflash import CyberFlashSyncPage
 from gigasort.gui.pages.xbaz import XBazPage
 from gigasort.gui.pages.gamestructure import GameStructurePage
+from gigasort.gui.pages.fomodpacker import FomodPackerPage
 
 WINDOW_WIDTH = 960
 WINDOW_HEIGHT = 640
@@ -94,6 +95,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.cyberflash_page = CyberFlashSyncPage(workspace=self.workspace)
         self.xbaz_page = XBazPage(workspace=self.workspace)
         self.gamestructure_page = GameStructurePage(workspace=self.workspace)
+        self.fomodpacker_page = FomodPackerPage(workspace=self.workspace)
         add_row("gigaslim", "GigaSlim", "edit-clear-symbolic",
                 self.gigaslim_page)
         add_row("cyberflash", "CyberFlashSync", "document-save-symbolic",
@@ -101,6 +103,8 @@ class MainWindow(Adw.ApplicationWindow):
         add_row("xbaz", "XBaz", "input-gaming-symbolic", self.xbaz_page)
         add_row("gamestructure", "Game Structure", "folder-symbolic",
                 self.gamestructure_page)
+        add_row("fomodpacker", "FOMODPacker", "preferences-system-symbolic",
+                self.fomodpacker_page)
 
         def on_row_activated(listbox, row):
             if hasattr(row, "_page_id"):
@@ -125,7 +129,8 @@ class MainWindow(Adw.ApplicationWindow):
 
     def _on_sort_applied(self):
         for page in (self.undo_page, self.status_page, self.rejects_page,
-                     self.wtnc_page, self.gamestructure_page):
+                     self.wtnc_page, self.gamestructure_page,
+                     self.fomodpacker_page):
             page.workspace = self.scan_page.workspace
         self.undo_page.refresh()
         self.status_page.refresh()

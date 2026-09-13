@@ -91,6 +91,23 @@ def verify_file(folder, path):
                     struct_ok=rec.get("struct_ok", True),
                 )
 
+    # 1b) Curated companion: quest/addon files with no numeric id whose
+    #     basename matches a known companion token resolve via the primary
+    #     vehicle's id (explicit pair, NOT a keyword guess).
+    from gigasort.constants import QUEST_COMPANIONS
+    low_clean = clean.lower()
+    for token, primary_id in QUEST_COMPANIONS.items():
+        if token in low_clean:
+            rec = signature.offline_lookup(folder, primary_id)
+            if rec:
+                return VerificationResult(
+                    APPROVED, mod_id=primary_id,
+                    title=rec.get("title") or clean,
+                    category=rec.get("category"),
+                    source="companion-pair",
+                    struct_ok=True,
+                )
+
     # 2) Offline structural gate: strong CP2077 layout + numeric id.
     mid = ids[0] if ids else None
     if mid:

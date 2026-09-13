@@ -34,6 +34,8 @@ def build_report(result, dry_run=True, counts=None):
         "relocate": [(a, b, c) for (a, b, c, _s) in result.relocate],
         "misplaced": result.relocate,
         "hold_conflicts": {k: len(v) for k, v in result.hold_conflicts.items()},
+        "semantic_conflicts": {
+            k: v for k, v in result.semantic_conflicts.items()},
         "unverified_never_moved": sorted(
             n for n in result.plan
             if n not in result.gate),
@@ -69,4 +71,9 @@ def format_summary(report):
         lines.append("misplaced (review with --locate):")
         for fn, src, dst, _sz in report["misplaced"][:20]:
             lines.append("  %-40s %s -> %s" % (fn, src, dst))
+    sc = report.get("semantic_conflicts") or {}
+    if sc:
+        lines.append("semantic conflicts (keep at most one per tag):")
+        for tag, names in sorted(sc.items(), key=lambda kv: (kv[0] or "")):
+            lines.append("  [%s] %s" % (tag or "explicit", ", ".join(names)))
     return "\n".join(lines) + "\n"

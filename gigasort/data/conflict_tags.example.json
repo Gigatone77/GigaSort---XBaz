@@ -1,0 +1,27 @@
+{
+  "schema": "1",
+  "description": "Example conflict-tags database. Ship YOUR OWN file (do not modify this example).",
+  "mods": {
+    "My Weather Mod":     {"archives": ["MyWeather.archive"],             "tags": ["weather"]},
+    "My LUT Pack":        {"archives": ["MyLUTPack.archive"],             "tags": ["lut"]},
+    "My Alt LUT":         {"archives": ["MyAltLUT.archive"],              "tags": ["lut"]},
+    "My Crowd Mod":       {"archives": ["MyCrowdMod.archive"],            "tags": ["density"]},
+    "My Crowd Fix":       {"archives": ["MyCrowdFix.archive"],            "tags": ["density"]},
+    "My Lighting Pack":   {"archives": ["MyLightingPack.archive"],        "tags": ["lighting"]},
+    "My Lighting Tweaks": {"archives": ["MyLightingTweaks.archive"],      "tags": ["lighting"]},
+    "Weather Addon":      {"archives": ["WeatherAddon.archive"],          "tags": ["weather"]},
+    "Lighting Fix":       {"archives": ["LightingFix.archive"],           "tags": ["lighting"]},
+    "Standalone Rain FX": {"archives": ["StandaloneRainFX.archive"],      "tags": ["rain"]},
+    "Better Rain":        {"archives": ["BetterRain.archive"],            "tags": ["rain"]}
+  },
+  "dependencies": {
+    "My Weather Mod":     ["My Rain Addon"],
+    "My Alt LUT":         ["My LUT Pack"]
+  },
+  "conflicts": [
+    ["My Weather Mod", "Weather Addon"]
+  ],
+  "exceptions": [
+    ["My Lighting Pack", "Lighting Fix"]
+  ]
+}

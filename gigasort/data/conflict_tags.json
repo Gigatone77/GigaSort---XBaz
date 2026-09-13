@@ -1,0 +1,8 @@
+{
+  "schema": "1",
+  "description": "GigaSort semantic-conflict tag database (blank template). Add mod display-names + their archive filenames + tag(s) to flag mods that fight for the same in-game resource even though they never share a file. Examples in conflict_tags.example.json.",
+  "mods": {},
+  "dependencies": {},
+  "conflicts": [],
+  "exceptions": []
+}

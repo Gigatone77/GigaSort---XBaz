@@ -15,7 +15,7 @@ from gigasort.constants import DEFAULT_WORKSPACE
 from gigasort.core import (
     verify, engine, report, setup, wtnc,
     superseded, collection, gamestructure, extract, agent,
-    gigaslim, cyberflash,
+    gigaslim, cyberflash, fomodpacker, overlap, conflict as conflict_mod,
 )
 from gigasort.core.scan import scan_workspace
 
@@ -82,8 +82,28 @@ def build_parser():
                    help="run the packaged CyberFlashSync module")
     g.add_argument("--cyberflash-sync", action="store_true",
                    help="alias of --cyberflash")
+    g.add_argument("--fomodpacker", action="store_true",
+                   help="list/customize FOMOD installers from the _FOMODS "
+                        "bin (see --fomod-archive, --fomod-picks)")
     g.add_argument("--wtnc", action="store_true",
                    help="run the WTNC collection compatibility report")
+    g.add_argument("--overlap", action="store_true",
+                   help="overlap audit: cross-pack same-path + baseline "
+                        "conflict check (see --baseline)")
+    g.add_argument("--conflict-tags", action="store_true",
+                   help="semantic conflict report: tags shared by two or "
+                        "more installed/pending archives (blank schema; "
+                        "users author own conflict_tags.json)")
+
+    p.add_argument("--fomod-archive", default=None,
+                   help="FOMODPacker: exact archive filename to inspect/"
+                        "build (default: first FOMOD in _FOMODS)")
+    p.add_argument("--fomod-picks", default=None,
+                   help="FOMODPacker: JSON picks file "
+                        '{"<step>":{"<group>":["<plugin>",...]}}')
+    p.add_argument("--fomod-workspace", default=None,
+                   help="FOMODPacker: output workspace for the built "
+                        "game tree (default: same as -w/--workspace)")
 
     p.add_argument("--dry-run", action="store_true",
                    help="print the plan without moving anything")
@@ -97,6 +117,12 @@ def build_parser():
                    help="comma-separated category folders to restrict moves to")
     p.add_argument("--game-dir", default=None,
                    help="CP2077 game install root (conflict / structure checks)")
+    p.add_argument("--baseline", default=None,
+                   help="overlap audit: read-only reference tree (e.g. unpicked "
+                        "WTNC install) to check packs against")
+    p.add_argument("--tree", action="append", default=[],
+                   help="overlap audit: a game-relative tree to audit "
+                        "(repeatable; default: the workspace)")
     p.add_argument("--context", action="append", default=[],
                    help="additional context folder (repeatable)")
     return p
@@ -107,6 +133,85 @@ def _print_gate(folder, files):
     for f in sorted(files):
         print("%-6s %s" % ("PASS" if f in gate else "FAIL", f))
     return not (len(files) and not gate)
+
+
+def _run_fomodpacker(workspace, args):
+    """FOMODPacker: list FOMODs from the _FOMODS bin, or build one.
+
+    Default (no --fomod-archive): enumerate _FOMODS and describe each.
+    With --fomod-archive + --fomod-picks: build the FOMODPacker game tree.
+    Mod identity is the Nexus mod id embedded in the archive name
+    (same regex as the rest of GigaSort); filenames are never
+    keyword-guessed for routing."""
+    from gigasort.constants import FOMOD_BIN
+    import json as _json
+
+    fomod_dir = os.path.join(workspace, FOMOD_BIN)
+    fomods = []
+    if os.path.isdir(fomod_dir):
+        fomods = sorted(n for n in os.listdir(fomod_dir)
+                        if n.lower().endswith(".zip"))
+    # also pick a -w/--workspace root archive if explicitly named
+    if args.fomod_archive:
+        cand = args.fomod_archive
+        if os.path.dirname(cand) == "":
+            for base in (fomod_dir, workspace):
+                if os.path.isfile(os.path.join(base, cand)):
+                    cand = os.path.join(base, cand)
+                    break
+
+    if not args.fomod_archive:
+        if not fomods:
+            print("FOMODPacker: no FOMOD installers in %s" % fomod_dir)
+            return 1
+        print("FOMODPacker — %d FOMOD(s) parked in %s:\n" % (
+            len(fomods), fomod_dir))
+        for name in fomods:
+            path = os.path.join(fomod_dir, name)
+            if fomodpacker.is_fomod(path):
+                print(fomodpacker.describe(path))
+                print()
+        return 0
+
+    if not os.path.isfile(cand):
+        print("FOMODPacker: archive not found: %s" % cand)
+        return 1
+    if not fomodpacker.is_fomod(cand):
+        print("FOMODPacker: %s is not a FOMOD zip" %
+              os.path.basename(cand))
+        return 2
+
+    if not args.fomod_picks:
+        # inspect-only mode: dump every step/group/plugin + mod id
+        mid = None
+        from gigasort.core.categorize import extract_mod_id
+        mid = extract_mod_id(os.path.basename(cand))
+        print(fomodpacker.describe(cand))
+        print("\nmod id: %s" % (mid or "(none found)"))
+        return 0
+
+    try:
+        with open(args.fomod_picks, encoding="utf-8") as fh:
+            picks = _json.load(fh)
+    except (OSError, _json.JSONDecodeError) as exc:
+        print("FOMODPacker: bad picks file %s: %s" %
+              (args.fomod_picks, exc))
+        return 2
+
+    out_ws = args.fomod_workspace or workspace
+    os.makedirs(out_ws, exist_ok=True)
+    result = fomodpacker.build(cand, picks, out_ws,
+                               dry_run=args.dry_run)
+    if not args.dry_run:
+        fomodpacker.write_manifest(result, cand, picks)
+        fomodpacker.write_modlist(result)
+    print("FOMODPacker: %s" % result["root"])
+    print("  files: %d" % result["files"])
+    for step, plugs in result["steps"].items():
+        print("  [%s] %s" % (step, ", ".join(plugs)))
+    for issue in result["issues"]:
+        print("  ! %s" % issue)
+    return 0
 
 
 def main(argv=None):
@@ -162,6 +267,32 @@ def main(argv=None):
         sys.stdout.write(out)
         return rc
 
+    if args.overlap:
+        trees = [os.path.abspath(t) for t in args.tree] or [primary]
+        labels_and_paths = {}
+        for t in trees:
+            if not os.path.isdir(t):
+                print("overlap audit: no such tree: %s" % t)
+                return 1
+            labels_and_paths[t] = overlap.rel_paths(t)
+        result = overlap.audit(
+            trees, labels_and_paths,
+            baseline=os.path.abspath(args.baseline) if args.baseline else None)
+        print(overlap.format_audit(result))
+        if args.json:
+            print(json.dumps({k: v for k, v in result.items()
+                              if k not in ("counts",)}, indent=2))
+        return 1 if (result["hard_overwrites"] or result["differing"]) else 0
+
+    if args.conflict_tags:
+        from gigasort.core import storage
+        sc = conflict_mod.find_semantic_conflicts(
+            primary, args.game_dir or (storage.load_settings(primary)
+                                       .get("game_dir")))
+        print(conflict_mod.format_semantic_conflicts(sc) or
+              "no semantic conflicts found.")
+        return 0
+
     if args.wtnc:
         rep = wtnc.run_wtnc_report(primary)
         print("WTNC report: manifest %d, extra compat %d, archives %d" % (
@@ -204,6 +335,9 @@ def main(argv=None):
         for name in failed:
             print("  FAILED  %s" % name)
         return 0
+
+    if args.fomodpacker:
+        return _run_fomodpacker(primary, args)
 
     # trace: everything else requires a scan
     result = scan_workspace(primary)

@@ -16,9 +16,21 @@ ARCHIVE_EXTS = (".zip", ".rar", ".7z")
 # Bin folders inside the workspace (mutually exclusive where noted).
 REJECT_BIN = "_REJECTS"      # review / uncategorized holder
 TRASH_BIN = "_TRASH"          # marked for deletion (wiped only per-file)
+# ------------------------------------------------------------------
+# Curated companion / quest→vehicle pairings (explicit, NOT keyword guess)
+# ------------------------------------------------------------------
+# Files whose basenames contain the secondary key (lower-case) but carry NO
+# numeric mod id will resolve via the primary vehicle's id → same category.
+# Keys are tested as substring matches (lower-cased).
+QUEST_COMPANIONS = {
+    # quest mod 23127 "The Lone Wanderer's Stash" pairs with GT-R R35 20237
+    "gtr35_nomad": "20237",
+}
+
 HOLD_BIN = "_ON_HOLD"         # conflict gated, waiting on the user
 DUPLICATES_BIN = "_DUPLICATES"
 NOT_WTNC_BIN = "_NOT_WTNC"    # "Not compatible with WTNC" sweep bin
+FOMOD_BIN = "_FOMODS"         # FOMOD-installer archives (await FOMODPacker)
 
 # State files (all written inside the workspace).
 SETTINGS_FILENAME = "_GigaSort_settings.json"

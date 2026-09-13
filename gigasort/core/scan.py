@@ -11,6 +11,7 @@ import os
 from gigasort.constants import (
     APPROVED,
     DUPLICATES_BIN,
+    FOMOD_BIN,
     HOLD_BIN,
     KNOWN_FOLDERS,
     KNOWN_FRAMEWORKS,
@@ -38,6 +39,7 @@ class ScanResult:
     plan: dict = None                  # {src_basename: dest relpath}
     plan_groups: dict = None           # {category: [(fn, size)]} (display)
     hold_conflicts: dict = None        # {fn: [paths]}
+    semantic_conflicts: dict = None    # {tag: [display names]}
     framework_of: dict = None          # {fn: framework}
     toplevel_authors: list = None
     author_plus_batch: bool = True
@@ -52,6 +54,7 @@ class ScanResult:
         self.relocate = self.relocate or []
         self.plan = self.plan or {}
         self.hold_conflicts = self.hold_conflicts or {}
+        self.semantic_conflicts = self.semantic_conflicts or {}
         self.framework_of = self.framework_of or {}
         self.toplevel_authors = self.toplevel_authors or []
         self.gate = self.gate or set()
@@ -67,6 +70,17 @@ class ScanResult:
 
 def _is_archive(name):
     return name.lower().endswith((".zip", ".rar", ".7z"))
+
+
+def _is_fomod(folder, name):
+    """Structural FOMOD detection: read the archive, never a filename hint."""
+    if not name.lower().endswith(".zip"):
+        return False
+    try:
+        from gigasort.core.fomodpacker import is_fomod
+        return is_fomod(os.path.join(folder, name))
+    except Exception:  # noqa: BLE001 - never fail a scan on detection
+        return False
 
 
 def _size(path):
@@ -113,6 +127,21 @@ def resolve_category(folder, name, overrides=None):
         if cat:
             return cat
     except Exception:  # noqa: BLE001 - routing must never crash a scan
+        pass
+    # Curated companion: quest/addon files with no numeric id but matching a
+    # known companion key resolve via the primary vehicle's id.
+    try:
+        from gigasort.constants import QUEST_COMPANIONS
+        low = clean_name(name)
+        for token, primary_id in QUEST_COMPANIONS.items():
+            if token in low:
+                from gigasort.core import signature, verify
+                rec = signature.offline_lookup(folder, primary_id)
+                if rec and rec.get("category"):
+                    return rec.get("category")
+                res = verify.verify_file(folder, os.path.join(folder, name))
+                return res.category if res.status == APPROVED else None
+    except Exception:  # noqa: BLE001
         pass
     return None
 
@@ -161,7 +190,7 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=None,
     result.author_plus_batch = author_plus_batch
     result.group_frameworks = group_frameworks
 
-    state = {REJECT_BIN, TRASH_BIN, HOLD_BIN, DUPLICATES_BIN}
+    state = {REJECT_BIN, TRASH_BIN, HOLD_BIN, DUPLICATES_BIN, FOMOD_BIN}
     try:
         for n in os.listdir(folder):
             if n.startswith("_") and os.path.isdir(os.path.join(folder, n)):
@@ -206,6 +235,16 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=None,
         # unverified never leave place
         if name not in result.gate:
             result.rejects.append((name, size))
+            continue
+
+        # FOMOD installers are parked (never category-sorted) unless the
+        # human overrides them. Detection reads the ARCHIVE (fomod/ModuleConfig
+        # present?) — a structural fact, never a filename keyword. Only
+        # id-verified archives enter _FOMODS.
+        if name in result.gate and _is_fomod(folder, name):
+            result.plan[name] = os.path.join(FOMOD_BIN, name)
+            result.kept.append((name, size))
+            result.total_bytes += size
             continue
 
         # web override wins
@@ -255,6 +294,13 @@ def scan_workspace(folder, toplevel_authors=None, author_plus_batch=None,
                 folder, game_dir or settings.get("game_dir"))
     except Exception:  # noqa: BLE001
         result.hold_conflicts = {}
+
+    # semantic (tag-based) conflict report — never moves anything
+    try:
+        result.semantic_conflicts = conflict_mod.find_semantic_conflicts(
+            folder, game_dir or settings.get("game_dir"))
+    except Exception:  # noqa: BLE001
+        result.semantic_conflicts = {}
 
     return result
 
