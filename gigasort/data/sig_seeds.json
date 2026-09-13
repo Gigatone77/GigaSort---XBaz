@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "built": "2026-09-12",
+  "built": "2026-09-13",
   "mods": {
     "26078": {
       "title": "Showroom - Photo Studio (Visual - Photomode space)",
@@ -7870,6 +7870,195 @@
       "category": "09 Vehicles & Transport",
       "verified": true,
       "source": "gigasort-companion-pair"
+    },
+    "1138": {
+      "title": "Gorilla Arms Force Open Fix",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "7330": {
+      "title": "General Performance Improvements - CET Version",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "8884": {
+      "title": "sq027 Panam in Panzer scene",
+      "category": "11 Sensitive Content (18+)",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "9209": {
+      "title": "FX Begone (Modular Effects Removal)",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "9215": {
+      "title": "Preem Scanner (Customization Options for a Clean Minimal Scanner)",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "11077": {
+      "title": "Lizzie's Braindances",
+      "category": "11 Sensitive Content (18+)",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12170": {
+      "title": "yokai_international",
+      "category": "05 Clothing & Armor",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12256": {
+      "title": "No More Autosaves - Phantom Liberty Compatible",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12269": {
+      "title": "Trash Begone (Blowing Debris and Cockroach Removal)",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12369": {
+      "title": "Balanced Nighttime Cycle",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12640": {
+      "title": "manavortex weapon - Tron Disk",
+      "category": "06 Weapons & Misc Items",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "12874": {
+      "title": "Dog town Location Visuals Nulled",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "13524": {
+      "title": "Night City Visuals Nulled",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "14113": {
+      "title": "Lexus LC500 2026 Black Edition",
+      "category": "09 Vehicles & Transport",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "14849": {
+      "title": "Manas Material Library",
+      "category": "06 Weapons & Misc Items",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "14932": {
+      "title": "Glow Begone",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "15988": {
+      "title": "Kunai 2_0 - customizable throwable ninja weapon",
+      "category": "06 Weapons & Misc Items",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "21735": {
+      "title": "The Zenitex Military Store",
+      "category": "05 Clothing & Armor",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "22334": {
+      "title": "Weeee (New H10 Exit)",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "23503": {
+      "title": "Cleaned Holo Billboard Ads",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "24622": {
+      "title": "Weapon - CyberKhopesh",
+      "category": "06 Weapons & Misc Items",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "24895": {
+      "title": "Weapons - Battle Axe - BattleX",
+      "category": "06 Weapons & Misc Items",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "25629": {
+      "title": "Here's Brendan",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "27018": {
+      "title": "Kiroshi Optics - Deep Scan Protocol",
+      "category": "01 Eyes & Lashes",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "28290": {
+      "title": "CCXL Eyelashes Core",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "29092": {
+      "title": "SYNOPSIZED SILVERHAND - faster interlude + skip",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "32739": {
+      "title": "Sensible Melee Range",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "pack-01/04/06 ID merge 2026-09-13"
     }
   }
 }
