@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "built": "2026-09-13",
+  "built": "2026-09-14",
   "mods": {
     "26078": {
       "title": "Showroom - Photo Studio (Visual - Photomode space)",
@@ -8059,6 +8059,146 @@
       "verified": true,
       "source": "nexus-web-confirmed",
       "note": "pack-01/04/06 ID merge 2026-09-13"
+    },
+    "15220": {
+      "title": "Stay Hydrated - Stay Nourished - Stay Healthy",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "Cyberpunk THING modlist name->id (2026-09-13); Nexus cat Gameplay"
+    },
+    "16559": {
+      "title": "Vehicle Durability Display",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "Cyberpunk THING modlist name->id (2026-09-13); Nexus cat Utilities"
+    },
+    "16579": {
+      "title": "Decals Flickering Fix",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "Cyberpunk THING modlist name->id (2026-09-13); Nexus cat Visuals and Graphics (bug-fix)"
+    },
+    "16720": {
+      "title": "NPC Actions Stutter Fix",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "Cyberpunk THING modlist 'Car Dodge Stutter Fix' name->id (2026-09-13); Nexus cat Gameplay"
+    },
+    "12375": {
+      "title": "CGI ADS 2",
+      "category": "07 Colors, Profiles & Resources",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (ad replacement pack; adult-gated page, title confirmed via Nexus page)"
+    },
+    "31304": {
+      "title": "Air Traffic Dupe Fix",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (Deceptious; collection-pinned AirTrafficDupeFix.archive)"
+    },
+    "28876": {
+      "title": "TAKEMUTED - Reject Takemura's holocalls",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; collection-pinned Takemuted.archive)"
+    },
+    "15285": {
+      "title": "Clean Voiceovers (while zoomed or scanning)",
+      "category": "12 Audio & Sound",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (Grapjas; collection-pinned ZoomVoSfxRemover.archive)"
+    },
+    "12600": {
+      "title": "50.1 Night Drive Radio",
+      "category": "12 Audio & Sound",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (Loso721 RadioExt station; collection-pinned 'custom icon' file)"
+    },
+    "23719": {
+      "title": "Subjective lore-friendly edits for some dialogue choices",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; uninstall names ####_prattler_prier_player_V.archive)"
+    },
+    "24424": {
+      "title": "Untie T-BUG's call and Jackie's despawn from H10 elevator",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; collection-pinned !T-Bug_call_untied_axl)"
+    },
+    "24378": {
+      "title": "TELEPORTING CAR DISABLED",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; collection-pinned ####_militech_meet_teleporting_cat_disabled)"
+    },
+    "31371": {
+      "title": "DESPERATE MEASURES GIG edit for pacifist run",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; collection-pinned desperate_measures_pacifist_fix)"
+    },
+    "29119": {
+      "title": "eXed BDs - early SKIP button on quest BDs",
+      "category": "14 Quests & Story",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (HoboOfFerelden; collection-pinned eXed_BD)"
+    },
+    "27698": {
+      "title": "Filthy Access Points",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (juiiicy00; collection-pinned FAPLoc)"
+    },
+    "9372": {
+      "title": "Ultimate Kill Counter (2.31 Supported)",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "nexus-web-confirmed",
+      "note": "web-confirmed 2026-09-14 (Atticus; collection-pinned DumpPromptFix.archive ships inside)"
+    },
+    "1889": {
+      "title": "Limited Fast Travel",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "web-verify",
+      "note": "pack01 limitedFastTravel.reds interior matches nexus"
+    },
+    "27403": {
+      "title": "Unaware Executions",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "web-verify",
+      "note": "pack01 UnawareExecutions/.reds x3 matches nexus install"
+    },
+    "33018": {
+      "title": "Vault Anywhere",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "web-verify",
+      "note": "pack01 Vault Anywhere.reds"
+    },
+    "33052": {
+      "title": "Step Up Anywhere",
+      "category": "08 Cores, Fixes & Utilities",
+      "verified": true,
+      "source": "web-verify",
+      "note": "KB only - no file in collection"
     }
   }
 }

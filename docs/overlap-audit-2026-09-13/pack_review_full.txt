@@ -1,0 +1,1172 @@
+WTNC baseline: /var/home/Gigatone/Games/raw_WTNCCT_mod_pack (1916 files)
+
+==============================================================================
+PACK 01 QoL & Fixes - GAME STRUCTURE
+  files: 515
+  [WTNC OVERLAP] 5 file(s) already in unpicked WTNC baseline:
+      archive/pc/mod/dynamic_wanted_stars.archive
+      r6/scripts/BountiesRestored/gimmeBountyPls.reds
+      r6/scripts/BountiesRestored/settings.reds
+      r6/scripts/dynamic_wanted_stars/DynamicWantedStars.reds
+      r6/tweaks/Buzzsaw VFX Fix/Items.Preset_Pulsar_Buzzsaw_inline3.yaml
+  [CROSS-PACK] 122 basename(s) also present in other pack(s):
+      AfricanAmericanNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      AfricanNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      AldecaldosProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      AmericanNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      AnimalsProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Arabic.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ArrayUtils.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      BackstoryManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      BackstoryUI.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      BackstoryUIExpanded.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      BarghestProfileManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ChildBackstoryGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ChineseNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ChineseSimplified.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ChineseTraditional.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CoherenceManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CriminalRecordManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Cron.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      CrowdArchetype.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdAssociation.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdDistrictManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdEntity.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdGender.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdTrait.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdTraits.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CrowdWealth.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      CyberwareRegistryManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Czech.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      DatabaseSourceManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      English.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      EthnicityDetector.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      EuropeanNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ExpandedBackstoryManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      FinancialProfileManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      French.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      GameSession.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GameSettings.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      GameUI.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GangManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      GangNameGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      GangProfileGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      GangProfileUtils.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      German.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      HaitianNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      HispanicNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Hungarian.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      IndianNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Italian.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Japanese.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      JapaneseNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspBoloGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspCommunityPool.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspConnectionDetector.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspConnectionTracker.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspEventPoolCache.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KdspQuestScannerExclusions.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KiroshiSettings.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Korean.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      KoreanNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      LifePath.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      LifePathEvent.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      LifePathEvents.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      LifePathPossibilities.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      LocalizationProvider.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      MaelstromProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      MedicalHistoryManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      MiddleEasternNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      MoxesProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NCPDNameGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NCPDProfileGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NPCPuppet.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NameGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NetAliases.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NetProfileGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      NetWatchDBReport.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      PersonalQuirkGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Polish.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Portuguese.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      PsychProfileManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Random.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      RareNPCManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Ref.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      RelationshipsManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Russian.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScannerBackstory.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScannerBackstorySystem.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScannerGlitch.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScannerLoadingText.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScannerNPCBodyGameController.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ScavengersProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      SixthStreetProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      SlavicNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      SoutheastAsianNames.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Spanish.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      SpanishLatAm.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      String.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextAdulthood.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextBackgrounds.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextBolo.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextChildhood.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextConnections.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextCore.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextCorpos.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextHousing.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextJobs.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextLifepaths.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextLoading.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TextUpbringing.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Thai.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TraumaTeamGenerator.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Turkish.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      TygerClawsProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      UI_ScannerModulesDef.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      UniqueNPCData.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      UniqueNPCEntries.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      UniqueNPCManager.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      ValentinosProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      VehicleRegistration.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      VoodooBoysProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      WindowUtils.lua
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      WraithsProfile.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      init.lua
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+==============================================================================
+PACK 02 Cars & Vehicles - GAME STRUCTURE
+  files: 220
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 119 basename(s) also present in other pack(s):
+      ArchV4.xl
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_FZR.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Fyrn.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_ICONS.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Malina.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Mogus.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Paladin.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Valor.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      ArchV4_Vigil.tweak
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      BDF_DRe_Arch_V4.archive
+          also in: 20 Vehicles - DennisReactive - GAME STRUCTURE
+      CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      Config.reds
+          also in: 06 Zenitex & Manavortex - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE
+      Cron.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GameSession.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GameSettings.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      GameUI.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      KRNLNIK_Ford_Mustang_Boss_302.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      KRNLNIK_Mercedes_190E_Evolution_II.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      Ref.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      SetupNewSite.reds
+          also in: 06 Zenitex & Manavortex - GAME STRUCTURE
+      SetupNewTab.reds
+          also in: 06 Zenitex & Manavortex - GAME STRUCTURE
+      VehicleManufacturerFix.reds
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+      ford_mustang_boss_302.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      ford_mustang_boss_302_ICONS.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      init.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      jeep_cherokee_trackhawk.xl
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      jeep_grand_cherokee_trackhawk.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      jeep_grand_cherokee_trackhawk_ICONS.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      lexus_c500.yaml
+          also in: 14 Vehicles - aalexbug - GAME STRUCTURE
+      lexus_lc500.archive
+          also in: 14 Vehicles - aalexbug - GAME STRUCTURE
+      lexus_lc500.xl
+          also in: 14 Vehicles - aalexbug - GAME STRUCTURE
+      mazda_rx7_fd_widebody.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      mazda_rx7_fd_widebody_ICONS.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      mercedes_benz_190e_evo2.xl
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      mercedes_benz_190e_evolution_2.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      mercedes_benz_190e_evolution_2_ICONS.tweak
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      mustang_boss_302.xl
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      oranje3_supron_widebody.archive
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE
+      oranje3_supron_widebody.xl
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE
+      oranje3_supron_widebody.yaml
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE
+      rx7_widebody.xl
+          also in: 09 Vehicles - Cornmilf - GAME STRUCTURE
+      void_Nissan_Silvia_S15_00_base.yaml
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_01_neon_red.yaml
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bb08.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bf02.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bobblehead.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bobblehead.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_ex08.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_ex08.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_h03.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_hl01.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_mi04.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_neon.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_neon.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_p01_black_matte.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_racing_brakes.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_rollcage.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_roof_wing.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_roof_wing.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_seats.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_shift_stick_lights.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_shift_stick_lights.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_sp07.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_steering_wheel.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wb01.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wb01.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wh07.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_xx_base.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Silvia_S15_xx_base.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_00_base.yaml
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_console.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_console.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_rollcage.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_rollcage.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_spoiler.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_spoiler.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_wh06.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_widebody.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_widebody.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_xx_base.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_xx_base.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_base.yaml
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_wb04.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_wb04.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_bb16.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_bf08.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_dash_acc.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_dash_acc.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_ex04.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_ex04.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_fuel_cell.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_fuel_cell.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_h09.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_mi07.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_neon.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_neon.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_p00_default.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rb02.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rc04.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_roof_spoiler.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_roof_spoiler.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rsc03.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rsc03.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_sk11.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_sp01.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_stw02.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_tl01.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_wh01.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_xx_base.archive
+          also in: 08 Vehicles - void - GAME STRUCTURE
+      void_Nissan_Skyline_R34_xx_base.xl
+          also in: 08 Vehicles - void - GAME STRUCTURE
+==============================================================================
+PACK 03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+  files: 152
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 4 basename(s) also present in other pack(s):
+      NUT_johnnyhairedits_CCXL.archive
+          also in: 05 CCXL Hair Collection - GAME STRUCTURE
+      NUT_johnnyhairedits_CCXL.xl
+          also in: 05 CCXL Hair Collection - GAME STRUCTURE
+      NUT_mullet_collection_CCXL.archive
+          also in: 05 CCXL Hair Collection - GAME STRUCTURE
+      NUT_mullet_collection_CCXL.xl
+          also in: 05 CCXL Hair Collection - GAME STRUCTURE
+==============================================================================
+PACK 04 Quests & Gigs - GAME STRUCTURE
+  files: 155
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 116 basename(s) also present in other pack(s):
+      AfricanAmericanNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      AfricanNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      AldecaldosProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      AmericanNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      AnimalsProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Arabic.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ArrayUtils.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      BackstoryManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      BackstoryUI.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      BackstoryUIExpanded.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      BarghestProfileManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ChildBackstoryGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ChineseNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ChineseSimplified.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ChineseTraditional.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Classes.reds
+          also in: 06 Zenitex & Manavortex - GAME STRUCTURE
+      CoherenceManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CriminalRecordManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdArchetype.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdAssociation.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdDistrictManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdEntity.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdGender.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdTrait.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdTraits.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CrowdWealth.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      CyberwareRegistryManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Czech.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      DatabaseSourceManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      English.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      EthnicityDetector.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      EuropeanNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ExpandedBackstoryManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      FinancialProfileManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      French.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      GangManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      GangNameGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      GangProfileGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      GangProfileUtils.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      German.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      HaitianNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      HispanicNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Hungarian.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      IndianNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Italian.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Japanese.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      JapaneseNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspBoloGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspCommunityPool.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspConnectionDetector.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspConnectionTracker.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspEventPoolCache.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KdspQuestScannerExclusions.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KiroshiSettings.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Korean.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      KoreanNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      LifePath.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      LifePathEvent.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      LifePathEvents.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      LifePathPossibilities.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      LocalizationProvider.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      MaelstromProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      MedicalHistoryManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      MiddleEasternNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      MoxesProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NCPDNameGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NCPDProfileGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NPCPuppet.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NameGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NetAliases.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NetProfileGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      NetWatchDBReport.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      PersonalQuirkGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Polish.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Portuguese.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      PsychProfileManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Random.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      RareNPCManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      RelationshipsManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Russian.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScannerBackstory.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScannerBackstorySystem.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScannerGlitch.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScannerLoadingText.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScannerNPCBodyGameController.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ScavengersProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      SixthStreetProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      SlavicNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      SoutheastAsianNames.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Spanish.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      SpanishLatAm.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      String.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextAdulthood.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextBackgrounds.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextBolo.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextChildhood.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextConnections.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextCore.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextCorpos.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextHousing.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextJobs.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextLifepaths.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextLoading.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TextUpbringing.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Thai.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TraumaTeamGenerator.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      Turkish.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      TygerClawsProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      UI_ScannerModulesDef.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      UniqueNPCData.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      UniqueNPCEntries.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      UniqueNPCManager.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      ValentinosProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      VehicleRegistration.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      VoodooBoysProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+      WraithsProfile.reds
+          also in: 01 QoL & Fixes - GAME STRUCTURE
+==============================================================================
+PACK 05 CCXL Hair Collection - GAME STRUCTURE
+  files: 73
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 4 basename(s) also present in other pack(s):
+      NUT_johnnyhairedits_CCXL.archive
+          also in: 03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+      NUT_johnnyhairedits_CCXL.xl
+          also in: 03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+      NUT_mullet_collection_CCXL.archive
+          also in: 03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+      NUT_mullet_collection_CCXL.xl
+          also in: 03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+==============================================================================
+PACK 06 Zenitex & Manavortex - GAME STRUCTURE
+  files: 191
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 4 basename(s) also present in other pack(s):
+      Classes.reds
+          also in: 04 Quests & Gigs - GAME STRUCTURE
+      Config.reds
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE
+      SetupNewSite.reds
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      SetupNewTab.reds
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+==============================================================================
+PACK 07 Vehicles - Oranje3 - GAME STRUCTURE
+  files: 23
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 4 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      oranje3_supron_widebody.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      oranje3_supron_widebody.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      oranje3_supron_widebody.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+==============================================================================
+PACK 08 Vehicles - void - GAME STRUCTURE
+  files: 461
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 75 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      void_Nissan_Silvia_S15_00_base.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_01_neon_red.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bb08.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bf02.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bobblehead.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_bobblehead.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_ex08.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_ex08.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_h03.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_hl01.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_mi04.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_neon.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_neon.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_p01_black_matte.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_racing_brakes.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_rollcage.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_roof_wing.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_roof_wing.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_seats.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_shift_stick_lights.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_shift_stick_lights.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_sp07.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_steering_wheel.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wb01.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wb01.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_wh07.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_xx_base.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Silvia_S15_xx_base.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_00_base.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_console.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_console.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_rollcage.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_rollcage.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_spoiler.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_spoiler.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_wh06.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_widebody.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_widebody.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_xx_base.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_2000GT-R_xx_base.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_base.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_wb04.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_00_wb04.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_bb16.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_bf08.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_dash_acc.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_dash_acc.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_ex04.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_ex04.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_fuel_cell.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_fuel_cell.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_h09.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_mi07.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_neon.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_neon.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_p00_default.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rb02.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rc04.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_roof_spoiler.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_roof_spoiler.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rsc03.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_rsc03.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_sk11.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_sp01.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_stw02.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_tl01.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_wh01.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_xx_base.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      void_Nissan_Skyline_R34_xx_base.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+==============================================================================
+PACK 09 Vehicles - Cornmilf - GAME STRUCTURE
+  files: 229
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 20 basename(s) also present in other pack(s):
+      CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Ford_Mustang_Boss_302.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Mercedes_190E_Evolution_II.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      ford_mustang_boss_302.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ford_mustang_boss_302_ICONS.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      jeep_cherokee_trackhawk.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      jeep_grand_cherokee_trackhawk.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      jeep_grand_cherokee_trackhawk_ICONS.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mazda_rx7_fd_widebody.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mazda_rx7_fd_widebody_ICONS.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mercedes_benz_190e_evo2.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mercedes_benz_190e_evolution_2.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mercedes_benz_190e_evolution_2_ICONS.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      mustang_boss_302.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      rx7_widebody.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+==============================================================================
+PACK 10 Vehicles - MisterChedda - GAME STRUCTURE
+  files: 0
+  [WTNC OVERLAP] none
+  [CROSS-PACK] none
+==============================================================================
+PACK 11 Vehicles - ErenN77 - GAME STRUCTURE
+  files: 30
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 12 basename(s) also present in other pack(s):
+      ControlPanel.lua
+          also in: 15 Vehicles - SDH0 - GAME STRUCTURE
+      Cron.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GameSession.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      GameUI.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      ResolutionPresets.lua
+          also in: 15 Vehicles - SDH0 - GAME STRUCTURE
+      Styles.lua
+          also in: 15 Vehicles - SDH0 - GAME STRUCTURE
+      VehicleManufacturerFix.reds
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      WindowUtils.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      init.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE
+      placeholder.vortex
+          also in: 15 Vehicles - SDH0 - GAME STRUCTURE
+      settings.lua
+          also in: 15 Vehicles - SDH0 - GAME STRUCTURE
+==============================================================================
+PACK 12 Vehicles - EzioMaverick - GAME STRUCTURE
+  files: 0
+  [WTNC OVERLAP] none
+  [CROSS-PACK] none
+==============================================================================
+PACK 13 Vehicles - Ashfold - GAME STRUCTURE
+  files: 0
+  [WTNC OVERLAP] none
+  [CROSS-PACK] none
+==============================================================================
+PACK 14 Vehicles - aalexbug - GAME STRUCTURE
+  files: 61
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 4 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      lexus_c500.yaml
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      lexus_lc500.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      lexus_lc500.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+==============================================================================
+PACK 15 Vehicles - SDH0 - GAME STRUCTURE
+  files: 111
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 11 basename(s) also present in other pack(s):
+      ControlPanel.lua
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+      Cron.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE
+      GameSession.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE
+      GameUI.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+      ResolutionPresets.lua
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+      Styles.lua
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+      WindowUtils.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE
+      init.lua
+          also in: 01 QoL & Fixes - GAME STRUCTURE, 02 Cars & Vehicles - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE
+      placeholder.vortex
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+      settings.lua
+          also in: 11 Vehicles - ErenN77 - GAME STRUCTURE
+==============================================================================
+PACK 16 Vehicles - Morpheus - GAME STRUCTURE
+  files: 26
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 17 Vehicles - Okrasha - GAME STRUCTURE
+  files: 25
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 18 Vehicles - MAXSA5 - GAME STRUCTURE
+  files: 22
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE
+  files: 32
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 20 Vehicles - DennisReactive - GAME STRUCTURE
+  files: 11
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 11 basename(s) also present in other pack(s):
+      ArchV4.xl
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_FZR.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Fyrn.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_ICONS.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Malina.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Mogus.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Paladin.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Valor.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      ArchV4_Vigil.tweak
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      BDF_DRe_Arch_V4.archive
+          also in: 02 Cars & Vehicles - GAME STRUCTURE
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 21 Vehicles - Synthetic Culture - GAME STRUCTURE
+  files: 9
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 22 Vehicles - methodd - GAME STRUCTURE
+  files: 5
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 2 basename(s) also present in other pack(s):
+      Config.reds
+          also in: 02 Cars & Vehicles - GAME STRUCTURE, 06 Zenitex & Manavortex - GAME STRUCTURE
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE
+  files: 4
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 24 Vehicles - BONeill - GAME STRUCTURE
+  files: 2
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 25 Vehicles - AAbdii - GAME STRUCTURE
+  files: 4
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 26 Vehicles - Author Unknown - GAME STRUCTURE
+==============================================================================
+PACK 26 Vehicles - Author Unknown - GAME STRUCTURE
+  files: 5
+  [WTNC OVERLAP] none
+  [CROSS-PACK] 1 basename(s) also present in other pack(s):
+      MOD_LIST.txt
+          also in: 07 Vehicles - Oranje3 - GAME STRUCTURE, 08 Vehicles - void - GAME STRUCTURE, 09 Vehicles - Cornmilf - GAME STRUCTURE, 11 Vehicles - ErenN77 - GAME STRUCTURE, 14 Vehicles - aalexbug - GAME STRUCTURE, 15 Vehicles - SDH0 - GAME STRUCTURE, 16 Vehicles - Morpheus - GAME STRUCTURE, 17 Vehicles - Okrasha - GAME STRUCTURE, 18 Vehicles - MAXSA5 - GAME STRUCTURE, 19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE, 20 Vehicles - DennisReactive - GAME STRUCTURE, 21 Vehicles - Synthetic Culture - GAME STRUCTURE, 22 Vehicles - methodd - GAME STRUCTURE, 23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE, 24 Vehicles - BONeill - GAME STRUCTURE, 25 Vehicles - AAbdii - GAME STRUCTURE
+==============================================================================

@@ -1,0 +1,2035 @@
+26 packs found
+
+=== 1) SAME RELATIVE PATH in >1 pack (would overwrite on drop-in) ===
+
+MOD_LIST.txt
+          653  07 Vehicles - Oranje3 - GAME STRUCTURE
+         1184  08 Vehicles - void - GAME STRUCTURE
+         2135  09 Vehicles - Cornmilf - GAME STRUCTURE
+          522  11 Vehicles - ErenN77 - GAME STRUCTURE
+          860  14 Vehicles - aalexbug - GAME STRUCTURE
+          802  15 Vehicles - SDH0 - GAME STRUCTURE
+          638  16 Vehicles - Morpheus - GAME STRUCTURE
+          576  17 Vehicles - Okrasha - GAME STRUCTURE
+          554  18 Vehicles - MAXSA5 - GAME STRUCTURE
+          938  19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE
+          416  20 Vehicles - DennisReactive - GAME STRUCTURE
+          417  21 Vehicles - Synthetic Culture - GAME STRUCTURE
+          418  22 Vehicles - methodd - GAME STRUCTURE
+          430  23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE
+          417  24 Vehicles - BONeill - GAME STRUCTURE
+          418  25 Vehicles - AAbdii - GAME STRUCTURE
+          429  26 Vehicles - Author Unknown - GAME STRUCTURE
+
+archive/pc/mod/ArchV4.xl
+          349  02 Cars & Vehicles - GAME STRUCTURE
+          349  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+archive/pc/mod/BDF_DRe_Arch_V4.archive
+     87535616  02 Cars & Vehicles - GAME STRUCTURE
+     87535616  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+archive/pc/mod/CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+    143831040  02 Cars & Vehicles - GAME STRUCTURE
+    143831040  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302.archive
+     38719488  02 Cars & Vehicles - GAME STRUCTURE
+     38719488  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+         8192  02 Cars & Vehicles - GAME STRUCTURE
+         8192  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+     33996800  02 Cars & Vehicles - GAME STRUCTURE
+     33996800  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+         8192  02 Cars & Vehicles - GAME STRUCTURE
+         8192  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II.archive
+     39309312  02 Cars & Vehicles - GAME STRUCTURE
+     39309312  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+         8192  02 Cars & Vehicles - GAME STRUCTURE
+         8192  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/NUT_johnnyhairedits_CCXL.archive
+      7098368  03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+      7098368  05 CCXL Hair Collection - GAME STRUCTURE
+
+archive/pc/mod/NUT_johnnyhairedits_CCXL.xl
+         3470  03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+         3470  05 CCXL Hair Collection - GAME STRUCTURE
+
+archive/pc/mod/NUT_mullet_collection_CCXL.archive
+     15749120  03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+     15749120  05 CCXL Hair Collection - GAME STRUCTURE
+
+archive/pc/mod/NUT_mullet_collection_CCXL.xl
+         3370  03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+         3370  05 CCXL Hair Collection - GAME STRUCTURE
+
+archive/pc/mod/jeep_cherokee_trackhawk.xl
+          101  02 Cars & Vehicles - GAME STRUCTURE
+          101  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/mercedes_benz_190e_evo2.xl
+           99  02 Cars & Vehicles - GAME STRUCTURE
+           99  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/mustang_boss_302.xl
+          102  02 Cars & Vehicles - GAME STRUCTURE
+          102  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/oranje3_supron_widebody.archive
+     11014144  02 Cars & Vehicles - GAME STRUCTURE
+     11014144  07 Vehicles - Oranje3 - GAME STRUCTURE
+
+archive/pc/mod/oranje3_supron_widebody.xl
+          101  02 Cars & Vehicles - GAME STRUCTURE
+          101  07 Vehicles - Oranje3 - GAME STRUCTURE
+
+archive/pc/mod/rx7_widebody.xl
+          103  02 Cars & Vehicles - GAME STRUCTURE
+          103  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_bb08.archive
+        73728  02 Cars & Vehicles - GAME STRUCTURE
+        73728  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_bf02.archive
+       270336  02 Cars & Vehicles - GAME STRUCTURE
+       270336  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.archive
+        16384  02 Cars & Vehicles - GAME STRUCTURE
+        16384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.xl
+           93  02 Cars & Vehicles - GAME STRUCTURE
+           93  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_ex08.archive
+        49152  02 Cars & Vehicles - GAME STRUCTURE
+        49152  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_ex08.xl
+           90  02 Cars & Vehicles - GAME STRUCTURE
+           90  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_h03.archive
+        45056  02 Cars & Vehicles - GAME STRUCTURE
+        45056  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_hl01.archive
+       184320  02 Cars & Vehicles - GAME STRUCTURE
+       184320  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_mi04.archive
+        73728  02 Cars & Vehicles - GAME STRUCTURE
+        73728  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_neon.archive
+        16384  02 Cars & Vehicles - GAME STRUCTURE
+        16384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_neon.xl
+           87  02 Cars & Vehicles - GAME STRUCTURE
+           87  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_p01_black_matte.xl
+          877  02 Cars & Vehicles - GAME STRUCTURE
+          877  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_racing_brakes.archive
+      1740800  02 Cars & Vehicles - GAME STRUCTURE
+      1740800  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_rollcage.archive
+        40960  02 Cars & Vehicles - GAME STRUCTURE
+        40960  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.archive
+        20480  02 Cars & Vehicles - GAME STRUCTURE
+        20480  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.xl
+           86  02 Cars & Vehicles - GAME STRUCTURE
+           86  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_seats.archive
+       282624  02 Cars & Vehicles - GAME STRUCTURE
+       282624  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.archive
+        49152  02 Cars & Vehicles - GAME STRUCTURE
+        49152  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.xl
+           94  02 Cars & Vehicles - GAME STRUCTURE
+           94  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_sp07.archive
+        40960  02 Cars & Vehicles - GAME STRUCTURE
+        40960  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_steering_wheel.archive
+        57344  02 Cars & Vehicles - GAME STRUCTURE
+        57344  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_wb01.archive
+       249856  02 Cars & Vehicles - GAME STRUCTURE
+       249856  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_wb01.xl
+           87  02 Cars & Vehicles - GAME STRUCTURE
+           87  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_wh07.archive
+       131072  02 Cars & Vehicles - GAME STRUCTURE
+       131072  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_xx_base.archive
+     72699904  02 Cars & Vehicles - GAME STRUCTURE
+     72699904  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Silvia_S15_xx_base.xl
+          315  02 Cars & Vehicles - GAME STRUCTURE
+          315  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+     21078016  02 Cars & Vehicles - GAME STRUCTURE
+     21078016  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.archive
+        94208  02 Cars & Vehicles - GAME STRUCTURE
+        94208  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.xl
+          114  02 Cars & Vehicles - GAME STRUCTURE
+          114  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+         8192  02 Cars & Vehicles - GAME STRUCTURE
+         8192  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.archive
+        45056  02 Cars & Vehicles - GAME STRUCTURE
+        45056  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.xl
+          115  02 Cars & Vehicles - GAME STRUCTURE
+          115  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.archive
+        65536  02 Cars & Vehicles - GAME STRUCTURE
+        65536  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.xl
+          114  02 Cars & Vehicles - GAME STRUCTURE
+          114  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_wh06.archive
+        81920  02 Cars & Vehicles - GAME STRUCTURE
+        81920  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+        24576  02 Cars & Vehicles - GAME STRUCTURE
+        24576  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.archive
+       139264  02 Cars & Vehicles - GAME STRUCTURE
+       139264  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.xl
+          115  02 Cars & Vehicles - GAME STRUCTURE
+          115  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.archive
+     15077376  02 Cars & Vehicles - GAME STRUCTURE
+     15077376  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.xl
+           83  02 Cars & Vehicles - GAME STRUCTURE
+           83  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.archive
+        77824  02 Cars & Vehicles - GAME STRUCTURE
+        77824  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.xl
+           85  02 Cars & Vehicles - GAME STRUCTURE
+           85  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_bb16.archive
+        36864  02 Cars & Vehicles - GAME STRUCTURE
+        36864  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_bf08.archive
+       163840  02 Cars & Vehicles - GAME STRUCTURE
+       163840  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.archive
+      4644864  02 Cars & Vehicles - GAME STRUCTURE
+      4644864  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.xl
+           91  02 Cars & Vehicles - GAME STRUCTURE
+           91  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_ex04.archive
+        45056  02 Cars & Vehicles - GAME STRUCTURE
+        45056  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_ex04.xl
+           90  02 Cars & Vehicles - GAME STRUCTURE
+           90  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.archive
+        86016  02 Cars & Vehicles - GAME STRUCTURE
+        86016  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.xl
+           92  02 Cars & Vehicles - GAME STRUCTURE
+           92  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_h09.archive
+       176128  02 Cars & Vehicles - GAME STRUCTURE
+       176128  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_mi07.archive
+        65536  02 Cars & Vehicles - GAME STRUCTURE
+        65536  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_neon.archive
+        16384  02 Cars & Vehicles - GAME STRUCTURE
+        16384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_neon.xl
+           87  02 Cars & Vehicles - GAME STRUCTURE
+           87  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_p00_default.xl
+          830  02 Cars & Vehicles - GAME STRUCTURE
+          830  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+      1040384  02 Cars & Vehicles - GAME STRUCTURE
+      1040384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+           93  02 Cars & Vehicles - GAME STRUCTURE
+           93  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_rb02.archive
+      1732608  02 Cars & Vehicles - GAME STRUCTURE
+      1732608  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_rc04.archive
+        28672  02 Cars & Vehicles - GAME STRUCTURE
+        28672  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.archive
+        16384  02 Cars & Vehicles - GAME STRUCTURE
+        16384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.xl
+           95  02 Cars & Vehicles - GAME STRUCTURE
+           95  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_rsc03.archive
+        20480  02 Cars & Vehicles - GAME STRUCTURE
+        20480  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_rsc03.xl
+           93  02 Cars & Vehicles - GAME STRUCTURE
+           93  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_sk11.archive
+        16384  02 Cars & Vehicles - GAME STRUCTURE
+        16384  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_sp01.archive
+        77824  02 Cars & Vehicles - GAME STRUCTURE
+        77824  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_stw02.archive
+       122880  02 Cars & Vehicles - GAME STRUCTURE
+       122880  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_tl01.archive
+       163840  02 Cars & Vehicles - GAME STRUCTURE
+       163840  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_wh01.archive
+        77824  02 Cars & Vehicles - GAME STRUCTURE
+        77824  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_xx_base.archive
+     46284800  02 Cars & Vehicles - GAME STRUCTURE
+     46284800  08 Vehicles - void - GAME STRUCTURE
+
+archive/pc/mod/void_Nissan_Skyline_R34_xx_base.xl
+           71  02 Cars & Vehicles - GAME STRUCTURE
+           71  08 Vehicles - void - GAME STRUCTURE
+
+r6/scripts/VehicleManufacturerFix.reds
+          718  02 Cars & Vehicles - GAME STRUCTURE
+          718  11 Vehicles - ErenN77 - GAME STRUCTURE
+
+r6/scripts/VirtualCarDealer/Config.reds
+           25  02 Cars & Vehicles - GAME STRUCTURE
+          133  22 Vehicles - methodd - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/BackstoryManager.reds
+       103688  01 QoL & Fixes - GAME STRUCTURE
+       103688  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/BackstoryUI.reds
+         1126  01 QoL & Fixes - GAME STRUCTURE
+         1126  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/BackstoryUIExpanded.reds
+         2642  01 QoL & Fixes - GAME STRUCTURE
+         2642  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Barghest/BarghestProfileManager.reds
+        20282  01 QoL & Fixes - GAME STRUCTURE
+        20282  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Child/ChildBackstoryGenerator.reds
+         6914  01 QoL & Fixes - GAME STRUCTURE
+         6914  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Coherence/CoherenceManager.reds
+        28597  01 QoL & Fixes - GAME STRUCTURE
+        28597  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Connections/KdspCommunityPool.reds
+         7895  01 QoL & Fixes - GAME STRUCTURE
+         7895  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Connections/KdspConnectionDetector.reds
+         9556  01 QoL & Fixes - GAME STRUCTURE
+         9556  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Connections/KdspConnectionTracker.reds
+         7520  01 QoL & Fixes - GAME STRUCTURE
+         7520  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Criminal/CriminalRecordManager.reds
+        46033  01 QoL & Fixes - GAME STRUCTURE
+        46033  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Criminal/KdspBoloGenerator.reds
+          655  01 QoL & Fixes - GAME STRUCTURE
+          655  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdArchetype.reds
+          298  01 QoL & Fixes - GAME STRUCTURE
+          298  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdAssociation.reds
+         1360  01 QoL & Fixes - GAME STRUCTURE
+         1360  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdEntity.reds
+          926  01 QoL & Fixes - GAME STRUCTURE
+          926  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdGender.reds
+           56  01 QoL & Fixes - GAME STRUCTURE
+           56  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdTrait.reds
+         2721  01 QoL & Fixes - GAME STRUCTURE
+         2721  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdTraits.reds
+          383  01 QoL & Fixes - GAME STRUCTURE
+          383  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/CrowdWealth.reds
+          153  01 QoL & Fixes - GAME STRUCTURE
+          153  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Cyberware/CyberwareRegistryManager.reds
+        61265  01 QoL & Fixes - GAME STRUCTURE
+        61265  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/DatabaseSourceManager.reds
+        36182  01 QoL & Fixes - GAME STRUCTURE
+        36182  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/District/CrowdDistrictManager.reds
+        21776  01 QoL & Fixes - GAME STRUCTURE
+        21776  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/EthnicityDetector.reds
+        11856  01 QoL & Fixes - GAME STRUCTURE
+        11856  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/ExpandedBackstoryManager.reds
+        10215  01 QoL & Fixes - GAME STRUCTURE
+        10215  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Financial/FinancialProfileManager.reds
+       111158  01 QoL & Fixes - GAME STRUCTURE
+       111158  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/AldecaldosProfile.reds
+         8243  01 QoL & Fixes - GAME STRUCTURE
+         8243  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/AnimalsProfile.reds
+         8883  01 QoL & Fixes - GAME STRUCTURE
+         8883  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/GangManager.reds
+        23835  01 QoL & Fixes - GAME STRUCTURE
+        23835  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/GangNameGenerator.reds
+        37271  01 QoL & Fixes - GAME STRUCTURE
+        37271  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/GangProfileGenerator.reds
+         3253  01 QoL & Fixes - GAME STRUCTURE
+         3253  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/GangProfileUtils.reds
+         2940  01 QoL & Fixes - GAME STRUCTURE
+         2940  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/MaelstromProfile.reds
+         8648  01 QoL & Fixes - GAME STRUCTURE
+         8648  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/MoxesProfile.reds
+         7508  01 QoL & Fixes - GAME STRUCTURE
+         7508  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/ScavengersProfile.reds
+         8271  01 QoL & Fixes - GAME STRUCTURE
+         8271  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/SixthStreetProfile.reds
+         9503  01 QoL & Fixes - GAME STRUCTURE
+         9503  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/TygerClawsProfile.reds
+         8582  01 QoL & Fixes - GAME STRUCTURE
+         8582  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/ValentinosProfile.reds
+         8937  01 QoL & Fixes - GAME STRUCTURE
+         8937  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/VoodooBoysProfile.reds
+         8377  01 QoL & Fixes - GAME STRUCTURE
+         8377  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Gang/WraithsProfile.reds
+         8267  01 QoL & Fixes - GAME STRUCTURE
+         8267  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/KdspQuestScannerExclusions.reds
+         1747  01 QoL & Fixes - GAME STRUCTURE
+         1747  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/LifePath/KdspEventPoolCache.reds
+         1227  01 QoL & Fixes - GAME STRUCTURE
+         1227  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/LifePath/LifePath.reds
+         2655  01 QoL & Fixes - GAME STRUCTURE
+         2655  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/LifePath/LifePathEvent.reds
+         2504  01 QoL & Fixes - GAME STRUCTURE
+         2504  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/LifePath/LifePathEvents.reds
+       328773  01 QoL & Fixes - GAME STRUCTURE
+       328773  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/LifePath/LifePathPossibilities.reds
+         4999  01 QoL & Fixes - GAME STRUCTURE
+         4999  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Medical/MedicalHistoryManager.reds
+        64307  01 QoL & Fixes - GAME STRUCTURE
+        64307  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/NCPD/NCPDNameGenerator.reds
+         9236  01 QoL & Fixes - GAME STRUCTURE
+         9236  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/NCPD/NCPDProfileGenerator.reds
+        18785  01 QoL & Fixes - GAME STRUCTURE
+        18785  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/NET/NetAliases.reds
+        29841  01 QoL & Fixes - GAME STRUCTURE
+        29841  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/NET/NetProfileGenerator.reds
+         5319  01 QoL & Fixes - GAME STRUCTURE
+         5319  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/NameGenerator.reds
+        18195  01 QoL & Fixes - GAME STRUCTURE
+        18195  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/AfricanAmericanNames.reds
+        18448  01 QoL & Fixes - GAME STRUCTURE
+        18448  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/AfricanNames.reds
+        18475  01 QoL & Fixes - GAME STRUCTURE
+        18475  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/AmericanNames.reds
+        18582  01 QoL & Fixes - GAME STRUCTURE
+        18582  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/ChineseNames.reds
+        17723  01 QoL & Fixes - GAME STRUCTURE
+        17723  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/EuropeanNames.reds
+        18806  01 QoL & Fixes - GAME STRUCTURE
+        18806  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/HaitianNames.reds
+        19056  01 QoL & Fixes - GAME STRUCTURE
+        19056  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/HispanicNames.reds
+        19005  01 QoL & Fixes - GAME STRUCTURE
+        19005  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/IndianNames.reds
+        17473  01 QoL & Fixes - GAME STRUCTURE
+        17473  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/JapaneseNames.reds
+        18504  01 QoL & Fixes - GAME STRUCTURE
+        18504  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/KoreanNames.reds
+        17804  01 QoL & Fixes - GAME STRUCTURE
+        17804  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/MiddleEasternNames.reds
+        17069  01 QoL & Fixes - GAME STRUCTURE
+        17069  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/SlavicNames.reds
+        18825  01 QoL & Fixes - GAME STRUCTURE
+        18825  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Names/SoutheastAsianNames.reds
+        18150  01 QoL & Fixes - GAME STRUCTURE
+        18150  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Psych/PsychProfileManager.reds
+       104600  01 QoL & Fixes - GAME STRUCTURE
+       104600  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Quirks/PersonalQuirkGenerator.reds
+        18145  01 QoL & Fixes - GAME STRUCTURE
+        18145  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Rare/RareNPCManager.reds
+       202550  01 QoL & Fixes - GAME STRUCTURE
+       202550  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Relationships/RelationshipsManager.reds
+        38905  01 QoL & Fixes - GAME STRUCTURE
+        38905  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/ScannerBackstory.reds
+          667  01 QoL & Fixes - GAME STRUCTURE
+          667  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/ScannerGlitch.reds
+        17376  01 QoL & Fixes - GAME STRUCTURE
+        17376  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/TraumaTeam/TraumaTeamGenerator.reds
+        12760  01 QoL & Fixes - GAME STRUCTURE
+        12760  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Unique/UniqueNPCData.reds
+         4652  01 QoL & Fixes - GAME STRUCTURE
+         4652  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Unique/UniqueNPCEntries.reds
+       229888  01 QoL & Fixes - GAME STRUCTURE
+       229888  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Unique/UniqueNPCManager.reds
+         4215  01 QoL & Fixes - GAME STRUCTURE
+         4215  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Core/Vehicle/VehicleRegistration.reds
+         5983  01 QoL & Fixes - GAME STRUCTURE
+         5983  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Overrides/NPCPuppet.reds
+         6407  01 QoL & Fixes - GAME STRUCTURE
+         6407  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Overrides/ScannerNPCBodyGameController.reds
+         5683  01 QoL & Fixes - GAME STRUCTURE
+         5683  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Overrides/UI_ScannerModulesDef.reds
+           87  01 QoL & Fixes - GAME STRUCTURE
+           87  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Settings/KiroshiSettings.reds
+        23985  01 QoL & Fixes - GAME STRUCTURE
+        23985  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Arabic.reds
+          661  01 QoL & Fixes - GAME STRUCTURE
+          661  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/ChineseSimplified.reds
+          738  01 QoL & Fixes - GAME STRUCTURE
+          738  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/ChineseTraditional.reds
+          745  01 QoL & Fixes - GAME STRUCTURE
+          745  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Czech.reds
+          654  01 QoL & Fixes - GAME STRUCTURE
+          654  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/English.reds
+      1034370  01 QoL & Fixes - GAME STRUCTURE
+      1034370  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/French.reds
+        39330  01 QoL & Fixes - GAME STRUCTURE
+        39330  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/German.reds
+          661  01 QoL & Fixes - GAME STRUCTURE
+          661  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Hungarian.reds
+          682  01 QoL & Fixes - GAME STRUCTURE
+          682  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Italian.reds
+          668  01 QoL & Fixes - GAME STRUCTURE
+          668  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Japanese.reds
+          675  01 QoL & Fixes - GAME STRUCTURE
+          675  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Korean.reds
+          661  01 QoL & Fixes - GAME STRUCTURE
+          661  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/LocalizationProvider.reds
+         1522  01 QoL & Fixes - GAME STRUCTURE
+         1522  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Polish.reds
+          661  01 QoL & Fixes - GAME STRUCTURE
+          661  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Portuguese.reds
+          689  01 QoL & Fixes - GAME STRUCTURE
+          689  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Russian.reds
+          668  01 QoL & Fixes - GAME STRUCTURE
+          668  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Spanish.reds
+          668  01 QoL & Fixes - GAME STRUCTURE
+          668  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/SpanishLatAm.reds
+          703  01 QoL & Fixes - GAME STRUCTURE
+          703  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Thai.reds
+          647  01 QoL & Fixes - GAME STRUCTURE
+          647  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Strings/Turkish.reds
+          668  01 QoL & Fixes - GAME STRUCTURE
+          668  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextAdulthood.reds
+        59770  01 QoL & Fixes - GAME STRUCTURE
+        59770  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextBackgrounds.reds
+        24488  01 QoL & Fixes - GAME STRUCTURE
+        24488  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextBolo.reds
+         8297  01 QoL & Fixes - GAME STRUCTURE
+         8297  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextChildhood.reds
+        32266  01 QoL & Fixes - GAME STRUCTURE
+        32266  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextConnections.reds
+         5278  01 QoL & Fixes - GAME STRUCTURE
+         5278  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextCore.reds
+         1330  01 QoL & Fixes - GAME STRUCTURE
+         1330  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextCorpos.reds
+        11058  01 QoL & Fixes - GAME STRUCTURE
+        11058  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextHousing.reds
+        23155  01 QoL & Fixes - GAME STRUCTURE
+        23155  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextJobs.reds
+        27321  01 QoL & Fixes - GAME STRUCTURE
+        27321  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextLifepaths.reds
+        15178  01 QoL & Fixes - GAME STRUCTURE
+        15178  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextLoading.reds
+        14492  01 QoL & Fixes - GAME STRUCTURE
+        14492  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Text/TextUpbringing.reds
+        29080  01 QoL & Fixes - GAME STRUCTURE
+        29080  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/UI/NetWatchDBReport.reds
+        26441  01 QoL & Fixes - GAME STRUCTURE
+        26441  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/UI/ScannerBackstorySystem.reds
+        12072  01 QoL & Fixes - GAME STRUCTURE
+        12072  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/UI/ScannerLoadingText.reds
+         6065  01 QoL & Fixes - GAME STRUCTURE
+         6065  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Util/ArrayUtils.reds
+          214  01 QoL & Fixes - GAME STRUCTURE
+          214  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Util/Random.reds
+         1220  01 QoL & Fixes - GAME STRUCTURE
+         1220  04 Quests & Gigs - GAME STRUCTURE
+
+r6/scripts/backgroundScanner/Util/String.reds
+          566  01 QoL & Fixes - GAME STRUCTURE
+          566  04 Quests & Gigs - GAME STRUCTURE
+
+r6/tweaks/ArchV4_FZR.tweak
+         8848  02 Cars & Vehicles - GAME STRUCTURE
+         8848  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Fyrn.tweak
+        12714  02 Cars & Vehicles - GAME STRUCTURE
+        12714  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_ICONS.tweak
+         8386  02 Cars & Vehicles - GAME STRUCTURE
+         8386  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Malina.tweak
+         8313  02 Cars & Vehicles - GAME STRUCTURE
+         8313  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Mogus.tweak
+        10379  02 Cars & Vehicles - GAME STRUCTURE
+        10379  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Paladin.tweak
+        12192  02 Cars & Vehicles - GAME STRUCTURE
+        12192  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Valor.tweak
+        10910  02 Cars & Vehicles - GAME STRUCTURE
+        10910  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/ArchV4_Vigil.tweak
+        10296  02 Cars & Vehicles - GAME STRUCTURE
+        10296  20 Vehicles - DennisReactive - GAME STRUCTURE
+
+r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk.tweak
+        11660  02 Cars & Vehicles - GAME STRUCTURE
+        11660  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk_ICONS.tweak
+          452  02 Cars & Vehicles - GAME STRUCTURE
+          452  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/ford_mustang_boss_302.tweak
+        11273  02 Cars & Vehicles - GAME STRUCTURE
+        11273  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/ford_mustang_boss_302_ICONS.tweak
+          421  02 Cars & Vehicles - GAME STRUCTURE
+          421  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/mazda_rx7_fd_widebody.tweak
+        11728  02 Cars & Vehicles - GAME STRUCTURE
+        11728  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/mazda_rx7_fd_widebody_ICONS.tweak
+          444  02 Cars & Vehicles - GAME STRUCTURE
+          444  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2.tweak
+        11272  02 Cars & Vehicles - GAME STRUCTURE
+        11272  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2_ICONS.tweak
+          398  02 Cars & Vehicles - GAME STRUCTURE
+          398  09 Vehicles - Cornmilf - GAME STRUCTURE
+
+r6/tweaks/oranje3_supron_widebody/oranje3_supron_widebody.yaml
+        17373  02 Cars & Vehicles - GAME STRUCTURE
+        17373  07 Vehicles - Oranje3 - GAME STRUCTURE
+
+r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_00_base.yaml
+        15665  02 Cars & Vehicles - GAME STRUCTURE
+        15665  08 Vehicles - void - GAME STRUCTURE
+
+r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_01_neon_red.yaml
+          163  02 Cars & Vehicles - GAME STRUCTURE
+          163  08 Vehicles - void - GAME STRUCTURE
+
+r6/tweaks/yellingintothevoid/void_Nissan_Skyline_2000GT-R_00_base.yaml
+        12232  02 Cars & Vehicles - GAME STRUCTURE
+        12232  08 Vehicles - void - GAME STRUCTURE
+
+r6/tweaks/yellingintothevoid/void_Nissan_Skyline_R34_00_base.yaml
+        16582  02 Cars & Vehicles - GAME STRUCTURE
+        16582  08 Vehicles - void - GAME STRUCTURE
+
+=== 2) SAME BASENAME in >1 pack (potential clash even at different rel path) ===
+
+AfricanAmericanNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AfricanAmericanNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AfricanAmericanNames.reds
+
+AfricanNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AfricanNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AfricanNames.reds
+
+AldecaldosProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/AldecaldosProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/AldecaldosProfile.reds
+
+AmericanNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AmericanNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/AmericanNames.reds
+
+AnimalsProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/AnimalsProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/AnimalsProfile.reds
+
+Arabic.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Arabic.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Arabic.reds
+
+ArchV4.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/ArchV4.xl
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  archive/pc/mod/ArchV4.xl
+
+ArchV4_FZR.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_FZR.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_FZR.tweak
+
+ArchV4_Fyrn.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Fyrn.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Fyrn.tweak
+
+ArchV4_ICONS.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_ICONS.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_ICONS.tweak
+
+ArchV4_Malina.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Malina.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Malina.tweak
+
+ArchV4_Mogus.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Mogus.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Mogus.tweak
+
+ArchV4_Paladin.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Paladin.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Paladin.tweak
+
+ArchV4_Valor.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Valor.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Valor.tweak
+
+ArchV4_Vigil.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Vigil.tweak
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  r6/tweaks/ArchV4_Vigil.tweak
+
+ArrayUtils.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/ArrayUtils.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/ArrayUtils.reds
+
+BDF_DRe_Arch_V4.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/BDF_DRe_Arch_V4.archive
+    20 Vehicles - DennisReactive - GAME STRUCTURE  ::  archive/pc/mod/BDF_DRe_Arch_V4.archive
+
+BackstoryManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryManager.reds
+
+BackstoryUI.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryUI.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryUI.reds
+
+BackstoryUIExpanded.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryUIExpanded.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/BackstoryUIExpanded.reds
+
+BarghestProfileManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Barghest/BarghestProfileManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Barghest/BarghestProfileManager.reds
+
+CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/CORNMILF_Jeep_Grand_Cherokee_Trackhawk.archive
+
+ChildBackstoryGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Child/ChildBackstoryGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Child/ChildBackstoryGenerator.reds
+
+ChineseNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/ChineseNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/ChineseNames.reds
+
+ChineseSimplified.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/ChineseSimplified.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/ChineseSimplified.reds
+
+ChineseTraditional.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/ChineseTraditional.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/ChineseTraditional.reds
+
+Classes.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/LizziesBDs/Classes.reds
+    06 Zenitex & Manavortex - GAME STRUCTURE  ::  r6/scripts/virtual-atelier-full/core/Classes.reds
+
+CoherenceManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Coherence/CoherenceManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Coherence/CoherenceManager.reds
+
+Config.reds
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/scripts/VirtualCarDealer/Config.reds
+    06 Zenitex & Manavortex - GAME STRUCTURE  ::  r6/scripts/virtual-atelier-full/Config.reds
+    22 Vehicles - methodd - GAME STRUCTURE  ::  r6/scripts/VirtualCarDealer/Config.reds
+
+ControlPanel.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/ControlPanel.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/ControlPanel.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/ControlPanel.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/ControlPanel.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/ControlPanel.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/ControlPanel.lua
+
+CriminalRecordManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Criminal/CriminalRecordManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Criminal/CriminalRecordManager.reds
+
+Cron.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ConflictBegone/Modules/Cron.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/StreamingBugWorkaround/Cron.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/betterHeadlights/Cron.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/nativeInteractions/modules/utils/Cron.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/radioExt/modules/utils/Cron.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/external/Cron.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/Cron.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/Cron.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/Cron.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/Cron.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/Cron.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/Cron.lua
+
+CrowdArchetype.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdArchetype.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdArchetype.reds
+
+CrowdAssociation.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdAssociation.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdAssociation.reds
+
+CrowdDistrictManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/District/CrowdDistrictManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/District/CrowdDistrictManager.reds
+
+CrowdEntity.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdEntity.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdEntity.reds
+
+CrowdGender.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdGender.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdGender.reds
+
+CrowdTrait.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdTrait.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdTrait.reds
+
+CrowdTraits.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdTraits.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdTraits.reds
+
+CrowdWealth.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdWealth.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/CrowdWealth.reds
+
+CyberwareRegistryManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Cyberware/CyberwareRegistryManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Cyberware/CyberwareRegistryManager.reds
+
+Czech.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Czech.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Czech.reds
+
+DatabaseSourceManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/DatabaseSourceManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/DatabaseSourceManager.reds
+
+English.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/English.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/English.reds
+
+EthnicityDetector.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/EthnicityDetector.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/EthnicityDetector.reds
+
+EuropeanNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/EuropeanNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/EuropeanNames.reds
+
+ExpandedBackstoryManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ExpandedBackstoryManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ExpandedBackstoryManager.reds
+
+FinancialProfileManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Financial/FinancialProfileManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Financial/FinancialProfileManager.reds
+
+French.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/French.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/French.reds
+
+GameSession.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ImmersiveFirstPerson/Modules/GameSession.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ImmersiveGigs/GameSession.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/hoboPath/GameSession.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/external/GameSession.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/GameSession.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/GameSession.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/GameSession.lua
+
+GameSettings.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/radioExt/modules/utils/GameSettings.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/external/GameSettings.lua
+
+GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ConflictBegone/Modules/GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/CourierJobs/lib/GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/StreamingBugWorkaround/GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/betterHeadlights/GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/nativeInteractions/modules/utils/GameUI.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/radioExt/modules/utils/GameUI.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/external/GameUI.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/GameUI.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/GameUI.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/GameUI.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/GameUI.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/GameUI.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/GameUI.lua
+
+GangManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangManager.reds
+
+GangNameGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangNameGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangNameGenerator.reds
+
+GangProfileGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangProfileGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangProfileGenerator.reds
+
+GangProfileUtils.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangProfileUtils.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/GangProfileUtils.reds
+
+German.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/German.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/German.reds
+
+HaitianNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/HaitianNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/HaitianNames.reds
+
+HispanicNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/HispanicNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/HispanicNames.reds
+
+Hungarian.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Hungarian.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Hungarian.reds
+
+IndianNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/IndianNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/IndianNames.reds
+
+Italian.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Italian.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Italian.reds
+
+Japanese.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Japanese.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Japanese.reds
+
+JapaneseNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/JapaneseNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/JapaneseNames.reds
+
+KRNLNIK_Ford_Mustang_Boss_302.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302.archive
+
+KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Ford_Mustang_Boss_302_Gunmetal_Grey_Black.archive
+
+KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody.archive
+
+KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mazda_Rx7_FD_Widebody_White_Red.archive
+
+KRNLNIK_Mercedes_190E_Evolution_II.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II.archive
+
+KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/KRNLNIK_Mercedes_190E_Evolution_II_Silver.archive
+
+KdspBoloGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Criminal/KdspBoloGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Criminal/KdspBoloGenerator.reds
+
+KdspCommunityPool.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspCommunityPool.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspCommunityPool.reds
+
+KdspConnectionDetector.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspConnectionDetector.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspConnectionDetector.reds
+
+KdspConnectionTracker.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspConnectionTracker.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Connections/KdspConnectionTracker.reds
+
+KdspEventPoolCache.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/KdspEventPoolCache.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/KdspEventPoolCache.reds
+
+KdspQuestScannerExclusions.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/KdspQuestScannerExclusions.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/KdspQuestScannerExclusions.reds
+
+KiroshiSettings.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Settings/KiroshiSettings.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Settings/KiroshiSettings.reds
+
+Korean.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Korean.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Korean.reds
+
+KoreanNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/KoreanNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/KoreanNames.reds
+
+LifePath.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePath.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePath.reds
+
+LifePathEvent.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathEvent.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathEvent.reds
+
+LifePathEvents.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathEvents.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathEvents.reds
+
+LifePathPossibilities.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathPossibilities.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/LifePath/LifePathPossibilities.reds
+
+LocalizationProvider.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/LocalizationProvider.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/LocalizationProvider.reds
+
+MaelstromProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/MaelstromProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/MaelstromProfile.reds
+
+MedicalHistoryManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Medical/MedicalHistoryManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Medical/MedicalHistoryManager.reds
+
+MiddleEasternNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/MiddleEasternNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/MiddleEasternNames.reds
+
+MoxesProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/MoxesProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/MoxesProfile.reds
+
+NCPDNameGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NCPD/NCPDNameGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NCPD/NCPDNameGenerator.reds
+
+NCPDProfileGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NCPD/NCPDProfileGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NCPD/NCPDProfileGenerator.reds
+
+NPCPuppet.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/NPCPuppet.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/LizziesBDs/NPCPuppet.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/NPCPuppet.reds
+
+NUT_johnnyhairedits_CCXL.archive
+    03 CCXL Eyes & Cosmetics - GAME STRUCTURE  ::  archive/pc/mod/NUT_johnnyhairedits_CCXL.archive
+    05 CCXL Hair Collection - GAME STRUCTURE  ::  archive/pc/mod/NUT_johnnyhairedits_CCXL.archive
+
+NUT_johnnyhairedits_CCXL.xl
+    03 CCXL Eyes & Cosmetics - GAME STRUCTURE  ::  archive/pc/mod/NUT_johnnyhairedits_CCXL.xl
+    05 CCXL Hair Collection - GAME STRUCTURE  ::  archive/pc/mod/NUT_johnnyhairedits_CCXL.xl
+
+NUT_mullet_collection_CCXL.archive
+    03 CCXL Eyes & Cosmetics - GAME STRUCTURE  ::  archive/pc/mod/NUT_mullet_collection_CCXL.archive
+    05 CCXL Hair Collection - GAME STRUCTURE  ::  archive/pc/mod/NUT_mullet_collection_CCXL.archive
+
+NUT_mullet_collection_CCXL.xl
+    03 CCXL Eyes & Cosmetics - GAME STRUCTURE  ::  archive/pc/mod/NUT_mullet_collection_CCXL.xl
+    05 CCXL Hair Collection - GAME STRUCTURE  ::  archive/pc/mod/NUT_mullet_collection_CCXL.xl
+
+NameGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NameGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NameGenerator.reds
+
+NetAliases.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NET/NetAliases.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NET/NetAliases.reds
+
+NetProfileGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NET/NetProfileGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/NET/NetProfileGenerator.reds
+
+NetWatchDBReport.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/NetWatchDBReport.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/NetWatchDBReport.reds
+
+PersonalQuirkGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Quirks/PersonalQuirkGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Quirks/PersonalQuirkGenerator.reds
+
+Polish.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Polish.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Polish.reds
+
+Portuguese.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Portuguese.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Portuguese.reds
+
+PsychProfileManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Psych/PsychProfileManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Psych/PsychProfileManager.reds
+
+Random.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/Random.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/Random.reds
+
+RareNPCManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Rare/RareNPCManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Rare/RareNPCManager.reds
+
+Ref.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Airdrops/Ref.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/nativeInteractions/modules/utils/Ref.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/external/Ref.lua
+
+RelationshipsManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Relationships/RelationshipsManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Relationships/RelationshipsManager.reds
+
+ResolutionPresets.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/ResolutionPresets.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/ResolutionPresets.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/ResolutionPresets.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/ResolutionPresets.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/ResolutionPresets.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/ResolutionPresets.lua
+
+Russian.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Russian.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Russian.reds
+
+ScannerBackstory.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ScannerBackstory.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ScannerBackstory.reds
+
+ScannerBackstorySystem.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/ScannerBackstorySystem.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/ScannerBackstorySystem.reds
+
+ScannerGlitch.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ScannerGlitch.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/ScannerGlitch.reds
+
+ScannerLoadingText.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/ScannerLoadingText.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/UI/ScannerLoadingText.reds
+
+ScannerNPCBodyGameController.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/ScannerNPCBodyGameController.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/ScannerNPCBodyGameController.reds
+
+ScavengersProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/ScavengersProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/ScavengersProfile.reds
+
+SetupNewSite.reds
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/scripts/VirtualCarDealer/overrides/SetupNewSite.reds
+    06 Zenitex & Manavortex - GAME STRUCTURE  ::  r6/scripts/virtual-atelier-full/SetupNewSite.reds
+
+SetupNewTab.reds
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/scripts/VirtualCarDealer/overrides/SetupNewTab.reds
+    06 Zenitex & Manavortex - GAME STRUCTURE  ::  r6/scripts/virtual-atelier-full/SetupNewTab.reds
+
+SixthStreetProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/SixthStreetProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/SixthStreetProfile.reds
+
+SlavicNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/SlavicNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/SlavicNames.reds
+
+SoutheastAsianNames.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/SoutheastAsianNames.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Names/SoutheastAsianNames.reds
+
+Spanish.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Spanish.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Spanish.reds
+
+SpanishLatAm.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/SpanishLatAm.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/SpanishLatAm.reds
+
+String.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/String.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Util/String.reds
+
+Styles.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/Styles.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/Styles.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/Styles.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/Styles.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/Styles.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/Styles.lua
+
+TextAdulthood.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextAdulthood.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextAdulthood.reds
+
+TextBackgrounds.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextBackgrounds.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextBackgrounds.reds
+
+TextBolo.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextBolo.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextBolo.reds
+
+TextChildhood.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextChildhood.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextChildhood.reds
+
+TextConnections.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextConnections.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextConnections.reds
+
+TextCore.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextCore.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextCore.reds
+
+TextCorpos.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextCorpos.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextCorpos.reds
+
+TextHousing.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextHousing.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextHousing.reds
+
+TextJobs.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextJobs.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextJobs.reds
+
+TextLifepaths.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextLifepaths.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextLifepaths.reds
+
+TextLoading.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextLoading.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextLoading.reds
+
+TextUpbringing.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextUpbringing.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Text/TextUpbringing.reds
+
+Thai.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Thai.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Thai.reds
+
+TraumaTeamGenerator.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/TraumaTeam/TraumaTeamGenerator.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/TraumaTeam/TraumaTeamGenerator.reds
+
+Turkish.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Turkish.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Strings/Turkish.reds
+
+TygerClawsProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/TygerClawsProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/TygerClawsProfile.reds
+
+UI_ScannerModulesDef.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/UI_ScannerModulesDef.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Overrides/UI_ScannerModulesDef.reds
+
+UniqueNPCData.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCData.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCData.reds
+
+UniqueNPCEntries.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCEntries.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCEntries.reds
+
+UniqueNPCManager.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCManager.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Unique/UniqueNPCManager.reds
+
+ValentinosProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/ValentinosProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/ValentinosProfile.reds
+
+VehicleManufacturerFix.reds
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/scripts/VehicleManufacturerFix.reds
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  r6/scripts/VehicleManufacturerFix.reds
+
+VehicleRegistration.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Vehicle/VehicleRegistration.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Vehicle/VehicleRegistration.reds
+
+VoodooBoysProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/VoodooBoysProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/VoodooBoysProfile.reds
+
+WindowUtils.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ConflictBegone/Modules/WindowUtils.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/modules/WindowUtils.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/modules/WindowUtils.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/modules/WindowUtils.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/modules/WindowUtils.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/modules/WindowUtils.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/modules/WindowUtils.lua
+
+WraithsProfile.reds
+    01 QoL & Fixes - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/WraithsProfile.reds
+    04 Quests & Gigs - GAME STRUCTURE  ::  r6/scripts/backgroundScanner/Core/Gang/WraithsProfile.reds
+
+ford_mustang_boss_302.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/ford_mustang_boss_302.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/ford_mustang_boss_302.tweak
+
+ford_mustang_boss_302_ICONS.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/ford_mustang_boss_302_ICONS.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/ford_mustang_boss_302_ICONS.tweak
+
+init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Airdrops/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ConflictBegone/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/CourierJobs/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/GeneralPerformanceImprovements-CET/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ImmersiveFirstPerson/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/ImmersiveGigs/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/NoMoreAutosaves-Toggle/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/NoSCfromMQ/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/StreamingBugWorkaround/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/StreetLightColors/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Vehicle Clone Destroyer/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/betterHeadlights/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/fps_counter_toggle/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/hoboPath/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/judydivingsuitfix/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/killstreak/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/nativeInteractions/init.lua
+    01 QoL & Fixes - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/radioExt/init.lua
+    02 Cars & Vehicles - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/Car Mod Shop/init.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/init.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/init.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/init.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/init.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/init.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/init.lua
+
+jeep_cherokee_trackhawk.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/jeep_cherokee_trackhawk.xl
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/jeep_cherokee_trackhawk.xl
+
+jeep_grand_cherokee_trackhawk.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk.tweak
+
+jeep_grand_cherokee_trackhawk_ICONS.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk_ICONS.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/cornmilf/jeep_grand_cherokee_trackhawk_ICONS.tweak
+
+lexus_c500.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/lexus_lc500/lexus_c500.yaml
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black/r6/tweaks/lexus_lc500/lexus_c500.yaml
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black Spoiler/r6/tweaks/lexus_lc500/lexus_c500.yaml
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White/r6/tweaks/lexus_lc500/lexus_c500.yaml
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White Spoiler/r6/tweaks/lexus_lc500/lexus_c500.yaml
+
+lexus_lc500.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/lexus_lc500.archive
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black/archive/pc/mod/lexus_lc500.archive
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black Spoiler/archive/pc/mod/lexus_lc500.archive
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White/archive/pc/mod/lexus_lc500.archive
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White Spoiler/archive/pc/mod/lexus_lc500.archive
+
+lexus_lc500.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/lexus_lc500.xl
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black/archive/pc/mod/lexus_lc500.xl
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - Black Spoiler/archive/pc/mod/lexus_lc500.xl
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White/archive/pc/mod/lexus_lc500.xl
+    14 Vehicles - aalexbug - GAME STRUCTURE  ::  Lexus LC500 Liberty Walk/Option - White Spoiler/archive/pc/mod/lexus_lc500.xl
+
+mazda_rx7_fd_widebody.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mazda_rx7_fd_widebody.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mazda_rx7_fd_widebody.tweak
+
+mazda_rx7_fd_widebody_ICONS.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mazda_rx7_fd_widebody_ICONS.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mazda_rx7_fd_widebody_ICONS.tweak
+
+mercedes_benz_190e_evo2.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/mercedes_benz_190e_evo2.xl
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/mercedes_benz_190e_evo2.xl
+
+mercedes_benz_190e_evolution_2.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2.tweak
+
+mercedes_benz_190e_evolution_2_ICONS.tweak
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2_ICONS.tweak
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  r6/tweaks/krnlnik/mercedes_benz_190e_evolution_2_ICONS.tweak
+
+mustang_boss_302.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/mustang_boss_302.xl
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/mustang_boss_302.xl
+
+oranje3_supron_widebody.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/oranje3_supron_widebody.archive
+    07 Vehicles - Oranje3 - GAME STRUCTURE  ::  archive/pc/mod/oranje3_supron_widebody.archive
+
+oranje3_supron_widebody.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/oranje3_supron_widebody.xl
+    07 Vehicles - Oranje3 - GAME STRUCTURE  ::  archive/pc/mod/oranje3_supron_widebody.xl
+
+oranje3_supron_widebody.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/oranje3_supron_widebody/oranje3_supron_widebody.yaml
+    07 Vehicles - Oranje3 - GAME STRUCTURE  ::  r6/tweaks/oranje3_supron_widebody/oranje3_supron_widebody.yaml
+
+placeholder.vortex
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/presets/placeholder.vortex
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/presets/placeholder.vortex
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/presets/placeholder.vortex
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/presets/placeholder.vortex
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/presets/placeholder.vortex
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/presets/placeholder.vortex
+
+rx7_widebody.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/rx7_widebody.xl
+    09 Vehicles - Cornmilf - GAME STRUCTURE  ::  archive/pc/mod/rx7_widebody.xl
+
+settings.lua
+    11 Vehicles - ErenN77 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/mercedes_amg_sl63_2021Settings/settings.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40LBWK/settings.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_FerrariF40Zephyr/settings.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_HyundaiGenesisX/settings.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_Nilu27/settings.lua
+    15 Vehicles - SDH0 - GAME STRUCTURE  ::  bin/x64/plugins/cyber_engine_tweaks/mods/SDH0_VWSuperBeetle/settings.lua
+
+void_Nissan_Silvia_S15_00_base.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_00_base.yaml
+    08 Vehicles - void - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_00_base.yaml
+
+void_Nissan_Silvia_S15_01_neon_red.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_01_neon_red.yaml
+    08 Vehicles - void - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Silvia_S15_01_neon_red.yaml
+
+void_Nissan_Silvia_S15_bb08.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bb08.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bb08.archive
+
+void_Nissan_Silvia_S15_bf02.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bf02.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bf02.archive
+
+void_Nissan_Silvia_S15_bobblehead.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.archive
+
+void_Nissan_Silvia_S15_bobblehead.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_bobblehead.xl
+
+void_Nissan_Silvia_S15_ex08.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_ex08.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_ex08.archive
+
+void_Nissan_Silvia_S15_ex08.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_ex08.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_ex08.xl
+
+void_Nissan_Silvia_S15_h03.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_h03.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_h03.archive
+
+void_Nissan_Silvia_S15_hl01.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_hl01.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_hl01.archive
+
+void_Nissan_Silvia_S15_mi04.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_mi04.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_mi04.archive
+
+void_Nissan_Silvia_S15_neon.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_neon.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_neon.archive
+
+void_Nissan_Silvia_S15_neon.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_neon.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_neon.xl
+
+void_Nissan_Silvia_S15_p01_black_matte.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_p01_black_matte.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_p01_black_matte.xl
+
+void_Nissan_Silvia_S15_racing_brakes.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_racing_brakes.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_racing_brakes.archive
+
+void_Nissan_Silvia_S15_rollcage.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_rollcage.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_rollcage.archive
+
+void_Nissan_Silvia_S15_roof_wing.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.archive
+
+void_Nissan_Silvia_S15_roof_wing.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_roof_wing.xl
+
+void_Nissan_Silvia_S15_seats.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_seats.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_seats.archive
+
+void_Nissan_Silvia_S15_shift_stick_lights.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.archive
+
+void_Nissan_Silvia_S15_shift_stick_lights.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_shift_stick_lights.xl
+
+void_Nissan_Silvia_S15_sp07.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_sp07.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_sp07.archive
+
+void_Nissan_Silvia_S15_steering_wheel.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_steering_wheel.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_steering_wheel.archive
+
+void_Nissan_Silvia_S15_wb01.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wb01.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wb01.archive
+
+void_Nissan_Silvia_S15_wb01.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wb01.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wb01.xl
+
+void_Nissan_Silvia_S15_wh07.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wh07.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_wh07.archive
+
+void_Nissan_Silvia_S15_xx_base.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_xx_base.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_xx_base.archive
+
+void_Nissan_Silvia_S15_xx_base.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_xx_base.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Silvia_S15_xx_base.xl
+
+void_Nissan_Skyline_2000GT-R_00_base.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Skyline_2000GT-R_00_base.yaml
+    08 Vehicles - void - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Skyline_2000GT-R_00_base.yaml
+
+void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_VCD Previews.archive
+
+void_Nissan_Skyline_2000GT-R_console.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.archive
+
+void_Nissan_Skyline_2000GT-R_console.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_console.xl
+
+void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_no_r_bumper.archive
+
+void_Nissan_Skyline_2000GT-R_rollcage.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.archive
+
+void_Nissan_Skyline_2000GT-R_rollcage.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_rollcage.xl
+
+void_Nissan_Skyline_2000GT-R_spoiler.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.archive
+
+void_Nissan_Skyline_2000GT-R_spoiler.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_spoiler.xl
+
+void_Nissan_Skyline_2000GT-R_wh06.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_wh06.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_wh06.archive
+
+void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_white_rim_tires.archive
+
+void_Nissan_Skyline_2000GT-R_widebody.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.archive
+
+void_Nissan_Skyline_2000GT-R_widebody.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_widebody.xl
+
+void_Nissan_Skyline_2000GT-R_xx_base.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.archive
+
+void_Nissan_Skyline_2000GT-R_xx_base.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_2000GT-R_xx_base.xl
+
+void_Nissan_Skyline_R34_00_base.yaml
+    02 Cars & Vehicles - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Skyline_R34_00_base.yaml
+    08 Vehicles - void - GAME STRUCTURE  ::  r6/tweaks/yellingintothevoid/void_Nissan_Skyline_R34_00_base.yaml
+
+void_Nissan_Skyline_R34_00_wb04.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.archive
+
+void_Nissan_Skyline_R34_00_wb04.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_00_wb04.xl
+
+void_Nissan_Skyline_R34_bb16.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_bb16.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_bb16.archive
+
+void_Nissan_Skyline_R34_bf08.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_bf08.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_bf08.archive
+
+void_Nissan_Skyline_R34_dash_acc.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.archive
+
+void_Nissan_Skyline_R34_dash_acc.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_dash_acc.xl
+
+void_Nissan_Skyline_R34_ex04.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_ex04.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_ex04.archive
+
+void_Nissan_Skyline_R34_ex04.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_ex04.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_ex04.xl
+
+void_Nissan_Skyline_R34_fuel_cell.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.archive
+
+void_Nissan_Skyline_R34_fuel_cell.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_fuel_cell.xl
+
+void_Nissan_Skyline_R34_h09.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_h09.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_h09.archive
+
+void_Nissan_Skyline_R34_mi07.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_mi07.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_mi07.archive
+
+void_Nissan_Skyline_R34_neon.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_neon.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_neon.archive
+
+void_Nissan_Skyline_R34_neon.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_neon.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_neon.xl
+
+void_Nissan_Skyline_R34_p00_default.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_p00_default.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_p00_default.xl
+
+void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.archive
+
+void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_parcelshelf_speakers.xl
+
+void_Nissan_Skyline_R34_rb02.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rb02.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rb02.archive
+
+void_Nissan_Skyline_R34_rc04.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rc04.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rc04.archive
+
+void_Nissan_Skyline_R34_roof_spoiler.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.archive
+
+void_Nissan_Skyline_R34_roof_spoiler.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_roof_spoiler.xl
+
+void_Nissan_Skyline_R34_rsc03.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rsc03.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rsc03.archive
+
+void_Nissan_Skyline_R34_rsc03.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rsc03.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_rsc03.xl
+
+void_Nissan_Skyline_R34_sk11.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_sk11.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_sk11.archive
+
+void_Nissan_Skyline_R34_sp01.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_sp01.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_sp01.archive
+
+void_Nissan_Skyline_R34_stw02.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_stw02.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_stw02.archive
+
+void_Nissan_Skyline_R34_tl01.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_tl01.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_tl01.archive
+
+void_Nissan_Skyline_R34_wh01.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_wh01.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_wh01.archive
+
+void_Nissan_Skyline_R34_xx_base.archive
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_xx_base.archive
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_xx_base.archive
+
+void_Nissan_Skyline_R34_xx_base.xl
+    02 Cars & Vehicles - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_xx_base.xl
+    08 Vehicles - void - GAME STRUCTURE  ::  archive/pc/mod/void_Nissan_Skyline_R34_xx_base.xl
+
+=== 3) Per-pack total file count ===
+    515  01 QoL & Fixes - GAME STRUCTURE
+    220  02 Cars & Vehicles - GAME STRUCTURE
+    152  03 CCXL Eyes & Cosmetics - GAME STRUCTURE
+    155  04 Quests & Gigs - GAME STRUCTURE
+     73  05 CCXL Hair Collection - GAME STRUCTURE
+    191  06 Zenitex & Manavortex - GAME STRUCTURE
+     23  07 Vehicles - Oranje3 - GAME STRUCTURE
+    461  08 Vehicles - void - GAME STRUCTURE
+    229  09 Vehicles - Cornmilf - GAME STRUCTURE
+      0  10 Vehicles - MisterChedda - GAME STRUCTURE
+     30  11 Vehicles - ErenN77 - GAME STRUCTURE
+      0  12 Vehicles - EzioMaverick - GAME STRUCTURE
+      0  13 Vehicles - Ashfold - GAME STRUCTURE
+     61  14 Vehicles - aalexbug - GAME STRUCTURE
+    111  15 Vehicles - SDH0 - GAME STRUCTURE
+     26  16 Vehicles - Morpheus - GAME STRUCTURE
+     25  17 Vehicles - Okrasha - GAME STRUCTURE
+     22  18 Vehicles - MAXSA5 - GAME STRUCTURE
+     32  19 Vehicles - ctxrlsec & GRLDY - GAME STRUCTURE
+     11  20 Vehicles - DennisReactive - GAME STRUCTURE
+      9  21 Vehicles - Synthetic Culture - GAME STRUCTURE
+      5  22 Vehicles - methodd - GAME STRUCTURE
+      4  23 Vehicles - HausVonSin & BONeill - GAME STRUCTURE
+      2  24 Vehicles - BONeill - GAME STRUCTURE
+      4  25 Vehicles - AAbdii - GAME STRUCTURE
+      5  26 Vehicles - Author Unknown - GAME STRUCTURE
