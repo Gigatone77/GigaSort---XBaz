@@ -1,4 +1,4 @@
-"""WTNC (Wake the Netrunner Collection) offline integration.
+"""WTNC (Welcome To Night City Collection) offline integration.
 
 Loads the bundled wtnc_modlist.md (no network), resolves which downloaded
 archives belong to the collection, and reports mods that are NOT compatible
