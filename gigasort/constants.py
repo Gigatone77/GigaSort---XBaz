@@ -387,19 +387,39 @@ TITLE_MATCHERS = [
 ]
 
 # The folder names GigaSort itself creates (the "NN Name" style folders).
+# Appearance categories carry type-variant sub-folders (CCXL adds /
+# Replacers of vanilla assets / Wearables as equippable gear). The base
+# folder stays for type-neutral content (frameworks, resources, gameplay).
 KNOWN_FOLDERS = frozenset({
     "01 Eyes & Lashes",
+    "01 Eyes & Lashes - CCXL",
+    "01 Eyes & Lashes - Replacers",
+    "01 Eyes & Lashes - Wearables",
     "02 Hair",
+    "02 Hair - CCXL",
+    "02 Hair - Replacers",
     "03 Face & Body",
+    "03 Face & Body - CCXL",
+    "03 Face & Body - Replacers",
+    "03 Face & Body - Wearables",
     "04 Tattoos & Cyberware",
+    "04 Tattoos & Cyberware - CCXL",
+    "04 Tattoos & Cyberware - Replacers",
+    "04 Tattoos & Cyberware - Wearables",
     "05 Clothing & Armor",
+    "05 Clothing & Armor - CCXL",
+    "05 Clothing & Armor - Replacers",
+    "05 Clothing & Armor - Wearables",
     "06 Weapons & Misc Items",
+    "06 Weapons & Misc Items - Replacers",
     "07 Colors, Profiles & Resources",
     "08 Cores, Fixes & Utilities",
     "09 Vehicles & Transport",
+    "09 Vehicles & Transport - Replacers",
     "10 World Building (Locations & Props)",
     "11 Sensitive Content (18+)",
     "12 Audio & Sound",
+    "12 Audio & Sound - Replacers",
     "13 Animations & Photo Mode",
     "14 Quests & Story",
 })
