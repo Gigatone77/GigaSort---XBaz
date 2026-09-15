@@ -1,0 +1,50 @@
+name: Upload to Nexus Mods
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version string (e.g. 3.0.2)'
+        required: true
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build wheel and sdist
+        run: |
+          pip install build
+          python -m build
+
+      - name: Zip bundle
+        run: |
+          zip -r GigaSort_v3-Cyberpunk2077.zip \
+            gigasort/ \
+            dist/ \
+            resources/ \
+            docs/ \
+            pyproject.toml \
+            README.md \
+            LICENSE \
+            CHANGELOG.md \
+            gigasort.desktop \
+            --exclude "*.pyc" \
+            --exclude "__pycache__" \
+            --exclude "*.bak-*" \
+            --exclude ".git/*" \
+            --exclude ".ruff_cache/*" \
+            --exclude "bin/*"
+
+      - name: Upload to Nexus Mods
+        uses: Nexus-Mods/upload-action@v1.0.0-beta.10
+        with:
+          api_key: ${{ secrets.NEXUSMODS_API_KEY }}
+          file_id: ${{ vars.NEXUSMODS_FILE_ID }}
+          filename: GigaSort_v3-Cyberpunk2077.zip
+          version: ${{ github.event.release.tag_name || inputs.version }}
+          display_name: GigaSort v3 - Cyberpunk 2077
+          category: main
