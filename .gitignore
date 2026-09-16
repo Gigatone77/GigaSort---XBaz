@@ -21,3 +21,6 @@ GAMESTRUCTURE/
 *.swp
 .DS_Store
 bin/
+
+# Session seed backups (kept local, excluded from wheels)
+gigasort/data/*.bak-*
