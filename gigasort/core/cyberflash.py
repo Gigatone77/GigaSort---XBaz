@@ -129,7 +129,7 @@ def dir_size(path):
                     total += os.path.getsize(os.path.join(root, f))
                 except OSError:
                     pass
-            for d in dirs:
+            for _d in dirs:
                 total += 4096
     except OSError:
         pass
@@ -675,7 +675,7 @@ def _interactive_menu(workspace=None):
               % (drive or "NOT FOUND",
                  human_size(shutil.disk_usage(drive).free) if drive else "-"))
         print("  items :")
-        for mid, mtype, src, dst_rel, enabled, exists in _item_table(workspace):
+        for mid, mtype, _src, dst_rel, enabled, _exists in _item_table(workspace):
             mark = "x" if enabled else " "
             print("    [%s] %-19s %-8s %s" % (mark, mid, mtype, dst_rel))
         print()

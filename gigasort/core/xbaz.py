@@ -649,7 +649,7 @@ def status():
     devs = find_elite2()
     if not devs:
         print("  (mapper: no controller node in sysfs)")
-    for node, intfs in devs:
+    for _node, intfs in devs:
         for i in intfs:
             drv = os.path.basename(os.readlink(os.path.join(i, "driver"))) \
                 if os.path.exists(os.path.join(i, "driver")) else "(unbound)"
@@ -725,7 +725,7 @@ def bind():
         print(c(RED, "no Elite 2 found on USB. plug it in and retry."))
         return
     bound_any = False
-    for node, intfs in devs:
+    for _node, intfs in devs:
         for i in intfs:
             drv = os.path.join(i, "driver")
             if os.path.exists(drv):
@@ -804,7 +804,7 @@ def paddles():
     print(c(BOLD, "XBaz paddle-enable - turn on the 4 back paddles"))
     cmd(["modprobe", "xpad"])
     bound_any = False
-    for node, intfs in find_elite2():
+    for _node, intfs in find_elite2():
         for i in intfs:
             if os.path.exists(os.path.join(i, "driver")):
                 continue

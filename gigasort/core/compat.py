@@ -160,7 +160,7 @@ def _read_entry(path, rel, max_bytes=256 * 1024):
         if ext == ".7z":
             import py7zr
             with py7zr.SevenZipFile(path, mode="r") as zf:
-                for fname, bio in zf.read([rel]).items():
+                for _fname, bio in zf.read([rel]).items():
                     return bio.read()[:max_bytes]
         if ext == ".rar":
             import rarfile

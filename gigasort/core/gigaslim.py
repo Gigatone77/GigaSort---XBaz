@@ -64,7 +64,7 @@ def file_size(p):
 
 def dir_size(path):
     total = 0
-    for root, dirs, files in os.walk(path):
+    for root, _dirs, files in os.walk(path):
         for f in files:
             total += file_size(os.path.join(root, f))
     return total
@@ -251,7 +251,7 @@ def run_analyze(game, keep_langs):
         print("  Nothing slimable found. The install is already tidy.")
         return 0
     per = {}
-    for src, rel, kind, size, cat in items:
+    for _src, rel, kind, size, cat in items:
         per.setdefault(cat, []).append((rel, kind, size))
     grand = 0
     for cat in sorted(per):
@@ -293,7 +293,7 @@ def run_apply(game, keep_langs, videos=False, cache=False,
     print("=" * 70)
     print("GIGASLIM APPLY")
     print("=" * 70)
-    for _src, rel, kind, size, cat in sorted(todo, key=lambda x: -x[3]):
+    for _src, rel, _kind, size, cat in sorted(todo, key=lambda x: -x[3]):
         print("  [%-9s] %s  (%s)" % (cat, rel, human_size(size)))
     print("  TOTAL: %s  in %d item(s)" % (human_size(need), len(todo)))
 
@@ -425,7 +425,7 @@ def run_status(game):
     else:
         print("  slimmed   : nothing currently (this backup store is empty)")
     print("  categories:")
-    for c, (label, default) in CATEGORIES.items():
+    for c, (label, _default) in CATEGORIES.items():
         flagged = "--videos/-V" if c == "videos" else ("--cache/-C" if c == "cache" else "on by default")
         print("    %-10s %-55s %s" % (c, label, flagged))
     print("\n  flash drive: %s" % (detect_drive() or "not plugged in"))

@@ -53,7 +53,7 @@ def route_hold_conflicts(folder, plan, game_dir=None, dry_run=False):
         return {}
 
     conflicts = {}
-    for base, dest in plan.items():
+    for base, _dest in plan.items():
         src = os.path.join(folder, base)
         if not os.path.exists(src):
             continue
@@ -206,7 +206,7 @@ def run_batch_sort(workspace, contexts=None, dry_run=False, yes=False,
     combined_gate = set()
 
     items = [workspace] + list(contexts or [])
-    for idx, folder in enumerate(items):
+    for _idx, folder in enumerate(items):
         res = scan_workspace(folder)
         results.append(res)
         for base, dest in res.plan.items():
