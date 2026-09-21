@@ -12,7 +12,7 @@ PACKS = sorted(
 
 def rels(root):
     out = set()
-    for dp, dn, fn in os.walk(root):
+    for dp, _dn, fn in os.walk(root):
         for f in fn:
             out.add(os.path.relpath(os.path.join(dp, f), root))
     return out

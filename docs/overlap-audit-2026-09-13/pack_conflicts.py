@@ -18,7 +18,7 @@ def sha(p):
 paths = defaultdict(dict)
 for p in PACKS:
     root = os.path.join(G, p)
-    for dp, dn, fn in os.walk(root):
+    for dp, _dn, fn in os.walk(root):
         for f in fn:
             if f in SKIP:
                 continue

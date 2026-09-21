@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Inventory all GAME STRUCTURE packs; find overlapping files across packs."""
-import os, hashlib
+import os
 from collections import defaultdict
 
 G = "/var/home/Gigatone/Games"
