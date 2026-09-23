@@ -2,6 +2,16 @@
 
 All notable changes to **GigaSort** are listed here.
 
+## [3.0.2] - 2026-09-23
+
+### GUI launch fixed from desktop entries / AppImages
+
+- **Menu launch now opens the GUI.** The no-flags GUI auto-start no longer
+  requires `stdin` to be a TTY, so launching `gigasort` from the app menu or
+  an AppImage (desktop-entry `Exec=gigasort --gui`) opens the GTK4 window
+  instead of falling through to the CLI report. Terminal launches behave
+  exactly as before.
+
 ## [3.0.1] - 2026-09-11
 
 ### GUI launch fix + fully-offline cosmetics
