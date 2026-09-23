@@ -223,7 +223,11 @@ def main(argv=None):
     primary, _context = _expand_folders(args)
 
     # Launch the GUI when no flags were given (interactive terminal) or --gui.
-    if args.gui or (not explicit_flags and sys.stdin.isatty()):
+    # No isatty() gate: launched from a .desktop entry / AppImage the stdin
+    # is /dev/null, not a TTY, yet the GUI must still open.
+    has_display = bool(os.environ.get("DISPLAY") or
+                       os.environ.get("WAYLAND_DISPLAY"))
+    if args.gui or (not explicit_flags and has_display):
         from gigasort.gui.app import run_app
         return run_app(workspace=primary)
 

@@ -2,7 +2,7 @@
 Type=Application
 Name=GigaSort
 Comment=Cyberpunk 2077 mod-archive organizer
-Exec=gigasort
+Exec=gigasort --gui
 Icon=gigasort
 Terminal=false
 Categories=Utility;
